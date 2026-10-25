@@ -1,0 +1,1189 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Manager | FIRST STANDARD MULTI STORES</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            background: #f3f5f8;
+            color: #17283f;
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            margin-bottom: 24px;
+        }
+
+        .admin-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .admin-header p {
+            color: #606975;
+            line-height: 1.6;
+        }
+
+        .admin-panel {
+            padding: 24px;
+            margin-bottom: 24px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .admin-panel h2 {
+            margin-top: 0;
+        }
+
+        .admin-panel label {
+            display: block;
+            margin: 16px 0 6px;
+            font-weight: 600;
+        }
+
+        .admin-panel input,
+        .admin-panel textarea,
+        .admin-panel select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd1d8;
+            border-radius: 6px;
+            font: inherit;
+        }
+
+        .admin-panel textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .admin-button {
+            margin-top: 18px;
+            padding: 12px 18px;
+            border: 0;
+            border-radius: 6px;
+            background: #17283f;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .admin-button:hover {
+            background: #263f5d;
+        }
+
+        .notice {
+            padding: 12px;
+            background: #fff4d6;
+            border-radius: 6px;
+            color: #624b0c;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 14px;
+            }
+
+            .admin-panel {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="admin-container">
+        <header class="admin-header">
+            <h1>Product Manager</h1>
+            <p>FIRST STANDARD MULTI STORES</p>
+        </header>
+
+<div id="admin-login-panel" class="admin-panel">
+    <h2>Administrator Login</h2>
+    <p>Sign in to manage your store products.</p>
+
+    <form id="admin-login-form">
+        <label for="admin-email">Email address</label>
+        <input
+            type="email"
+            id="admin-email"
+            placeholder="Your administrator email"
+            required
+        >
+
+        <label for="admin-password">Password</label>
+        <input
+            type="password"
+            id="admin-password"
+            placeholder="Your administrator password"
+            required
+        >
+
+        <button type="submit">Sign In</button>
+        <p id="admin-login-message" role="status"></p>
+    </form>
+</div>
+
+       <section id="product-management-panel" class="admin-panel" hidden>
+            <h2>Add or Edit a Product</h2>
+
+            <p class="notice">
+                This is the first setup step. We will connect this form
+                to your store's products after testing the page.
+            </p>
+
+            
+
+            <form id="product-form">
+                <label for="product-name">Product name</label>
+                <input type="text" id="product-name" required>
+
+                <label for="product-category">Category</label>
+                <select id="product-category" required>
+                    <option value="">Select a category</option>
+                    <option>Electronics</option>
+                    <option>Accessories</option>
+                    <option>Fashion</option>
+                    <option>Home & Living</option>
+                    <option>Beauty</option>
+                    <option>Other</option>
+                </select>
+
+                <label for="product-price">Price in naira (₦)</label>
+                <input type="number" id="product-price" min="1" step="1" required>
+<label for="product-stock">Available stock quantity</label>
+<input
+    type="number"
+    id="product-stock"
+    min="0"
+    step="1"
+    value="0"
+    required
+>
+
+
+                
+<label for="product-image">Product image URL (optional)</label>
+<input type="url" id="product-image" placeholder="https://example.com/product.jpg">
+
+<label for="product-image-file">Or upload an image from your laptop</label>
+<input type="file" id="product-image-file" accept="image/*">
+
+<div id="product-image-preview" style="margin-top: 12px;">
+    <img id="preview-image" alt="Product image preview"
+         style="display: none; width: 180px; max-width: 100%; border-radius: 8px;">
+</div>
+
+                <label for="product-description">Description</label>
+                <textarea id="product-description" required></textarea>
+
+                <button type="submit" class="admin-button">
+                    Save Product
+                </button>
+            </form>
+        </section>
+
+        
+<section id="saved-products-panel" class="admin-panel" hidden>
+    <section id="category-management-panel" class="admin-panel" hidden>
+    <h2>Manage Store Categories</h2>
+
+    <p>
+        Add, rename, or remove the categories displayed in your store.
+        Changes here will be saved to your categories database.
+    </p>
+
+    <form id="category-form">
+        <label for="category-name">New category name</label>
+        <input
+            type="text"
+            id="category-name"
+            placeholder="e.g. Phones & Tablets"
+            required
+        >
+
+        <button type="submit" class="admin-button">
+            Add Category
+        </button>
+    </form>
+
+    <h3>Existing Categories</h3>
+
+    <div id="category-management-list">
+        <p>Loading categories...</p>
+    </div>
+
+    <p id="category-management-message" role="status"></p>
+</section>
+    <h2>Saved Products</h2>
+    <div id="saved-products-list">
+        <p>No products saved yet.</p>
+    </div>
+</section>
+
+
+<section id="admin-orders-panel" class="admin-panel" hidden>
+    <h2>Customer Orders</h2>
+    <p>View customer purchases and update their order status.</p>
+
+    <button type="button" id="refresh-orders-button" class="admin-button">
+        Refresh Orders
+    </button>
+
+    <div id="admin-orders-list">
+        <p>Orders will appear here.</p>
+    </div>
+</section>
+
+
+        <p>
+            <a href="index.html">← Return to the store</a>
+        </p>
+    </main>
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+
+<script>
+    // Connect to Supabase
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+    // Find the page elements
+    const loginPanel = document.getElementById("admin-login-panel");
+    const loginForm = document.getElementById("admin-login-form");
+    const loginMessage = document.getElementById("admin-login-message");
+
+    const productPanel = document.getElementById("product-management-panel");
+    const savedProductsPanel = document.getElementById("saved-products-panel");
+    const categoryManagementPanel = document.getElementById("category-management-panel");
+    const categoryForm = document.getElementById("category-form");
+const categoryNameInput = document.getElementById("category-name");
+const categoryManagementList = document.getElementById("category-management-list");
+
+    const productForm = document.getElementById("product-form");
+    const productName = document.getElementById("product-name");
+    const productCategory = document.getElementById("product-category");
+    const productPrice = document.getElementById("product-price");
+    const productStock = document.getElementById("product-stock");
+    const productImageUrl = document.getElementById("product-image");
+    const productImageFile = document.getElementById("product-image-file");
+    const productDescription = document.getElementById("product-description");
+    const previewImage = document.getElementById("preview-image");
+    const savedProductsList = document.getElementById("saved-products-list");
+
+    let selectedImageFile = null;
+    let editingProductId = null;
+
+    // Add a Sign Out button
+    const logoutButton = document.createElement("button");
+    logoutButton.type = "button";
+    logoutButton.textContent = "Sign Out";
+    logoutButton.style.cssText =
+        "display:none;margin-bottom:20px;padding:10px 16px;cursor:pointer;";
+
+    document.querySelector(".admin-header").appendChild(logoutButton);
+
+    // Show or hide the management area
+    function setAdminView(isLoggedIn) {
+        loginPanel.hidden = isLoggedIn;
+        productPanel.hidden = !isLoggedIn;
+        savedProductsPanel.hidden = !isLoggedIn;
+        categoryManagementPanel.hidden = !isLoggedIn;
+        document.getElementById("admin-orders-panel").hidden = !isLoggedIn;
+        logoutButton.style.display = isLoggedIn ? "inline-block" : "none";
+    }
+
+    // Load products from the Supabase database
+    async function loadProducts() {
+        savedProductsList.replaceChildren();
+
+        const loadingMessage = document.createElement("p");
+        loadingMessage.textContent = "Loading products...";
+        savedProductsList.appendChild(loadingMessage);
+
+        const { data, error } = await supabaseClient
+            .from("products")
+            .select("*")
+            .order("created_at", { ascending: false });
+            console.log("Categories returned for products:", data?.map(product => ({
+    name: product.name,
+    category: product.category
+})));
+
+        if (error) {
+            savedProductsList.replaceChildren();
+
+            const errorMessage = document.createElement("p");
+            errorMessage.textContent =
+                "Could not load products: " + error.message;
+            savedProductsList.appendChild(errorMessage);
+            return;
+        }
+
+        savedProductsList.replaceChildren();
+
+        if (!data || data.length === 0) {
+            const message = document.createElement("p");
+            message.textContent = "No products saved yet.";
+            savedProductsList.appendChild(message);
+            return;
+        }
+
+        data.forEach(function (product) {
+            const card = document.createElement("div");
+            card.style.cssText =
+                "border:1px solid #ddd;padding:15px;margin:12px 0;border-radius:8px;";
+
+            if (product.image_url) {
+                const image = document.createElement("img");
+                image.src = product.image_url;
+                image.alt = product.name;
+                image.style.cssText =
+                    "width:100px;height:100px;object-fit:cover;border-radius:6px;";
+                card.appendChild(image);
+            }
+
+            const name = document.createElement("h3");
+            name.textContent = product.name;
+            card.appendChild(name);
+
+            const category = document.createElement("p");
+            category.textContent = "Category: " + product.category;
+            card.appendChild(category);
+
+            const price = document.createElement("p");
+            price.textContent =
+                "Price: ₦" + Number(product.price).toLocaleString("en-NG");
+            card.appendChild(price);
+
+            const description = document.createElement("p");
+            description.textContent = product.description || "";
+            card.appendChild(description);
+
+            const editButton = document.createElement("button");
+editButton.type = "button";
+editButton.textContent = "Edit Product";
+editButton.style.cssText = "padding:10px 14px;margin-right:8px;cursor:pointer;";
+
+editButton.addEventListener("click", function () {
+    editingProductId = product.id;
+
+    productName.value = product.name;
+    productCategory.value = product.category;
+    productPrice.value = product.price;
+    productStock.value = product.stock_quantity ?? 0;
+    productDescription.value = product.description || "";
+    productImageUrl.value = product.image_url || "";
+
+    selectedImageFile = null;
+    productImageFile.value = "";
+    previewImage.src = product.image_url || "";
+    previewImage.style.display = product.image_url ? "block" : "none";
+
+    productForm.querySelector('button[type="submit"]').textContent = "Update Product";
+    productForm.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.textContent = "Delete Product";
+            deleteButton.style.cssText =
+                "padding:10px 14px;cursor:pointer;";
+
+            deleteButton.addEventListener("click", async function () {
+                if (!confirm("Delete " + product.name + "?")) {
+                    return;
+                }
+
+                deleteButton.disabled = true;
+                deleteButton.textContent = "Deleting...";
+
+                const { error } = await supabaseClient
+                    .from("products")
+                    .delete()
+                    .eq("id", product.id);
+
+                if (error) {
+                    alert("Could not delete product: " + error.message);
+                    deleteButton.disabled = false;
+                    deleteButton.textContent = "Delete Product";
+                    return;
+                }
+
+                await loadProducts();
+            });
+
+
+            card.appendChild(editButton);
+            card.appendChild(deleteButton);
+            savedProductsList.appendChild(card);
+        });
+    }
+
+
+        // Load categories from Supabase
+    async function loadCategories() {
+        categoryManagementList.replaceChildren();
+
+        const loadingMessage = document.createElement("p");
+        loadingMessage.textContent = "Loading categories...";
+        categoryManagementList.appendChild(loadingMessage);
+
+        const { data, error } = await supabaseClient
+            .from("categories")
+            .select("*")
+            .order("name", { ascending: true });
+
+        if (error) {
+            categoryManagementList.replaceChildren();
+
+            const errorMessage = document.createElement("p");
+            errorMessage.textContent =
+                "Could not load categories: " + error.message;
+            categoryManagementList.appendChild(errorMessage);
+            return;
+        }
+
+        categoryManagementList.replaceChildren();
+                // Keep the product category dropdown synchronized
+        productCategory.replaceChildren();
+
+        const placeholderOption = document.createElement("option");
+        placeholderOption.value = "";
+        placeholderOption.textContent = "Select a category";
+        productCategory.appendChild(placeholderOption);
+
+        data.forEach(function (category) {
+            const option = document.createElement("option");
+            option.value = category.name;
+            option.textContent = category.name;
+            productCategory.appendChild(option);
+        });
+
+        if (!data || data.length === 0) {
+            const emptyMessage = document.createElement("p");
+            emptyMessage.textContent = "No categories found.";
+            categoryManagementList.appendChild(emptyMessage);
+            return;
+        }
+
+        data.forEach(function (category) {
+            const row = document.createElement("div");
+            row.style.cssText =
+                "display:flex;flex-wrap:wrap;gap:8px;align-items:center;" +
+                "border:1px solid #ddd;padding:12px;margin:10px 0;border-radius:8px;";
+
+            const name = document.createElement("span");
+            name.textContent = category.name;
+            name.style.cssText = "flex:1;min-width:150px;font-weight:bold;";
+
+            const renameButton = document.createElement("button");
+            renameButton.type = "button";
+            renameButton.textContent = "Rename";
+            renameButton.className = "admin-button";
+
+            
+renameButton.addEventListener("click", async function () {
+    const newName = prompt(
+        "Enter the new name for " + category.name + ":",
+        category.name
+    );
+
+    if (newName === null) return;
+    alert("Rename button is working. New name entered: " + newName);
+
+    const trimmedName = newName.trim();
+
+    if (!trimmedName) {
+        alert("Category name cannot be empty.");
+        return;
+    }
+
+    if (trimmedName === category.name) return;
+
+    renameButton.disabled = true;
+
+    try {
+        // Rename the category first
+       
+const { data: updatedCategory, error: categoryError } =
+    await supabaseClient
+        .from("categories")
+        .update({ name: trimmedName })
+        .eq("id", category.id)
+        .select();
+
+console.log("Rename result:", {
+    updatedCategory,
+    categoryError
+});
+const { data: sessionData } = await supabaseClient.auth.getSession();
+
+console.log("Current admin user ID:", sessionData.session?.user?.id);
+
+if (categoryError) {
+    throw categoryError;
+}
+
+if (!updatedCategory || updatedCategory.length === 0) {
+    throw new Error(
+        "Supabase updated zero rows. Check the admin login and RLS update policy."
+    );
+}
+
+
+        // Update products assigned to the old category name
+       
+const { data: updatedProducts, error: productsError } =
+    await supabaseClient
+        .from("products")
+        .update({ category: trimmedName })
+        .eq("category", category.name)
+        .select("id, category");
+
+if (productsError) {
+    alert(
+        'The category was renamed, but products could not be ' +
+        'updated. Error: ' + productsError.message
+    );
+} else if (!updatedProducts || updatedProducts.length === 0) {
+    console.log(
+        "No products were found with the old category:",
+        category.name
+    );
+
+    alert(
+        'Category renamed to "' + trimmedName +
+        '". No products were found using the old category "' +
+        category.name + '".'
+    );
+} else {
+    console.log("Updated products:", updatedProducts);
+
+    alert(
+        'Category renamed and ' + updatedProducts.length +
+        ' product(s) updated to "' + trimmedName + '".'
+    );
+}
+
+
+        await loadCategories();
+        await loadProducts();
+    } catch (error) {
+        alert("Could not rename category: " + error.message);
+    } finally {
+        renameButton.disabled = false;
+    }
+});
+
+
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.textContent = "Delete";
+            deleteButton.className = "admin-button";
+
+            
+deleteButton.addEventListener("click", async function () {
+    const confirmed = confirm(
+        'Delete category "' + category.name + '"?'
+    );
+
+    if (!confirmed) return;
+
+    deleteButton.disabled = true;
+
+    try {
+        const { data: linkedProducts, error: checkError } =
+            await supabaseClient
+                .from("products")
+                .select("id")
+                .eq("category", category.name)
+                .limit(1);
+
+        if (checkError) {
+            throw checkError;
+        }
+
+        if (linkedProducts && linkedProducts.length > 0) {
+            alert(
+                'Cannot delete "' + category.name +
+                '" because products are assigned to it. ' +
+                "Reassign those products first."
+            );
+            return;
+        }
+
+        const { error: deleteError } = await supabaseClient
+            .from("categories")
+            .delete()
+            .eq("id", category.id);
+
+        if (deleteError) {
+            throw deleteError;
+        }
+
+        await loadCategories();
+
+        alert('Category "' + category.name + '" deleted.');
+    } catch (error) {
+        alert("Could not delete category: " + error.message);
+    } finally {
+        deleteButton.disabled = false;
+    }
+});
+
+
+            row.appendChild(name);
+            row.appendChild(renameButton);
+            row.appendChild(deleteButton);
+            categoryManagementList.appendChild(row);
+        });
+    }
+
+        // Add a new category to Supabase
+    categoryForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const name = categoryNameInput.value.trim();
+
+        if (!name) {
+            alert("Enter a category name.");
+            return;
+        }
+
+        const addButton = categoryForm.querySelector(
+            'button[type="submit"]'
+        );
+
+        addButton.disabled = true;
+        addButton.textContent = "Adding...";
+
+        try {
+            const { error } = await supabaseClient
+                .from("categories")
+                .insert({ name: name });
+
+            if (error) {
+                throw error;
+            }
+
+            categoryForm.reset();
+            await loadCategories();
+
+            alert('Category "' + name + '" added successfully.');
+        } catch (error) {
+            alert("Could not add category: " + error.message);
+        } finally {
+            addButton.disabled = false;
+            addButton.textContent = "Add Category";
+        }
+    });
+    // Load customer orders from Supabase
+    async function loadAdminOrders() {
+        const ordersList = document.getElementById("admin-orders-list");
+        const refreshButton = document.getElementById("refresh-orders-button");
+
+        ordersList.replaceChildren();
+
+        const loadingMessage = document.createElement("p");
+        loadingMessage.textContent = "Loading customer orders...";
+        ordersList.appendChild(loadingMessage);
+
+        refreshButton.disabled = true;
+
+        try {
+            const { data, error } = await supabaseClient
+                .from("orders")
+                .select("*")
+                .order("created_at", { ascending: false });
+
+            if (error) {
+                throw error;
+            }
+
+            ordersList.replaceChildren();
+
+            if (!data || data.length === 0) {
+                const emptyMessage = document.createElement("p");
+                emptyMessage.textContent = "No customer orders found yet.";
+                ordersList.appendChild(emptyMessage);
+                return;
+            }
+
+            data.forEach(function (order) {
+                const card = document.createElement("div");
+                card.style.cssText =
+                    "border:1px solid #ddd;padding:16px;margin:14px 0;border-radius:8px;";
+
+                const heading = document.createElement("h3");
+                heading.textContent = "Order " + order.order_number;
+                card.appendChild(heading);
+
+                const total = document.createElement("p");
+                total.textContent =
+                    "Total: ₦" + Number(order.total).toLocaleString("en-NG");
+                card.appendChild(total);
+
+                
+                // Payment verification controls
+                const paymentLabel = document.createElement("label");
+                paymentLabel.textContent = "Payment status:";
+                paymentLabel.style.display = "block";
+                paymentLabel.style.marginTop = "12px";
+
+                const paymentSelect = document.createElement("select");
+                paymentSelect.style.padding = "10px";
+                paymentSelect.style.marginRight = "8px";
+
+                ["Unverified", "Paid"].forEach(function (paymentOption) {
+                    const option = document.createElement("option");
+                    option.value = paymentOption;
+                    option.textContent = paymentOption;
+                    option.selected =
+                        paymentOption === (order.payment_status || "Unverified");
+                    paymentSelect.appendChild(option);
+                });
+
+                const updatePaymentButton = document.createElement("button");
+                updatePaymentButton.type = "button";
+                updatePaymentButton.textContent = "Update Payment";
+                updatePaymentButton.style.cssText =
+                    "padding:10px 14px;margin-top:10px;cursor:pointer;";
+
+                updatePaymentButton.addEventListener("click", async function () {
+                    const selectedPayment = paymentSelect.value;
+
+                    if (selectedPayment === "Paid") {
+                        const confirmed = confirm(
+                            "Have you verified that the bank transfer was received?"
+                        );
+
+                        if (!confirmed) {
+                            paymentSelect.value =
+                                order.payment_status || "Unverified";
+                            return;
+                        }
+                    }
+
+                    updatePaymentButton.disabled = true;
+                    updatePaymentButton.textContent = "Updating...";
+
+                    try {
+                        const { data, error } = await supabaseClient
+                            .from("orders")
+                            .update({ payment_status: selectedPayment })
+                            .eq("id", order.id)
+                            .select("id, payment_status");
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        if (!data || data.length === 0) {
+                            throw new Error(
+                                "No order was updated. Check the Supabase permissions."
+                            );
+                        }
+
+                        alert(
+                            "Payment status updated to: " +
+                            data[0].payment_status
+                        );
+
+                        await loadAdminOrders();
+                    } catch (error) {
+                        alert(
+                            "Could not update payment status: " + error.message
+                        );
+                    } finally {
+                        updatePaymentButton.disabled = false;
+                        updatePaymentButton.textContent = "Update Payment";
+                    }
+                });
+
+                card.appendChild(paymentLabel);
+                card.appendChild(paymentSelect);
+                card.appendChild(updatePaymentButton);
+
+                const statusLabel = document.createElement("label");
+statusLabel.textContent = "Order status:";
+statusLabel.style.display = "block";
+statusLabel.style.marginTop = "12px";
+
+const statusSelect = document.createElement("select");
+statusSelect.style.padding = "10px";
+statusSelect.style.marginRight = "8px";
+
+[
+    "Pending",
+    "Processing",
+    "Shipped",
+    "Delivered",
+    "Cancelled"
+].forEach(function (statusOption) {
+    const option = document.createElement("option");
+    option.value = statusOption;
+    option.textContent = statusOption;
+    option.selected = statusOption === order.status;
+    statusSelect.appendChild(option);
+});
+
+const updateStatusButton = document.createElement("button");
+updateStatusButton.type = "button";
+updateStatusButton.textContent = "Update Status";
+updateStatusButton.style.cssText =
+    "padding:10px 14px;margin-top:10px;cursor:pointer;";
+
+
+updateStatusButton.addEventListener("click", async function () {
+    updateStatusButton.disabled = true;
+    updateStatusButton.textContent = "Updating...";
+
+    try {
+        const selectedStatus = statusSelect.value;
+
+        const { data, error } = await supabaseClient
+            .from("orders")
+            .update({ status: selectedStatus })
+            .eq("id", order.id)
+            .select("id, status");
+
+        if (error) {
+            throw error;
+        }
+
+        if (!data || data.length === 0) {
+    alert(
+        "No order was updated.\n" +
+        "Order ID: " + order.id + "\n" +
+        "Selected status: " + selectedStatus + "\n" +
+        "Supabase returned no updated row."
+    );
+    return;
+}
+
+        alert(
+            "Order updated successfully.\n" +
+            "Order ID: " + data[0].id + "\n" +
+            "Saved status: " + data[0].status
+        );
+
+        await loadAdminOrders();
+
+    } catch (error) {
+        alert("Could not update order status: " + error.message);
+    } finally {
+        updateStatusButton.disabled = false;
+        updateStatusButton.textContent = "Update Status";
+    }
+});
+
+
+card.appendChild(statusLabel);
+card.appendChild(statusSelect);
+card.appendChild(updateStatusButton);
+
+                const date = document.createElement("p");
+                date.textContent =
+                    "Date: " + new Date(order.created_at).toLocaleString();
+                card.appendChild(date);
+
+                const address = document.createElement("pre");
+                address.style.cssText =
+                    "white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;";
+                address.textContent =
+                    "Delivery details: " +
+                    JSON.stringify(order.delivery_address, null, 2);
+                card.appendChild(address);
+
+                const items = document.createElement("pre");
+                items.style.cssText =
+                    "white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;";
+                items.textContent =
+                    "Items: " + JSON.stringify(order.items, null, 2);
+                card.appendChild(items);
+
+                ordersList.appendChild(card);
+            });
+        } catch (error) {
+            ordersList.replaceChildren();
+
+            const errorMessage = document.createElement("p");
+            errorMessage.textContent =
+                "Could not load orders: " + error.message;
+            ordersList.appendChild(errorMessage);
+        } finally {
+            refreshButton.disabled = false;
+        }
+    }
+
+    document.getElementById("refresh-orders-button")
+        .addEventListener("click", loadAdminOrders);
+
+
+    // Administrator login
+    loginForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const email = document.getElementById("admin-email").value.trim();
+        const password = document.getElementById("admin-password").value;
+
+        loginMessage.textContent = "Signing in...";
+
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (error) {
+            loginMessage.textContent =
+                "Sign-in failed: " + error.message;
+            return;
+        }
+
+        if (!data.user) {
+            loginMessage.textContent = "Could not verify administrator.";
+            return;
+        }
+        alert("Administrator user ID: " + data.user.id);
+
+        loginMessage.textContent = "";
+        loginForm.reset();
+
+        setAdminView(true);
+await loadProducts();
+await loadCategories();
+await loadAdminOrders();
+    });
+
+    // Administrator sign out
+    logoutButton.addEventListener("click", async function () {
+        logoutButton.disabled = true;
+
+        const { error } = await supabaseClient.auth.signOut();
+
+        logoutButton.disabled = false;
+
+        if (error) {
+            alert("Could not sign out: " + error.message);
+            return;
+        }
+
+        setAdminView(false);
+        loginMessage.textContent = "";
+    });
+
+    // Preview a selected image
+    productImageFile.addEventListener("change", function () {
+        const file = productImageFile.files[0];
+
+        selectedImageFile = null;
+
+        if (!file) {
+            return;
+        }
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        if (!allowedTypes.includes(file.type)) {
+            alert("Choose a JPG, PNG, or WebP image.");
+            productImageFile.value = "";
+            return;
+        }
+
+   if (file.size > 3 * 1024 * 1024) {
+    alert("Please choose an image smaller than 3 MB.");
+    productImageFile.value = "";
+    return;
+}
+
+        selectedImageFile = file;
+        productImageUrl.value = "";
+
+        previewImage.src = URL.createObjectURL(file);
+        previewImage.style.display = "block";
+    });
+
+    // Preview an image URL
+    productImageUrl.addEventListener("input", function () {
+        selectedImageFile = null;
+        productImageFile.value = "";
+
+        const imageUrl = productImageUrl.value.trim();
+
+        if (imageUrl) {
+            previewImage.src = imageUrl;
+            previewImage.style.display = "block";
+        } else {
+            previewImage.removeAttribute("src");
+            previewImage.style.display = "none";
+        }
+    });
+
+    // Save a new product to Supabase
+    productForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const name = productName.value.trim();
+        const category = productCategory.value;
+        const price = Number(productPrice.value);
+        const description = productDescription.value.trim();
+
+        if (!name || !category || !Number.isFinite(price) || price <= 0) {
+            alert("Enter a product name, category, and valid price.");
+            return;
+        }
+
+        if (!selectedImageFile && !productImageUrl.value.trim()) {
+            alert("Choose an image file or enter an image URL.");
+            return;
+        }
+
+        const saveButton = productForm.querySelector(
+            'button[type="submit"]'
+        );
+
+        saveButton.disabled = true;
+        saveButton.textContent = "Saving...";
+
+        try {
+            let imageUrl = productImageUrl.value.trim();
+
+            // Upload an image file to Supabase Storage when selected
+            if (selectedImageFile) {
+                const safeFileName = selectedImageFile.name.replace(
+                    /[^a-zA-Z0-9._-]/g,
+                    "-"
+                );
+
+                const filePath = Date.now() + "-" + safeFileName;
+
+                const { error: uploadError } = await supabaseClient
+                    .storage
+                    .from("product-images")
+                    .upload(filePath, selectedImageFile, {
+                        cacheControl: "3600",
+                        upsert: false,
+                        contentType: selectedImageFile.type
+                    });
+
+                if (uploadError) {
+                    throw new Error(
+                        "Image upload failed: " + uploadError.message
+                    );
+                }
+
+                const { data: publicImage } = supabaseClient
+                    .storage
+                    .from("product-images")
+                    .getPublicUrl(filePath);
+
+                imageUrl = publicImage.publicUrl;
+            }
+
+
+            // Add a new product or update an existing product
+const productDetails = {
+    name: name,
+    category: category,
+    price: price,
+    stock_quantity: Number(productStock.value),
+    image_url: imageUrl,
+    description: description,
+    is_active: true
+};
+
+            let saveError;
+
+            if (editingProductId !== null) {
+                const { error } = await supabaseClient
+                    .from("products")
+                    .update(productDetails)
+                    .eq("id", editingProductId);
+
+                saveError = error;
+            } else {
+                const { error } = await supabaseClient
+                    .from("products")
+                    .insert(productDetails);
+
+                saveError = error;
+            }
+
+            if (saveError) {
+                throw new Error(
+                    "Product save failed: " + saveError.message
+                );
+            }
+
+            const wasEditing = editingProductId !== null;
+
+            productForm.reset();
+            productStock.value = 0;
+            selectedImageFile = null;
+            editingProductId = null;
+            previewImage.removeAttribute("src");
+            previewImage.style.display = "none";
+
+            await loadProducts();
+
+            alert(
+                wasEditing
+                    ? "Product updated successfully!"
+                    : "Product saved to the online database!"
+            );
+        } catch (error) {
+            alert(error.message || "Something went wrong while saving.");
+        } finally {
+            saveButton.disabled = false;
+            saveButton.textContent = "Save Product";
+        }
+    });
+
+
+    // Restore the login state when the page opens or refreshes
+    async function initialiseAdmin() {
+        setAdminView(false);
+
+        const { data, error } = await supabaseClient.auth.getSession();
+
+        if (error) {
+            loginMessage.textContent =
+                "Could not check login: " + error.message;
+            return;
+        }
+
+        if (data.session) {
+    setAdminView(true);
+    await loadProducts();
+    await loadCategories();
+}
+    }
+
+    initialiseAdmin();
+</script>
+
+</body>
+</html>
+

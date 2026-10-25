@@ -28,10 +28,10 @@
 </div>
 
 
-    <div class="delivery">
-        <span>Delivering to</span>
-        <strong>Nigeria</strong>
-    </div>
+    <button type="button" class="delivery" id="delivery-location">
+    <span>Delivering to</span>
+    <strong id="delivery-location-text">Nigeria</strong>
+</button>
 
    
 <form class="search-bar" id="search-form">
@@ -45,8 +45,8 @@
 </form>
 
 
-    <a href="#" class="account-link">
-        <span>Hello, reader</span>
+    <a href="account.html" class="account-link">
+        <span>Hello, customer</span>
         <strong>Account &amp; Lists</strong>
     </a>
 
@@ -66,12 +66,19 @@
 
     <div id="cart-items"></div>
 
-    <div class="cart-panel-footer">
-        <p>Total: <strong id="cart-total">₦0</strong></p>
-        <button type="button" id="checkout-whatsapp">
-            Order via WhatsApp
-        </button>
-    </div>
+    
+<div class="cart-panel-footer">
+    <p>Total: <strong id="cart-total">₦0</strong></p>
+
+    <button type="button" id="checkout-website">
+        Place Website Order
+    </button>
+
+    <button type="button" id="checkout-whatsapp">
+        Order via WhatsApp
+    </button>
+</div>
+
 </section>
 
 
@@ -79,13 +86,7 @@
 <nav class="category-nav">
     <a href="#home">Home</a>
 <a href="#products" id="all-products-link">All Products</a>
-    <a href="#electronics" data-category="Electronics">Electronics</a>
-    <a href="#fashion" data-category="Fashion">Fashion</a>
-    <a href="#accessories" data-category="Accessories">Accessories</a>
-    <a href="#books" data-category="Books">Books</a>
-    <a href="#home-kitchen" data-category="Home & Kitchen">Home & Kitchen</a>
-    <a href="#beauty" data-category="Beauty">Beauty</a>
-    <a href="#gaming" data-category="Gaming">Gaming</a>
+   <span id="dynamic-category-links"></span>
     <a href="#deals">Special Offers</a>
     <a href="#contact">Contact Us</a>
 </nav>
@@ -93,27 +94,28 @@
 
 
 
+
 <section class="hero" id="home">
     <div class="hero-content">
-        <p class="hero-label">WELCOME TO FIRST STANDARD</p>
+        <p class="hero-label">WELCOME TO FIRST STANDARD MULTI STORES</p>
 
-        <h1>Discover Your Next Great Read</h1>
+        <h1>Everything You Need. All in One Place.</h1>
 
         <p class="hero-description">
-            Explore inspiring stories, bestselling books,
-            educational resources and timeless classics.
-            Your next favourite book is waiting for you.
+            From electronics and fashion to books, beauty and home essentials,
+            discover everyday products at prices you'll love.
         </p>
 
-        <a href="#books" class="hero-button">Shop Books Now</a>
+        <a href="#products" class="hero-button">Explore Products</a>
     </div>
 
     <div class="hero-decoration">
-        <span>BOOKS</span>
-        <span>KNOWLEDGE</span>
-        <span>INSPIRATION</span>
+        <span>QUALITY</span>
+        <span>VALUE</span>
+        <span>STYLE</span>
     </div>
 </section>
+
 
 
 <section class="shopping-categories" id="categories">
@@ -123,43 +125,7 @@
         <p>Find what you need, all in one place.</p>
     </div>
 
-    <div class="category-grid">
-        <a href="#products" class="category-card">
-            <span class="category-icon">📱</span>
-            <h3>Electronics</h3>
-            <p>Phones, laptops &amp; gadgets</p>
-        </a>
-
-        <a href="#products" class="category-card">
-            <span class="category-icon">👗</span>
-            <h3>Fashion</h3>
-            <p>Clothing, shoes &amp; accessories</p>
-        </a>
-
-        <a href="#products" class="category-card">
-            <span class="category-icon">📚</span>
-            <h3>Books</h3>
-            <p>Learning, stories &amp; more</p>
-        </a>
-
-        <a href="#products" class="category-card">
-            <span class="category-icon">🏠</span>
-            <h3>Home &amp; Kitchen</h3>
-            <p>Essentials for your home</p>
-        </a>
-
-        <a href="#products" class="category-card">
-            <span class="category-icon">💄</span>
-            <h3>Beauty</h3>
-            <p>Skincare &amp; personal care</p>
-        </a>
-
-        <a href="#products" class="category-card">
-            <span class="category-icon">🎮</span>
-            <h3>Gaming</h3>
-            <p>Games &amp; entertainment</p>
-        </a>
-    </div>
+    <div class="category-grid" id="dynamic-category-cards"></div>
 </section>
 
 
@@ -234,8 +200,94 @@
 </section>
 
 
+<section class="deals-section" id="deals">
+    <div class="deals-content">
+        <h2>Special Offers</h2>
+        <p>Buy 5 or more items and enjoy 5% off your purchase.</p>
+    </div>
+</section>
+
+
+<!-- Delivery Address Form -->
+<section id="delivery-address-section" class="delivery-address-section" hidden>
+    <div class="delivery-address-card">
+        <button type="button" id="close-delivery-form" class="close-delivery-form" aria-label="Close address form">&times;</button>
+
+        
+<p>Park delivery is available across all 36 Nigerian states and the FCT. A flat delivery fee of ₦2,000 applies to every order. Orders are delivered within 72 hours. Payment is by bank transfer only.</p>
+
+        <p>Enter your delivery address anywhere in Nigeria. Delivery availability and charges may depend on your location.</p>
+
+        <form id="delivery-address-form">
+            <label for="delivery-state">State or FCT</label>
+            <select id="delivery-state" required>
+                <option value="">Select your state</option>
+                <option>Abia</option>
+                <option>Adamawa</option>
+                <option>Akwa Ibom</option>
+                <option>Anambra</option>
+                <option>Bauchi</option>
+                <option>Bayelsa</option>
+                <option>Benue</option>
+                <option>Borno</option>
+                <option>Cross River</option>
+                <option>Delta</option>
+                <option>Ebonyi</option>
+                <option>Edo</option>
+                <option>Ekiti</option>
+                <option>Enugu</option>
+                <option>Gombe</option>
+                <option>Imo</option>
+                <option>Jigawa</option>
+                <option>Kaduna</option>
+                <option>Kano</option>
+                <option>Katsina</option>
+                <option>Kebbi</option>
+                <option>Kogi</option>
+                <option>Kwara</option>
+                <option>Lagos</option>
+                <option>Nasarawa</option>
+                <option>Niger</option>
+                <option>Ogun</option>
+                <option>Ondo</option>
+                <option>Osun</option>
+                <option>Oyo</option>
+                <option>Plateau</option>
+                <option>Rivers</option>
+                <option>Sokoto</option>
+                <option>Taraba</option>
+                <option>Yobe</option>
+                <option>Zamfara</option>
+                <option>Federal Capital Territory (Abuja)</option>
+            </select>
+
+            <label for="delivery-city">City or town</label>
+            <input type="text" id="delivery-city" placeholder="e.g. Ilorin, Ikeja, Abuja" required>
+
+            <label for="delivery-area">Area or neighbourhood</label>
+            <input type="text" id="delivery-area" placeholder="Enter your area" required>
+
+            <label for="delivery-street">Street address and house number</label>
+            <input type="text" id="delivery-street" placeholder="Enter your full street address" required>
+
+            <label for="delivery-phone">Phone number</label>
+            <input type="tel" id="delivery-phone" placeholder="Your contact number" required>
+
+            <button type="submit" class="save-delivery-address">Save delivery address</button>
+            <p id="delivery-address-message" role="status"></p>
+        </form>
+    </div>
+</section>
+
+
+<!-- Back to Top Button -->
+<div class="back-to-top-container">
+    <a href="#home" class="back-to-top">↑ Back to Top</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script src="script.js"></script>
-</body>
 
 
 <!-- Contact Us Section -->
@@ -248,7 +300,7 @@
             Contact us on WhatsApp and we'll be happy to assist you.
         </p>
         <a
-            href="https://wa.me/2347065862871"
+            href="https://wa.me/2348127276790"
             class="contact-button"
             target="_blank"
             rel="noopener noreferrer"
@@ -258,4 +310,48 @@
     </div>
 </section>
 
+<!-- Professional Website Footer -->
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2>FIRST STANDARD MULTI STORES</h2>
+            <p>Your trusted store for everyday essentials.</p>
+        </div>
+
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#products">Shop Products</a>
+            <a href="#contact">Contact Us</a>
+            <a href="#return-policy">Return Policy</a>
+        </div>
+
+        <div class="footer-policy" id="return-policy">
+            <h3>Return Policy</h3>
+            <p>
+                Please contact us before returning an item.
+                Returns and exchanges are subject to confirmation
+                and the condition of the product.
+            </p>
+            <a
+                href="https://wa.me/2348127276790"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Ask about a return
+            </a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>
+                &copy; <span id="footer-year">2026</span>
+                First Standard Multi Stores. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
+
+</body>
 </html>
+
+
+
