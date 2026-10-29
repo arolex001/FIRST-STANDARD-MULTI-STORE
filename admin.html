@@ -5,103 +5,274 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Manager | FIRST STANDARD MULTI STORES</title>
+
     <style>
-        * {
-            box-sizing: border-box;
-        }
+    
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            margin: 0;
-            padding: 24px;
-            background: #f3f5f8;
-            color: #17283f;
-            font-family: Arial, sans-serif;
-        }
+:root {
+    --brand-pink: #d9367c;
+    --brand-pink-dark: #b92363;
+    --brand-pink-light: #fff5f9;
+    --brand-black: #111111;
+    --text-main: #351126;
+    --text-muted: #765b6b;
+    --border-color: #f0c4d8;
+    --white: #ffffff;
+}
 
-        .admin-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+body {
+    margin: 0;
+    padding: 28px 20px;
+    background: var(--brand-pink-light);
+    color: var(--text-main);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
 
-        .admin-header {
-            margin-bottom: 24px;
-        }
+.admin-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
 
-        .admin-header h1 {
-            margin-bottom: 8px;
-        }
+.admin-header {
+    margin-bottom: 28px;
+    padding: 28px;
+    background: var(--brand-black);
+    color: var(--white);
+    border: 1px solid #292929;
+    border-bottom: 5px solid var(--brand-pink);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
 
-        .admin-header p {
-            color: #606975;
-            line-height: 1.6;
-        }
+.admin-header h1 {
+    margin: 0 0 8px;
+    color: #ff80b4;
+    font-size: clamp(24px, 4vw, 32px);
+    line-height: 1.3;
+}
 
-        .admin-panel {
-            padding: 24px;
-            margin-bottom: 24px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-        }
+.admin-header p {
+    margin: 0;
+    color: #f4dce7;
+    line-height: 1.6;
+}
 
-        .admin-panel h2 {
-            margin-top: 0;
-        }
+.admin-panel {
+    width: 100%;
+    margin-bottom: 26px;
+    padding: 28px;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(80, 20, 50, 0.07);
+}
 
-        .admin-panel label {
-            display: block;
-            margin: 16px 0 6px;
-            font-weight: 600;
-        }
+.admin-panel h2 {
+    margin: 0 0 12px;
+    color: var(--brand-pink);
+    font-size: 24px;
+    line-height: 1.4;
+}
 
-        .admin-panel input,
-        .admin-panel textarea,
-        .admin-panel select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd1d8;
-            border-radius: 6px;
-            font: inherit;
-        }
+.admin-panel h3 {
+    color: var(--brand-pink-dark);
+}
 
-        .admin-panel textarea {
-            min-height: 90px;
-            resize: vertical;
-        }
+.admin-panel p {
+    line-height: 1.7;
+}
 
-        .admin-button {
-            margin-top: 18px;
-            padding: 12px 18px;
-            border: 0;
-            border-radius: 6px;
-            background: #17283f;
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-        }
+.admin-panel label {
+    display: block;
+    margin: 18px 0 7px;
+    color: var(--text-main);
+    font-weight: 700;
+}
 
-        .admin-button:hover {
-            background: #263f5d;
-        }
+.admin-panel input,
+.admin-panel textarea,
+.admin-panel select {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid #dfc7d3;
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--text-main);
+    font: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
 
-        .notice {
-            padding: 12px;
-            background: #fff4d6;
-            border-radius: 6px;
-            color: #624b0c;
-            line-height: 1.5;
-        }
+.admin-panel input:focus,
+.admin-panel textarea:focus,
+.admin-panel select:focus {
+    outline: none;
+    border-color: var(--brand-pink);
+    box-shadow: 0 0 0 3px rgba(217, 54, 124, 0.13);
+}
 
-        @media (max-width: 600px) {
-            body {
-                padding: 14px;
-            }
+.admin-panel textarea {
+    min-height: 110px;
+    resize: vertical;
+}
 
-            .admin-panel {
-                padding: 18px;
-            }
-        }
-    </style>
+.admin-button {
+    margin: 18px 8px 0 0;
+    padding: 12px 20px;
+    border: 1px solid var(--brand-pink);
+    border-radius: 8px;
+    background: var(--brand-pink);
+    color: var(--white);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.admin-button:hover {
+    background: var(--brand-pink-dark);
+    box-shadow: 0 4px 10px rgba(217, 54, 124, 0.2);
+}
+
+.admin-button:focus-visible {
+    outline: 3px solid #f4a7c8;
+    outline-offset: 3px;
+}
+
+.admin-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.notice {
+    margin: 16px 0;
+    padding: 16px 18px;
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--brand-pink);
+    border-radius: 9px;
+    background: var(--brand-pink-light);
+    color: var(--text-main);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+#admin-orders-list {
+    margin-top: 20px;
+}
+
+#admin-orders-list > div {
+    margin: 18px 0;
+    padding: 22px;
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--brand-pink);
+    border-radius: 12px;
+    background: #fffafd;
+    box-shadow: 0 5px 16px rgba(80, 20, 50, 0.07);
+    overflow-wrap: anywhere;
+}
+
+#admin-orders-list h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: var(--brand-pink-dark);
+    font-size: 20px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+#admin-orders-list p {
+    margin: 8px 0;
+    color: var(--text-main);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+#admin-orders-list button,
+#admin-orders-list select {
+    max-width: 100%;
+}
+
+#admin-orders-list button {
+    margin: 8px 8px 0 0;
+    padding: 10px 16px;
+    border: 1px solid var(--brand-pink);
+    border-radius: 7px;
+    background: var(--white);
+    color: var(--brand-pink-dark);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+#admin-orders-list button:hover {
+    background: var(--brand-pink);
+    color: var(--white);
+}
+
+#admin-orders-list button:focus-visible {
+    outline: 3px solid #f4a7c8;
+    outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 14px;
+    }
+
+    .admin-header {
+        padding: 21px 18px;
+    }
+
+    .admin-panel {
+        padding: 18px;
+        border-radius: 11px;
+    }
+
+    .admin-panel h2 {
+        font-size: 21px;
+    }
+
+    .admin-button {
+        max-width: 100%;
+        padding: 11px 15px;
+    }
+
+    #admin-orders-list > div {
+        padding: 15px;
+    }
+
+    .admin-container {
+    width: 100%;
+    min-width: 0;
+}
+
+.admin-panel {
+    width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+#admin-orders-list > div {
+    min-width: 0;
+}
+
+#admin-orders-list button {
+    max-width: 100%;
+    white-space: normal;
+}
+
+}
+</style>
 </head>
 <body>
     <main class="admin-container">
@@ -234,16 +405,86 @@
 </section>
 
 
+<section id="discount-settings-panel" class="admin-panel" hidden>
+    <h2>Bulk Discount Settings</h2>
+    <p>Control the bulk discount offered to customers.</p>
+
+    <form id="discount-settings-form">
+        <label for="bulk-discount-enabled">Bulk discount</label>
+        <select id="bulk-discount-enabled" required>
+            <option value="true">Enabled</option>
+            <option value="false">Disabled</option>
+        </select>
+
+        <label for="bulk-discount-percent">Discount percentage (%)</label>
+        <input
+            type="number"
+            id="bulk-discount-percent"
+            min="0"
+            max="100"
+            step="0.1"
+            required
+        >
+
+        <label for="bulk-discount-min-quantity">
+            Minimum quantity of the same product
+        </label>
+        <input
+            type="number"
+            id="bulk-discount-min-quantity"
+            min="1"
+            step="1"
+            required
+        >
+
+        <button type="submit" class="admin-button">
+            Save Discount Settings
+        </button>
+
+        <p id="discount-settings-message" role="status"></p>
+    </form>
+</section>
 <section id="admin-orders-panel" class="admin-panel" hidden>
     <h2>Customer Orders</h2>
     <p>View customer purchases and update their order status.</p>
+
+    <label for="order-number-search">Search by order number</label>
+    <input
+        type="search"
+        id="order-number-search"
+        placeholder="Enter an order number, e.g. FS-..."
+        autocomplete="off"
+    >
 
     <button type="button" id="refresh-orders-button" class="admin-button">
         Refresh Orders
     </button>
 
+
     <div id="admin-orders-list">
         <p>Orders will appear here.</p>
+    </div>
+</section>
+
+
+<section id="customer-accounts-panel" class="admin-panel" hidden>
+    <h2>Registered Customers</h2>
+    <p>View registered customers and their contact details.</p>
+
+    <button
+        type="button"
+        id="refresh-customers-button"
+        class="admin-button"
+    >
+        Refresh Customers
+    </button>
+
+    <p id="customer-accounts-message" role="status">
+        Customer accounts will appear here.
+    </p>
+
+    <div id="customer-accounts-list">
+        <p>Customer accounts have not been loaded yet.</p>
     </div>
 </section>
 
@@ -273,6 +514,12 @@
 
     const productPanel = document.getElementById("product-management-panel");
     const savedProductsPanel = document.getElementById("saved-products-panel");
+    const discountSettingsPanel = document.getElementById("discount-settings-panel");
+const discountSettingsForm = document.getElementById("discount-settings-form");
+const discountEnabledInput = document.getElementById("bulk-discount-enabled");
+const discountPercentInput = document.getElementById("bulk-discount-percent");
+const discountMinQuantityInput = document.getElementById("bulk-discount-min-quantity");
+const discountSettingsMessage = document.getElementById("discount-settings-message");
     const categoryManagementPanel = document.getElementById("category-management-panel");
     const categoryForm = document.getElementById("category-form");
 const categoryNameInput = document.getElementById("category-name");
@@ -306,11 +553,137 @@ const categoryManagementList = document.getElementById("category-management-list
         loginPanel.hidden = isLoggedIn;
         productPanel.hidden = !isLoggedIn;
         savedProductsPanel.hidden = !isLoggedIn;
+        discountSettingsPanel.hidden = !isLoggedIn;
         categoryManagementPanel.hidden = !isLoggedIn;
         document.getElementById("admin-orders-panel").hidden = !isLoggedIn;
+        document.getElementById("customer-accounts-panel").hidden = !isLoggedIn;
         logoutButton.style.display = isLoggedIn ? "inline-block" : "none";
     }
 
+    // Load bulk discount settings from Supabase
+async function loadDiscountSettings() {
+    discountSettingsMessage.textContent = "Loading discount settings...";
+
+    try {
+        const { data, error } = await supabaseClient
+            .from("store_settings")
+            .select("setting_key, setting_value")
+            .in("setting_key", [
+                "bulk_discount_enabled",
+                "bulk_discount_percent",
+                "bulk_discount_min_quantity"
+            ]);
+
+        if (error) {
+            throw error;
+        }
+
+        const settings = {};
+
+        (data || []).forEach(function (setting) {
+            settings[setting.setting_key] = setting.setting_value;
+        });
+
+        const enabled = settings.bulk_discount_enabled;
+
+        discountEnabledInput.value =
+            enabled === true || enabled === "true" ? "true" : "false";
+
+        discountPercentInput.value =
+            settings.bulk_discount_percent ?? 5;
+
+        discountMinQuantityInput.value =
+            settings.bulk_discount_min_quantity ?? 5;
+
+        discountSettingsMessage.textContent =
+            "Discount settings loaded.";
+    } catch (error) {
+        console.error("Loading discount settings failed:", error);
+
+        discountSettingsMessage.textContent =
+            "Could not load settings: " + error.message;
+    }
+}
+
+// Save bulk discount settings to Supabase
+discountSettingsForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const enabled = discountEnabledInput.value === "true";
+    const percent = Number(discountPercentInput.value);
+    const minimumQuantity = Number(discountMinQuantityInput.value);
+
+    if (
+        !Number.isFinite(percent) ||
+        percent < 0 ||
+        percent > 100 ||
+        !Number.isInteger(minimumQuantity) ||
+        minimumQuantity < 1
+    ) {
+        discountSettingsMessage.textContent =
+            "Enter a discount from 0 to 100 and a minimum quantity of at least 1.";
+        return;
+    }
+
+    const saveButton = discountSettingsForm.querySelector(
+        'button[type="submit"]'
+    );
+
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
+    discountSettingsMessage.textContent = "Saving settings...";
+
+    const settingsToSave = [
+        {
+            setting_key: "bulk_discount_enabled",
+            setting_value: enabled
+        },
+        {
+            setting_key: "bulk_discount_percent",
+            setting_value: percent
+        },
+        {
+            setting_key: "bulk_discount_min_quantity",
+            setting_value: minimumQuantity
+        }
+    ];
+
+    try {
+        for (const setting of settingsToSave) {
+            const { data, error } = await supabaseClient
+                .from("store_settings")
+                .update({ setting_value: setting.setting_value })
+                .eq("setting_key", setting.setting_key)
+                .select("setting_key");
+
+            if (error) {
+                throw error;
+            }
+
+            if (!data || data.length === 0) {
+                const { error: insertError } = await supabaseClient
+                    .from("store_settings")
+                    .insert(setting);
+
+                if (insertError) {
+                    throw insertError;
+                }
+            }
+        }
+
+        discountSettingsMessage.textContent =
+            "Discount settings saved successfully.";
+
+    } catch (error) {
+        console.error("Saving discount settings failed:", error);
+
+        discountSettingsMessage.textContent =
+            "Could not save settings: " + error.message;
+    } finally {
+        saveButton.disabled = false;
+        saveButton.textContent = "Save Discount Settings";
+    }
+});
     // Load products from the Supabase database
     async function loadProducts() {
         savedProductsList.replaceChildren();
@@ -500,14 +873,18 @@ editButton.addEventListener("click", function () {
             renameButton.className = "admin-button";
 
             
+
+
+
 renameButton.addEventListener("click", async function () {
+    const oldName = category.name;
+
     const newName = prompt(
-        "Enter the new name for " + category.name + ":",
-        category.name
+        "Enter the new name for " + oldName + ":",
+        oldName
     );
 
     if (newName === null) return;
-    alert("Rename button is working. New name entered: " + newName);
 
     const trimmedName = newName.trim();
 
@@ -516,82 +893,87 @@ renameButton.addEventListener("click", async function () {
         return;
     }
 
-    if (trimmedName === category.name) return;
+    if (trimmedName === oldName) return;
 
     renameButton.disabled = true;
+    renameButton.textContent = "Renaming...";
 
     try {
-        // Rename the category first
-       
-const { data: updatedCategory, error: categoryError } =
-    await supabaseClient
-        .from("categories")
-        .update({ name: trimmedName })
-        .eq("id", category.id)
-        .select();
+        // Check whether the new category name already exists.
+        const { data: existingCategories, error: checkError } =
+            await supabaseClient
+                .from("categories")
+                .select("id, name")
+                .ilike("name", trimmedName);
 
-console.log("Rename result:", {
-    updatedCategory,
-    categoryError
-});
-const { data: sessionData } = await supabaseClient.auth.getSession();
+        if (checkError) throw checkError;
 
-console.log("Current admin user ID:", sessionData.session?.user?.id);
+        const duplicate = (existingCategories || []).some(
+            item =>
+                item.id !== category.id &&
+                item.name.trim().toLowerCase() ===
+                    trimmedName.toLowerCase()
+        );
 
-if (categoryError) {
-    throw categoryError;
-}
+        if (duplicate) {
+            throw new Error("A category with that name already exists.");
+        }
 
-if (!updatedCategory || updatedCategory.length === 0) {
-    throw new Error(
-        "Supabase updated zero rows. Check the admin login and RLS update policy."
-    );
-}
+        // Rename the category in the categories table.
+        const { data: renamedCategory, error: renameError } =
+            await supabaseClient
+                .from("categories")
+                .update({ name: trimmedName })
+                .eq("id", category.id)
+                .select("id, name");
 
+        if (renameError) throw renameError;
 
-        // Update products assigned to the old category name
-       
-const { data: updatedProducts, error: productsError } =
-    await supabaseClient
-        .from("products")
-        .update({ category: trimmedName })
-        .eq("category", category.name)
-        .select("id, category");
+        if (!renamedCategory || renamedCategory.length === 0) {
+            throw new Error(
+                "No category was renamed. Check your admin permissions."
+            );
+        }
 
-if (productsError) {
-    alert(
-        'The category was renamed, but products could not be ' +
-        'updated. Error: ' + productsError.message
-    );
-} else if (!updatedProducts || updatedProducts.length === 0) {
-    console.log(
-        "No products were found with the old category:",
-        category.name
-    );
+        // Update products that use the old category name.
+        const { error: productsError } = await supabaseClient
+            .from("products")
+            .update({ category: trimmedName })
+            .eq("category", oldName);
 
-    alert(
-        'Category renamed to "' + trimmedName +
-        '". No products were found using the old category "' +
-        category.name + '".'
-    );
-} else {
-    console.log("Updated products:", updatedProducts);
+        if (productsError) {
+            console.error(
+                "Category renamed, but products were not updated:",
+                productsError
+            );
 
-    alert(
-        'Category renamed and ' + updatedProducts.length +
-        ' product(s) updated to "' + trimmedName + '".'
-    );
-}
+            alert(
+                'The category was renamed to "' + trimmedName +
+                '", but some products may still use "' + oldName +
+                '". Please check your product records.'
+            );
 
+            await loadCategories();
+            return;
+        }
 
         await loadCategories();
-        await loadProducts();
+
+        alert(
+            'Category "' + oldName + '" was renamed to "' +
+            trimmedName + '". Existing products were updated.'
+        );
     } catch (error) {
-        alert("Could not rename category: " + error.message);
+        console.error("Category rename error:", error);
+        alert("Rename failed: " + error.message);
     } finally {
         renameButton.disabled = false;
+        renameButton.textContent = "Rename";
     }
 });
+
+
+
 
 
             const deleteButton = document.createElement("button");
@@ -614,7 +996,7 @@ deleteButton.addEventListener("click", async function () {
             await supabaseClient
                 .from("products")
                 .select("id")
-                .eq("category", category.name)
+                .eq("category", category.name.trim())
                 .limit(1);
 
         if (checkError) {
@@ -729,8 +1111,7 @@ deleteButton.addEventListener("click", async function () {
 
             data.forEach(function (order) {
                 const card = document.createElement("div");
-                card.style.cssText =
-                    "border:1px solid #ddd;padding:16px;margin:14px 0;border-radius:8px;";
+card.className = "admin-order-card";
 
                 const heading = document.createElement("h3");
                 heading.textContent = "Order " + order.order_number;
@@ -905,23 +1286,66 @@ card.appendChild(updateStatusButton);
                     "Date: " + new Date(order.created_at).toLocaleString();
                 card.appendChild(date);
 
-                const address = document.createElement("pre");
-                address.style.cssText =
-                    "white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;";
-                address.textContent =
-                    "Delivery details: " +
-                    JSON.stringify(order.delivery_address, null, 2);
-                card.appendChild(address);
+                
+const address = document.createElement("p");
+const delivery = order.delivery_address || {};
 
-                const items = document.createElement("pre");
-                items.style.cssText =
-                    "white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;";
-                items.textContent =
-                    "Items: " + JSON.stringify(order.items, null, 2);
-                card.appendChild(items);
+const addressParts =
+    typeof delivery === "object" && !Array.isArray(delivery)
+        ? Object.entries(delivery)
+            .filter(function ([key, value]) {
+                return value !== null && value !== "";
+            })
+            .map(function ([key, value]) {
+                const label = key
+                    .replace(/_/g, " ")
+                    .replace(/\b\w/g, function (letter) {
+                        return letter.toUpperCase();
+                    });
 
-                ordersList.appendChild(card);
+                return label + ": " +
+                    (typeof value === "object"
+                        ? JSON.stringify(value)
+                        : value);
+            })
+        : [String(delivery)];
+
+address.textContent =
+    "Delivery details: " + addressParts.join(" | ");
+
+card.appendChild(address);
+
+
+               
+const items = document.createElement("div");
+items.style.cssText =
+    "white-space:pre-wrap;overflow-wrap:anywhere;margin:12px 0;";
+
+const orderItems = Array.isArray(order.items)
+    ? order.items
+    : [];
+
+items.textContent = "Items:\n" + (
+    orderItems.length
+        ? orderItems.map(function (item) {
+            const name = item.name || item.title || "Product";
+            const quantity = Number(item.quantity || item.qty || 1);
+            const price = Number(item.price || 0);
+
+            return name + " — Qty: " + quantity +
+                " — Unit price: ₦" +
+                price.toLocaleString("en-NG");
+        }).join("\n")
+        : "No item details available."
+);
+
+card.appendChild(items);
+ordersList.appendChild(card);
+
             });
+
+        filterAdminOrderCards();
+
         } catch (error) {
             ordersList.replaceChildren();
 
@@ -936,6 +1360,101 @@ card.appendChild(updateStatusButton);
 
     document.getElementById("refresh-orders-button")
         .addEventListener("click", loadAdminOrders);
+        const orderNumberSearch = document.getElementById("order-number-search");
+
+function filterAdminOrderCards() {
+    const searchTerm = orderNumberSearch.value.trim().toLowerCase();
+
+    const orderCards = document.querySelectorAll(
+        "#admin-orders-list > div"
+    );
+
+    orderCards.forEach(function (card) {
+        const heading = card.querySelector("h3");
+        const orderNumber = heading
+            ? heading.textContent.toLowerCase()
+            : "";
+
+        card.hidden =
+            searchTerm !== "" && !orderNumber.includes(searchTerm);
+    });
+}
+
+orderNumberSearch.addEventListener("input", filterAdminOrderCards);
+
+
+    // Load registered customers through the secure Supabase Edge Function
+    async function loadAdminCustomers() {
+        const customersList = document.getElementById("customer-accounts-list");
+        const customersMessage = document.getElementById("customer-accounts-message");
+        const refreshButton = document.getElementById("refresh-customers-button");
+
+        customersList.replaceChildren();
+        customersMessage.textContent = "Loading registered customers...";
+        refreshButton.disabled = true;
+
+        try {
+            const { data, error } = await supabaseClient.functions.invoke(
+                "admin-customers"
+            );
+
+            if (error) {
+                throw error;
+            }
+
+            if (data?.error) {
+                throw new Error(data.error);
+            }
+
+            const customers = data?.customers || [];
+            customersList.replaceChildren();
+
+            if (customers.length === 0) {
+                customersMessage.textContent = "No registered customers found.";
+                return;
+            }
+
+            customersMessage.textContent =
+                "Registered customers: " + customers.length;
+
+            customers.forEach(function (customer) {
+                const card = document.createElement("div");
+                card.style.cssText =
+                    "border:1px solid #f0c4d8;padding:16px;margin:12px 0;" +
+                    "border-radius:10px;background:#fffafd;overflow-wrap:anywhere;";
+
+                const name = document.createElement("h3");
+                name.textContent = customer.name || "Name not provided";
+                card.appendChild(name);
+
+                const email = document.createElement("p");
+                email.textContent = "Email: " + (customer.email || "Not provided");
+                card.appendChild(email);
+
+                const phone = document.createElement("p");
+                phone.textContent = "Phone: " + (customer.phone || "Not provided");
+                card.appendChild(phone);
+
+                const registered = document.createElement("p");
+                registered.textContent = "Registered: " +
+                    (customer.created_at
+                        ? new Date(customer.created_at).toLocaleString()
+                        : "Date unavailable");
+                card.appendChild(registered);
+
+                customersList.appendChild(card);
+            });
+        } catch (error) {
+            console.error("Loading registered customers failed:", error);
+            customersMessage.textContent =
+                "Could not load customers: " + error.message;
+        } finally {
+            refreshButton.disabled = false;
+        }
+    }
+
+    document.getElementById("refresh-customers-button")
+        .addEventListener("click", loadAdminCustomers);
 
 
     // Administrator login
@@ -971,6 +1490,8 @@ card.appendChild(updateStatusButton);
 await loadProducts();
 await loadCategories();
 await loadAdminOrders();
+await loadDiscountSettings();
+await loadAdminCustomers();
     });
 
     // Administrator sign out
@@ -1178,6 +1699,8 @@ const productDetails = {
     setAdminView(true);
     await loadProducts();
     await loadCategories();
+    await loadDiscountSettings();
+    await loadAdminCustomers();
 }
     }
 

@@ -182,25 +182,68 @@ async function processOrder() {
     }
 
     
+
 const subtotal = orderItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
 );
 
-const totalQuantity = orderItems.reduce(
-    (sum, item) => sum + item.quantity,
-    0
-);
+const { data: discountSettings, error: settingsError } =
+    await window.storeSupabaseClient
+        .from("store_settings")
+        .select("setting_key, setting_value")
+        .in("setting_key", [
+            "bulk_discount_enabled",
+            "bulk_discount_percent",
+            "bulk_discount_min_quantity"
+        ]);
 
-const discount = totalQuantity >= 5
-    ? Math.round((subtotal * 0.05 + Number.EPSILON) * 100) / 100
-    : 0;
+if (settingsError) {
+    console.error("Could not load discount settings:", settingsError);
+    alert("We could not load the current discount settings. Please try again.");
+    return;
+}
+
+const settings = {};
+
+(discountSettings || []).forEach((setting) => {
+    settings[setting.setting_key] = setting.setting_value;
+});
+
+const discountEnabled = settings.bulk_discount_enabled === true;
+const discountPercent = Number(settings.bulk_discount_percent ?? 5);
+const minimumQuantity = Number(settings.bulk_discount_min_quantity ?? 5);
+
+if (
+    !Number.isFinite(discountPercent) ||
+    discountPercent < 0 ||
+    discountPercent > 100 ||
+    !Number.isInteger(minimumQuantity) ||
+    minimumQuantity < 1
+) {
+    alert("The store discount settings are invalid. Please contact the administrator.");
+    return;
+}
 
 
-const deliveryFee = 2000;
+
+let discount = 0;
+
+if (discountEnabled) {
+    orderItems.forEach(function(item) {
+        if (item.quantity >= minimumQuantity) {
+            discount += item.price * item.quantity *
+                (discountPercent / 100);
+        }
+    });
+}
+
+discount = Math.round(
+    (discount + Number.EPSILON) * 100
+) / 100;
 
 const orderTotal = Math.round(
-    (subtotal - discount + deliveryFee + Number.EPSILON) * 100
+    (subtotal - discount + Number.EPSILON) * 100
 ) / 100;
 
 
@@ -265,78 +308,19 @@ response = await fetch(functionURL, {
 
     
 
-    let message =
-        "Hello FIRST STANDARD MULTI STORES! I would like to place an order:\n\n";
-
-    
-let total = 0;
-let messageTotalQuantity = 0;
-
-cart.forEach((item, index) => {
-    const itemTotal = item.price * item.quantity;
-    total += itemTotal;
-    messageTotalQuantity += item.quantity;
-
-    message += `${index + 1}. ${item.name}\n`;
-    message += `Quantity: ${item.quantity}\n`;
-    message += `Price: ₦${item.price.toLocaleString("en-NG")}\n`;
-    message += `Subtotal: ₦${itemTotal.toLocaleString("en-NG")}\n\n`;
-});
-
-const messageDiscount = messageTotalQuantity >= 5
-    ? Math.round((total * 0.05 + Number.EPSILON) * 100) / 100
-    : 0;
-
-
-
-
-const finalTotal = Math.round(
-    (total - messageDiscount + deliveryFee + Number.EPSILON) * 100
-) / 100;
-
-
-message += `Order subtotal: ₦${total.toLocaleString("en-NG")}\n`;
-
-
-
-message += `5% discount: -₦${messageDiscount.toLocaleString("en-NG")}\n`;
-message += `Park delivery fee: ₦${deliveryFee.toLocaleString("en-NG")}\n`;
-message += `Final total: ₦${finalTotal.toLocaleString("en-NG")}\n\n`;
-
-
-
-
-    message += "DELIVERY ADDRESS\n";
-    message += `State/FCT: ${deliveryAddress.state}\n`;
-    message += `City/Town: ${deliveryAddress.city}\n`;
-    message += `Area: ${deliveryAddress.area}\n`;
-    message += `Street: ${deliveryAddress.street}\n`;
-    message += `Phone: ${deliveryAddress.phone}\n\n`;
-
-    message +=
-        "Please confirm delivery availability, charges, and order details. Thank you.";
-
-    const whatsappURL =
-    "https://wa.me/" +
-    shopWhatsApp +
-    "?text=" +
-    encodeURIComponent(message);
-
-if (typeof checkoutMode !== "undefined" && checkoutMode === "website") {
+    // Website-only order confirmation.
     alert(
         "YOUR ORDER HAS BEEN SAVED\n\n" +
         "Order number: " + savedOrder.order_number + "\n\n" +
-        "BANK TRANSFER PAYMENT DETAILS\n" +
-        "Bank: Access Bank\n" +
-        "Account Number: 1802326309\n" +
-        "Account Name: Sophia Oba Oluwafunmilola\n\n" +
+        "PAYMENT\n" +
+        "Online payment via Paystack will be available " +
+        "once payment setup is complete.\n\n" +
         "DELIVERY INFORMATION\n" +
-        "Park delivery fee: ₦2,000 per order.\n" +
-        "Your goods will be delivered to the destination motor park.\n" +
-        "Transport from the park to your final destination " +
-        "is arranged and paid for separately.\n\n" +
+        "Our team will contact you to discuss delivery charges " +
+        "and arrangements.\n\n" +
         "Your order remains pending until payment is confirmed."
     );
+
     cart.length = 0;
     saveCart();
     updateCartCount();
@@ -346,54 +330,12 @@ if (typeof checkoutMode !== "undefined" && checkoutMode === "website") {
     }
 
     renderCartPanel();
-    return;
 }
 
-alert(
-    "YOUR ORDER HAS BEEN SAVED\n\n" +
-    "BANK TRANSFER PAYMENT DETAILS\n" +
-    "Bank: Access Bank\n" +
-    "Account Number: 1802326309\n" +
-    "Account Name: Sophia Oba Oluwafunmilola\n\n" +
-    "DELIVERY INFORMATION\n" +
-    "Park delivery fee: ₦2,000 per order.\n" +
-    "Your goods will be delivered to the destination motor park.\n" +
-    "Any transport from the park to your final destination " +
-    "is arranged and paid for separately.\n\n" +
-    "Please verify the account details before making payment. " +
-    "Your order remains pending until payment is confirmed."
-);
-
-if (confirm("Would you like to continue to WhatsApp to send your order details?")) {
-    window.location.href = whatsappURL;
-}
-}
-let checkoutMode = "whatsapp";
+let checkoutMode = "website";
 let checkoutInProgress = false;
 
-async function sendOrderToWhatsApp() {
-    if (checkoutInProgress) {
-        return;
-    }
 
-    checkoutInProgress = true;
-
-    if (checkoutButton) {
-        checkoutButton.disabled = true;
-        checkoutButton.textContent = "Processing order...";
-    }
-
-    try {
-        await processOrder();
-    } finally {
-        checkoutInProgress = false;
-
-        if (checkoutButton) {
-            checkoutButton.disabled = false;
-            checkoutButton.textContent = "Order via WhatsApp";
-        }
-    }
-}
 
 
 
@@ -412,20 +354,19 @@ const cartPanel = document.querySelector("#cart-panel");
 const cartItemsContainer = document.querySelector("#cart-items");
 const cartTotalElement = document.querySelector("#cart-total");
 const closeCartButton = document.querySelector("#close-cart");
-const checkoutButton = document.querySelector("#checkout-whatsapp");
 
 
-function renderCartPanel() {
+
+
+async function renderCartPanel() {
     if (!cartItemsContainer || !cartTotalElement) return;
 
     cartItemsContainer.innerHTML = "";
     let total = 0;
-    let totalQuantity = 0;
 
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
-        totalQuantity += item.quantity;
 
         const row = document.createElement("div");
         row.className = "cart-item";
@@ -452,18 +393,74 @@ function renderCartPanel() {
         cartItemsContainer.appendChild(row);
     });
 
-    
-const discount = totalQuantity >= 5 ? total * 0.05 : 0;
-const deliveryFee = 2000;
-const finalTotal = total - discount + deliveryFee;
+    try {
+        const { data: discountSettings, error } =
+            await window.storeSupabaseClient
+                .from("store_settings")
+                .select("setting_key, setting_value")
+                .in("setting_key", [
+                    "bulk_discount_enabled",
+                    "bulk_discount_percent",
+                    "bulk_discount_min_quantity"
+                ]);
 
-cartTotalElement.innerHTML =
-    `Subtotal: ₦${total.toLocaleString("en-NG")}<br>` +
-    `Discount (5%): -₦${discount.toLocaleString("en-NG")}<br>` +
-    `Park delivery fee: ₦${deliveryFee.toLocaleString("en-NG")}<br>` +
-    `<strong>Total: ₦${finalTotal.toLocaleString("en-NG")}</strong>`;
+        if (error) throw error;
 
+        const settings = {};
+        (discountSettings || []).forEach((setting) => {
+            settings[setting.setting_key] = setting.setting_value;
+        });
+
+        const discountEnabled =
+            settings.bulk_discount_enabled === true;
+        const discountPercent =
+            Number(settings.bulk_discount_percent ?? 5);
+        const minimumQuantity =
+            Number(settings.bulk_discount_min_quantity ?? 5);
+
+        if (
+            !Number.isFinite(discountPercent) ||
+            discountPercent < 0 ||
+            discountPercent > 100 ||
+            !Number.isInteger(minimumQuantity) ||
+            minimumQuantity < 1
+        ) {
+            throw new Error("Invalid store discount settings.");
+        }
+
+      const totalQuantity = cart.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+);
+
+let discount = 0;
+
+if (discountEnabled) {
+    cart.forEach(function(item) {
+        if (item.quantity >= minimumQuantity) {
+            discount += item.price * item.quantity *
+                (discountPercent / 100);
+        }
+    });
 }
+
+        const finalTotal = Math.round(
+            (total - discount + Number.EPSILON) * 100
+        ) / 100;
+
+        cartTotalElement.innerHTML =
+            `Subtotal: ₦${total.toLocaleString("en-NG")}<br>` +
+            `Bulk discount (${discountEnabled ? discountPercent : 0}%): ` +
+            `-₦${discount.toLocaleString("en-NG")}<br>` +
+            `<strong>Total: ₦${finalTotal.toLocaleString("en-NG")}</strong>`;
+    } catch (error) {
+        console.error("Could not load cart discount settings:", error);
+
+        cartTotalElement.textContent =
+            "Could not load discount settings. Please try again.";
+    }
+}
+
 
 
 if (cartLink && cartPanel) {
@@ -528,7 +525,7 @@ if (websiteCheckoutButton) {
         try {
             await processOrder();
         } finally {
-            checkoutMode = "whatsapp";
+            checkoutMode = "website";
             checkoutInProgress = false;
             websiteCheckoutButton.disabled = false;
             websiteCheckoutButton.textContent = "Place Website Order";
@@ -536,14 +533,11 @@ if (websiteCheckoutButton) {
     });
 }
 
-if (checkoutButton) {
-    checkoutButton.addEventListener("click", sendOrderToWhatsApp);
-}
+
 
 
 
 updateCartCount();
-renderCartPanel();
 
 
 
@@ -572,7 +566,9 @@ if (searchForm && productSearch) {
 }
 
 
-document.querySelector(".category-nav").addEventListener("click", (event) => {
+const categoryNav = document.querySelector(".category-nav");
+
+if (categoryNav) categoryNav.addEventListener("click", (event) => {
     const link = event.target.closest("a[data-category]");
 
     if (!link) return;
@@ -968,11 +964,98 @@ async function loadSupabaseCategories() {
     });
 }
 
+
+// Keep the Special Offers message synchronized with store settings.
+
+async function loadSpecialOfferMessage() {
+    const offerMessage = document.getElementById("special-offer-message");
+    const heroCircle = document.querySelector(".hero-offer-circle");
+    const heroPercent = document.getElementById("hero-discount-percent");
+    const heroMinimum = document.getElementById("hero-discount-minimum");
+
+    if (!window.storeSupabaseClient) return;
+
+    try {
+        const { data, error } = await window.storeSupabaseClient
+            .from("store_settings")
+            .select("setting_key, setting_value")
+            .in("setting_key", [
+                "bulk_discount_enabled",
+                "bulk_discount_percent",
+                "bulk_discount_min_quantity"
+            ]);
+
+        if (error) throw error;
+
+        const settings = {};
+
+        (data || []).forEach((setting) => {
+            settings[setting.setting_key] = setting.setting_value;
+        });
+
+        const enabled = settings.bulk_discount_enabled === true;
+        const percent = Number(settings.bulk_discount_percent ?? 5);
+        const minimum = Number(settings.bulk_discount_min_quantity ?? 5);
+
+        const validDiscount =
+            enabled &&
+            Number.isFinite(percent) &&
+            percent > 0 &&
+            percent <= 100 &&
+            Number.isInteger(minimum) &&
+            minimum >= 1;
+
+        if (!validDiscount) {
+            if (offerMessage) {
+                offerMessage.textContent =
+                    "Check our store for current special offers.";
+            }
+
+            if (heroCircle) {
+                heroCircle.style.display = "none";
+            }
+
+            return;
+        }
+
+        if (offerMessage) {
+            offerMessage.textContent =
+                "Buy " + minimum +
+                " or more of the same product and enjoy " +
+                percent + "% off.";
+        }
+
+        if (heroPercent) {
+            heroPercent.textContent = percent + "% OFF";
+        }
+
+        if (heroMinimum) {
+            heroMinimum.textContent = minimum + "+";
+        }
+
+        if (heroCircle) {
+            heroCircle.style.display = "";
+        }
+    } catch (error) {
+        console.error("Could not load the Special Offers message:", error);
+
+        if (offerMessage) {
+            offerMessage.textContent =
+                "Check our store for current special offers.";
+        }
+
+        if (heroCircle) {
+            heroCircle.style.display = "none";
+        }
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const waitForSupabase = setInterval(() => {
         if (window.storeSupabaseClient) {
             clearInterval(waitForSupabase);
             loadSupabaseCategories();
+            loadSpecialOfferMessage();
         }
     }, 200);
 });

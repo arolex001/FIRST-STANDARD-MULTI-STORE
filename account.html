@@ -200,12 +200,41 @@
 }
 
 .order-card {
-    margin: 14px 0;
-    padding: 16px;
-    border: 1px solid #f4c7dc;
-    border-radius: 10px;
+    margin: 18px 0;
+    padding: 18px;
+    border: 1px solid #f0b5d0;
+    border-left: 5px solid #d9367c;
+    border-radius: 12px;
     background: #fff5f9;
     overflow-wrap: anywhere;
+    box-shadow: 0 4px 12px rgba(80, 20, 50, 0.06);
+}
+
+.order-card h3 {
+    margin: 0 0 14px;
+    color: #b92363;
+    font-size: 17px;
+}
+
+.order-card p {
+    margin: 10px 0;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.order-card button {
+    margin-top: 8px;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 7px;
+    background: #d9367c;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.order-card button:hover {
+    background: #b92363;
 }
 
 .order-card p {
@@ -288,6 +317,10 @@
                     >
                 </div>
 
+                <p style="text-align: right; margin: 8px 0 16px;">
+                    <a href="#" id="forgot-password-link">Forgot password?</a>
+                </p>
+
                 <button type="submit" class="submit-button" id="submit-button">
                     Log In
                 </button>
@@ -310,10 +343,9 @@
 </section>
 
             <p class="small-print">
-                For your security, never share your password with anyone.
-                Customer order history will be connected after account access
-                and database permissions are configured.
-            </p>
+    For your security, never share your password with anyone.
+    Sign in to view your orders, payment status, and tracking updates.
+</p>
         </section>
     </main>
 
@@ -338,6 +370,50 @@
             const title = document.getElementById("form-title");
             const intro = document.getElementById("form-intro");
             const message = document.getElementById("message");
+            const forgotPasswordLink = document.getElementById("forgot-password-link");
+
+forgotPasswordLink.addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    const email = emailInput.value.trim();
+
+    if (!email) {
+        showMessage(
+            "Enter your email address above first, then click Forgot password?",
+            "error"
+        );
+        emailInput.focus();
+        return;
+    }
+
+    try {
+        forgotPasswordLink.style.pointerEvents = "none";
+        showMessage("Sending password reset email…", "");
+
+        const client = getSupabaseClient();
+
+        const { error } = await client.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.origin}/reset-password.html`
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        showMessage(
+            "If your account exists, a password reset link will be sent to your email. Check your inbox and spam folder.",
+            "success"
+        );
+    } catch (error) {
+        console.error("Password recovery error:", error);
+        showMessage(
+            error.message || "Could not request a password reset. Please try again.",
+            "error"
+        );
+    } finally {
+        forgotPasswordLink.style.pointerEvents = "";
+    }
+});
 
             let mode = "login";
             let supabaseClient = null;
@@ -477,9 +553,9 @@ const supabaseKey =
                         }
 
                         showMessage(
-                            "You are signed in. Your customer order history will be added after the account permissions are configured.",
-                            "success"
-                        );
+    "You are signed in. Your order history is shown below.",
+    "success"
+);
                     }
                 } catch (error) {
                     console.error("Customer account error:", error);
