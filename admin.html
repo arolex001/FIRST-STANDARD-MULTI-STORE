@@ -1,1712 +1,3180 @@
 
+
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Manager | FIRST STANDARD MULTI STORES</title>
 
-    <style>
-    
-* {
-    box-sizing: border-box;
-}
+    <meta charset="UTF-8">
 
-:root {
-    --brand-pink: #d9367c;
-    --brand-pink-dark: #b92363;
-    --brand-pink-light: #fff5f9;
-    --brand-black: #111111;
-    --text-main: #351126;
-    --text-muted: #765b6b;
-    --border-color: #f0c4d8;
-    --white: #ffffff;
-}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-body {
-    margin: 0;
-    padding: 28px 20px;
-    background: var(--brand-pink-light);
-    color: var(--text-main);
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-}
+    <title>Product Manager | FIRST STANDARD MULTI STORES</title>
 
-.admin-container {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-}
 
-.admin-header {
-    margin-bottom: 28px;
-    padding: 28px;
-    background: var(--brand-black);
-    color: var(--white);
-    border: 1px solid #292929;
-    border-bottom: 5px solid var(--brand-pink);
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
 
-.admin-header h1 {
-    margin: 0 0 8px;
-    color: #ff80b4;
-    font-size: clamp(24px, 4vw, 32px);
-    line-height: 1.3;
-}
-
-.admin-header p {
-    margin: 0;
-    color: #f4dce7;
-    line-height: 1.6;
-}
-
-.admin-panel {
-    width: 100%;
-    margin-bottom: 26px;
-    padding: 28px;
-    background: var(--white);
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    box-shadow: 0 8px 24px rgba(80, 20, 50, 0.07);
-}
-
-.admin-panel h2 {
-    margin: 0 0 12px;
-    color: var(--brand-pink);
-    font-size: 24px;
-    line-height: 1.4;
-}
-
-.admin-panel h3 {
-    color: var(--brand-pink-dark);
-}
-
-.admin-panel p {
-    line-height: 1.7;
-}
-
-.admin-panel label {
-    display: block;
-    margin: 18px 0 7px;
-    color: var(--text-main);
-    font-weight: 700;
-}
-
-.admin-panel input,
-.admin-panel textarea,
-.admin-panel select {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    min-height: 46px;
-    padding: 12px 14px;
-    border: 1px solid #dfc7d3;
-    border-radius: 8px;
-    background: var(--white);
-    color: var(--text-main);
-    font: inherit;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.admin-panel input:focus,
-.admin-panel textarea:focus,
-.admin-panel select:focus {
-    outline: none;
-    border-color: var(--brand-pink);
-    box-shadow: 0 0 0 3px rgba(217, 54, 124, 0.13);
-}
-
-.admin-panel textarea {
-    min-height: 110px;
-    resize: vertical;
-}
-
-.admin-button {
-    margin: 18px 8px 0 0;
-    padding: 12px 20px;
-    border: 1px solid var(--brand-pink);
-    border-radius: 8px;
-    background: var(--brand-pink);
-    color: var(--white);
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-}
-
-.admin-button:hover {
-    background: var(--brand-pink-dark);
-    box-shadow: 0 4px 10px rgba(217, 54, 124, 0.2);
-}
-
-.admin-button:focus-visible {
-    outline: 3px solid #f4a7c8;
-    outline-offset: 3px;
-}
-
-.admin-button:disabled {
-    opacity: 0.6;
-    cursor: wait;
-}
-
-.notice {
-    margin: 16px 0;
-    padding: 16px 18px;
-    border: 1px solid var(--border-color);
-    border-left: 5px solid var(--brand-pink);
-    border-radius: 9px;
-    background: var(--brand-pink-light);
-    color: var(--text-main);
-    font-size: 15px;
-    line-height: 1.7;
-    overflow-wrap: anywhere;
-}
-
-#admin-orders-list {
-    margin-top: 20px;
-}
-
-#admin-orders-list > div {
-    margin: 18px 0;
-    padding: 22px;
-    border: 1px solid var(--border-color);
-    border-left: 5px solid var(--brand-pink);
-    border-radius: 12px;
-    background: #fffafd;
-    box-shadow: 0 5px 16px rgba(80, 20, 50, 0.07);
-    overflow-wrap: anywhere;
-}
-
-#admin-orders-list h3 {
-    margin-top: 0;
-    margin-bottom: 12px;
-    color: var(--brand-pink-dark);
-    font-size: 20px;
-    line-height: 1.4;
-    overflow-wrap: anywhere;
-}
-
-#admin-orders-list p {
-    margin: 8px 0;
-    color: var(--text-main);
-    font-size: 15px;
-    line-height: 1.7;
-    overflow-wrap: anywhere;
-}
-
-#admin-orders-list button,
-#admin-orders-list select {
-    max-width: 100%;
-}
-
-#admin-orders-list button {
-    margin: 8px 8px 0 0;
-    padding: 10px 16px;
-    border: 1px solid var(--brand-pink);
-    border-radius: 7px;
-    background: var(--white);
-    color: var(--brand-pink-dark);
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-}
-
-#admin-orders-list button:hover {
-    background: var(--brand-pink);
-    color: var(--white);
-}
-
-#admin-orders-list button:focus-visible {
-    outline: 3px solid #f4a7c8;
-    outline-offset: 3px;
-}
-
-@media (max-width: 600px) {
-    body {
-        padding: 14px;
-    }
-
-    .admin-header {
-        padding: 21px 18px;
-    }
-
-    .admin-panel {
-        padding: 18px;
-        border-radius: 11px;
-    }
-
-    .admin-panel h2 {
-        font-size: 21px;
-    }
-
-    .admin-button {
-        max-width: 100%;
-        padding: 11px 15px;
-    }
-
-    #admin-orders-list > div {
-        padding: 15px;
-    }
-
-    .admin-container {
-    width: 100%;
-    min-width: 0;
-}
-
-.admin-panel {
-    width: 100%;
-    min-width: 0;
-    overflow-wrap: anywhere;
-}
-
-#admin-orders-list > div {
-    min-width: 0;
-}
-
-#admin-orders-list button {
-    max-width: 100%;
-    white-space: normal;
-}
-
-}
+    <style>
+*{box-sizing:border-box} :root{--pink:#e83e88;--pink-dark:#c62970;--pink-soft:#fff0f6;--ink:#17131a;--muted:#77717b;--line:#eee7ec;--white:#fff;--bg:#f7f7fa;--green:#16845b}
+body{margin:0;background:var(--bg);color:#29242c;font:15px/1.6 Inter,Arial,sans-serif}
+.admin-container{width:100%;max-width:none;min-height:100vh;margin:0;padding:0;display:grid;grid-template-columns:260px minmax(0,1fr);grid-template-rows:auto 1fr;grid-template-areas:"head head" "side main"}
+.admin-header{grid-area:head;margin:0;padding:20px 30px;background:var(--ink);color:white;border:0;border-bottom:3px solid var(--pink);border-radius:0;box-shadow:0 4px 18px #17131a16;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.admin-header h1{margin:0;color:#ff79b5;font-size:24px;letter-spacing:.2px}.admin-header p{margin:2px 0 0;color:#d9d2da;font-size:13px}
+.admin-sidebar{grid-area:side;background:#201c24;color:white;padding:25px 16px;min-height:calc(100vh - 83px)}.sidebar-label{margin:0 12px 12px;color:#a9a1ad;font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase}.admin-nav{display:grid;gap:7px}.admin-nav button{width:100%;border:0;border-radius:9px;background:transparent;color:#ded9e1;padding:12px 14px;text-align:left;font:600 14px Arial;cursor:pointer;display:flex;align-items:center;gap:12px}.admin-nav button:hover{background:#ffffff12;color:white}.admin-nav button.active{background:var(--pink);color:white;box-shadow:0 5px 14px #e83e8840}.nav-mark{width:8px;height:8px;border:2px solid currentColor;border-radius:3px;opacity:.9}
+.admin-main{grid-area:main;min-width:0;padding:30px;max-width:1500px;width:100%;margin:0 auto}.page-heading{margin:0 0 22px}.page-heading h2{margin:0;color:#29242c;font-size:25px}.page-heading p{margin:5px 0 0;color:var(--muted)}
+.admin-panel{width:100%;margin:0 0 22px;padding:26px;background:var(--white);border:1px solid var(--line);border-radius:14px;box-shadow:0 5px 20px #251a2510}.admin-panel h2{margin:0 0 12px;color:#29242c;font-size:21px}.admin-panel h3{color:var(--pink-dark)}.admin-panel p{line-height:1.7}.admin-panel label{display:block;margin:16px 0 6px;color:#38313a;font-weight:700}.admin-panel input,.admin-panel textarea,.admin-panel select{display:block;width:100%;max-width:100%;min-height:45px;padding:11px 13px;border:1px solid #ded7df;border-radius:8px;background:white;color:#29242c;font:inherit}.admin-panel input:focus,.admin-panel textarea:focus,.admin-panel select:focus{outline:0;border-color:var(--pink);box-shadow:0 0 0 3px #e83e881c}.admin-panel textarea{min-height:110px;resize:vertical}.admin-button,.admin-panel button[type=submit]{margin:15px 8px 0 0;padding:11px 18px;border:1px solid var(--pink);border-radius:8px;background:var(--pink);color:white;font:700 14px Arial;cursor:pointer}.admin-button:hover,.admin-panel button[type=submit]:hover{background:var(--pink-dark)}button:disabled{opacity:.55;cursor:wait}.notice{margin:15px 0;padding:13px 16px;border:1px solid #f5c9dc;border-left:4px solid var(--pink);border-radius:8px;background:var(--pink-soft);color:#503044;overflow-wrap:anywhere}
+#saved-products-list>div,#category-management-list>div,#admin-orders-list>div,#customer-accounts-list>div{margin:14px 0;padding:18px;border:1px solid var(--line);border-radius:11px;background:#fff;box-shadow:0 3px 12px #251a2508;overflow-wrap:anywhere}#admin-orders-list h3{margin-top:0}#admin-orders-list button{margin:8px 8px 0 0;padding:10px 14px;border:1px solid var(--pink);border-radius:7px;background:white;color:var(--pink-dark);font-weight:700;cursor:pointer}#admin-orders-list button:hover{background:var(--pink);color:white}#admin-orders-list select{margin:6px 0;max-width:100%}
+#admin-login-panel{grid-column:1/-1;max-width:520px;margin:70px auto;padding:32px}.admin-footer{padding:5px 30px 25px}.admin-footer a{color:var(--pink-dark);font-weight:700;text-decoration:none}.dashboard-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:22px}.dashboard-tile{padding:22px;border:1px solid var(--line);border-radius:13px;background:white;box-shadow:0 4px 16px #251a2508}.dashboard-tile strong{display:block;font-size:27px;color:var(--pink-dark)}.dashboard-tile span{color:var(--muted);font-size:13px}
+[hidden]{display:none!important}
+@media(max-width:850px){.admin-container{grid-template-columns:1fr;grid-template-areas:"head" "side" "main"}.admin-sidebar{min-height:0;padding:12px}.sidebar-label{display:none}.admin-nav{display:flex;overflow-x:auto;padding-bottom:3px}.admin-nav button{white-space:nowrap;width:auto;flex:0 0 auto}.admin-main{padding:20px}.dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.admin-header{padding:16px;align-items:flex-start}.admin-header h1{font-size:19px}.admin-main{padding:14px}.admin-panel{padding:18px}.dashboard-grid{grid-template-columns:1fr 1fr;gap:10px}.dashboard-tile{padding:15px}.dashboard-tile strong{font-size:22px}#admin-login-panel{margin:28px 14px;padding:22px}.admin-footer{padding:8px 15px 20px}}
+.dashboard-action{display:block;width:100%;text-align:left;cursor:pointer;color:inherit;font:inherit}.dashboard-action:hover{border-color:var(--pink);transform:translateY(-2px);box-shadow:0 8px 22px #e83e881c}.admin-footer{grid-column:2;padding:8px 30px 22px;color:var(--muted);font-size:12px}.admin-main>.admin-panel{max-width:1100px}.admin-header{position:relative;z-index:2}.admin-header button{border:1px solid #ff79b5;border-radius:8px;background:#e83e88;color:#fff;font-weight:700}
 </style>
+
 </head>
+
 <body>
-    <main class="admin-container">
-        <header class="admin-header">
-            <h1>Product Manager</h1>
-            <p>FIRST STANDARD MULTI STORES</p>
-        </header>
 
+    <main class="admin-container">
+
+        <header class="admin-header">
+
+            <h1>Product Manager</h1>
+
+            <p>FIRST STANDARD MULTI STORES</p>
+
+        </header>
+
+<aside id="admin-sidebar" class="admin-sidebar" hidden>
+  <p class="sidebar-label">Workspace</p>
+  <nav class="admin-nav" aria-label="Admin navigation">
+    <button type="button" data-view="dashboard" class="active"><span class="nav-mark"></span>Dashboard</button>
+    <button type="button" data-view="products"><span class="nav-mark"></span>Products</button>
+    <button type="button" data-view="categories"><span class="nav-mark"></span>Categories</button>
+    <button type="button" data-view="orders"><span class="nav-mark"></span>Orders</button>
+    <button type="button" data-view="customers"><span class="nav-mark"></span>Customers</button>
+    <button type="button" data-view="discounts"><span class="nav-mark"></span>Discounts</button>
+    <button type="button" data-view="settings"><span class="nav-mark"></span>Settings</button>
+  </nav>
+</aside>
+
+
+
+<div class="admin-main">
 <div id="admin-login-panel" class="admin-panel">
-    <h2>Administrator Login</h2>
-    <p>Sign in to manage your store products.</p>
 
-    <form id="admin-login-form">
-        <label for="admin-email">Email address</label>
-        <input
-            type="email"
-            id="admin-email"
-            placeholder="Your administrator email"
-            required
-        >
+    <h2>Administrator Login</h2>
 
-        <label for="admin-password">Password</label>
-        <input
-            type="password"
-            id="admin-password"
-            placeholder="Your administrator password"
-            required
-        >
+    <p>Sign in to manage your store products.</p>
 
-        <button type="submit">Sign In</button>
-        <p id="admin-login-message" role="status"></p>
-    </form>
+
+
+    <form id="admin-login-form">
+
+        <label for="admin-email">Email address</label>
+
+        <input
+
+            type="email"
+
+            id="admin-email"
+
+            placeholder="Your administrator email"
+
+            required
+
+        >
+
+
+
+        <label for="admin-password">Password</label>
+
+        <input
+
+            type="password"
+
+            id="admin-password"
+
+            placeholder="Your administrator password"
+
+            required
+
+        >
+
+
+
+        <button type="submit">Sign In</button>
+
+        <p id="admin-login-message" role="status"></p>
+
+    </form>
+
 </div>
 
-       <section id="product-management-panel" class="admin-panel" hidden>
-            <h2>Add or Edit a Product</h2>
+<section id="dashboard-panel" class="admin-panel" hidden>
+  <div class="page-heading"><h2>Store dashboard</h2><p>Manage your FIRST STANDARD MULTI STORES operations from one place.</p></div>
+  <div class="dashboard-grid">
+    <button type="button" class="dashboard-tile dashboard-action" data-go="products"><strong>Products</strong><span>Add products and manage your catalogue</span></button>
+    <button type="button" class="dashboard-tile dashboard-action" data-go="categories"><strong>Categories</strong><span>Organise your store departments</span></button>
+    <button type="button" class="dashboard-tile dashboard-action" data-go="orders"><strong>Orders</strong><span>Review purchases and update order status</span></button>
+    <button type="button" class="dashboard-tile dashboard-action" data-go="customers"><strong>Customers</strong><span>View registered customer accounts</span></button>
+    <button type="button" class="dashboard-tile dashboard-action" data-go="discounts"><strong>Discounts</strong><span>Manage percentage discounts and fixed-value offers</span></button>
+    <button type="button" class="dashboard-tile dashboard-action" data-go="settings"><strong>Settings</strong><span>View store administration information</span></button>
+  </div>
+  <div class="notice">Your existing product, category, discount, order and customer management functions remain connected to the current Supabase setup.</div>
+</section>
 
-            <p class="notice">
-                This is the first setup step. We will connect this form
-                to your store's products after testing the page.
-            </p>
 
-            
 
-            <form id="product-form">
-                <label for="product-name">Product name</label>
-                <input type="text" id="product-name" required>
 
-                <label for="product-category">Category</label>
-                <select id="product-category" required>
-                    <option value="">Select a category</option>
-                    <option>Electronics</option>
-                    <option>Accessories</option>
-                    <option>Fashion</option>
-                    <option>Home & Living</option>
-                    <option>Beauty</option>
-                    <option>Other</option>
-                </select>
 
-                <label for="product-price">Price in naira (₦)</label>
-                <input type="number" id="product-price" min="1" step="1" required>
+       <section id="product-management-panel" class="admin-panel" hidden>
+
+            <h2>Add or Edit a Product</h2>
+
+
+
+            <p class="notice">
+
+                This is the first setup step. We will connect this form
+
+                to your store's products after testing the page.
+
+            </p>
+
+
+
+
+
+
+
+            <form id="product-form">
+
+                <label for="product-name">Product name</label>
+
+                <input type="text" id="product-name" required>
+
+
+
+                <label for="product-category">Category</label>
+
+                <select id="product-category" required>
+
+                    <option value="">Select a category</option>
+
+                    <option>Electronics</option>
+
+                    <option>Accessories</option>
+
+                    <option>Fashion</option>
+
+                    <option>Home & Living</option>
+
+                    <option>Beauty</option>
+
+                    <option>Other</option>
+
+                </select>
+
+
+
+                <label for="product-price">Price in naira (₦)</label>
+
+                <input type="number" id="product-price" min="1" step="1" required>
+
 <label for="product-stock">Available stock quantity</label>
+
 <input
-    type="number"
-    id="product-stock"
-    min="0"
-    step="1"
-    value="0"
-    required
+
+    type="number"
+
+    id="product-stock"
+
+    min="0"
+
+    step="1"
+
+    value="0"
+
+    required
+
 >
 
 
-                
+
+
+
+
+
 <label for="product-image">Product image URL (optional)</label>
+
 <input type="url" id="product-image" placeholder="https://example.com/product.jpg">
 
+
+
 <label for="product-image-file">Or upload an image from your laptop</label>
+
 <input type="file" id="product-image-file" accept="image/*">
 
+
+
 <div id="product-image-preview" style="margin-top: 12px;">
-    <img id="preview-image" alt="Product image preview"
-         style="display: none; width: 180px; max-width: 100%; border-radius: 8px;">
+
+    <img id="preview-image" alt="Product image preview"
+
+         style="display: none; width: 180px; max-width: 100%; border-radius: 8px;">
+
 </div>
 
-                <label for="product-description">Description</label>
-                <textarea id="product-description" required></textarea>
 
-                <button type="submit" class="admin-button">
-                    Save Product
-                </button>
-            </form>
-        </section>
 
-        
+                <label for="product-description">Description</label>
+
+                <textarea id="product-description" required></textarea>
+
+
+
+                <button type="submit" class="admin-button">
+
+                    Save Product
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+
+
+
 <section id="saved-products-panel" class="admin-panel" hidden>
-    <section id="category-management-panel" class="admin-panel" hidden>
-    <h2>Manage Store Categories</h2>
 
-    <p>
-        Add, rename, or remove the categories displayed in your store.
-        Changes here will be saved to your categories database.
-    </p>
+    
 
-    <form id="category-form">
-        <label for="category-name">New category name</label>
-        <input
-            type="text"
-            id="category-name"
-            placeholder="e.g. Phones & Tablets"
-            required
-        >
+    <h2>Saved Products</h2>
 
-        <button type="submit" class="admin-button">
-            Add Category
-        </button>
-    </form>
+    <div id="saved-products-list">
 
-    <h3>Existing Categories</h3>
+        <p>No products saved yet.</p>
 
-    <div id="category-management-list">
-        <p>Loading categories...</p>
-    </div>
+    </div>
 
-    <p id="category-management-message" role="status"></p>
-</section>
-    <h2>Saved Products</h2>
-    <div id="saved-products-list">
-        <p>No products saved yet.</p>
-    </div>
 </section>
 
+<section id="category-management-panel" class="admin-panel" hidden>
+
+    <h2>Manage Store Categories</h2>
+
+
+
+    <p>
+
+        Add, rename, or remove the categories displayed in your store.
+
+        Changes here will be saved to your categories database.
+
+    </p>
+
+
+
+    <form id="category-form">
+
+        <label for="category-name">New category name</label>
+
+        <input
+
+            type="text"
+
+            id="category-name"
+
+            placeholder="e.g. Phones & Tablets"
+
+            required
+
+        >
+
+
+
+        <button type="submit" class="admin-button">
+
+            Add Category
+
+        </button>
+
+    </form>
+
+
+
+    <h3>Existing Categories</h3>
+
+
+
+    <div id="category-management-list">
+
+        <p>Loading categories...</p>
+
+    </div>
+
+
+
+    <p id="category-management-message" role="status"></p>
+
+</section>
+
+
+
+
+
+
+<section id="fixed-discount-offers-panel" class="admin-panel" hidden>
+  <h2>Fixed-Value Bulk Offers</h2>
+  <p>Create offers such as buying 5 items to receive ₦150 off each item.</p>
+  <form id="fixed-discount-offer-form">
+    <input type="hidden" id="fixed-offer-id">
+    <label for="fixed-offer-name">Offer name</label>
+    <input type="text" id="fixed-offer-name" maxlength="150" placeholder="e.g. Buy More, Save More" required>
+    <label for="fixed-offer-discount">Discount per item (₦)</label>
+    <input type="number" id="fixed-offer-discount" min="1" step="0.01" required>
+    <label for="fixed-offer-minimum">Minimum quantity of the same product</label>
+    <input type="number" id="fixed-offer-minimum" min="1" step="1" required>
+    <label for="fixed-offer-all-products">Products covered</label>
+    <select id="fixed-offer-all-products" required>
+      <option value="true">All products</option>
+      <option value="false">Selected products only</option>
+    </select>
+    <div id="fixed-offer-products-container" hidden>
+      <label for="fixed-offer-products">Select products</label>
+      <select id="fixed-offer-products" multiple size="6"></select>
+      <p>Hold Ctrl while selecting multiple products.</p>
+    </div>
+    <button type="submit" class="admin-button">Save Offer</button>
+    <button type="button" id="cancel-fixed-offer-edit" class="admin-button">Cancel Edit</button>
+    <p id="fixed-offer-form-message" role="status"></p>
+  </form>
+  <h3>Existing Offers</h3>
+  <button type="button" id="refresh-fixed-offers" class="admin-button">Refresh Offers</button>
+  <div id="fixed-discount-offers-list"><p>Offers will appear here.</p></div>
+</section>
 
 <section id="discount-settings-panel" class="admin-panel" hidden>
-    <h2>Bulk Discount Settings</h2>
-    <p>Control the bulk discount offered to customers.</p>
 
-    <form id="discount-settings-form">
-        <label for="bulk-discount-enabled">Bulk discount</label>
-        <select id="bulk-discount-enabled" required>
-            <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
-        </select>
+    <h2>Bulk Discount Settings</h2>
 
-        <label for="bulk-discount-percent">Discount percentage (%)</label>
-        <input
-            type="number"
-            id="bulk-discount-percent"
-            min="0"
-            max="100"
-            step="0.1"
-            required
-        >
+    <p>Control the bulk discount offered to customers.</p>
 
-        <label for="bulk-discount-min-quantity">
-            Minimum quantity of the same product
-        </label>
-        <input
-            type="number"
-            id="bulk-discount-min-quantity"
-            min="1"
-            step="1"
-            required
-        >
 
-        <button type="submit" class="admin-button">
-            Save Discount Settings
-        </button>
 
-        <p id="discount-settings-message" role="status"></p>
-    </form>
+    <form id="discount-settings-form">
+
+        <label for="bulk-discount-enabled">Bulk discount</label>
+
+        <select id="bulk-discount-enabled" required>
+
+            <option value="true">Enabled</option>
+
+            <option value="false">Disabled</option>
+
+        </select>
+
+
+
+        <label for="bulk-discount-percent">Discount percentage (%)</label>
+
+        <input
+
+            type="number"
+
+            id="bulk-discount-percent"
+
+            min="0"
+
+            max="100"
+
+            step="0.1"
+
+            required
+
+        >
+
+
+
+        <label for="bulk-discount-min-quantity">
+
+            Minimum quantity of the same product
+
+        </label>
+
+        <input
+
+            type="number"
+
+            id="bulk-discount-min-quantity"
+
+            min="1"
+
+            step="1"
+
+            required
+
+        >
+
+
+
+        <button type="submit" class="admin-button">
+
+            Save Discount Settings
+
+        </button>
+
+
+
+        <p id="discount-settings-message" role="status"></p>
+
+    </form>
+
 </section>
+
+<section id="admin-settings-panel" class="admin-panel" hidden>
+    <h2>Store administration</h2>
+    <p>Administrative access and store configuration.</p>
+    <div class="notice">Your store connection and security settings are managed through the existing Supabase configuration. No credentials are displayed here.</div>
+</section>
+
 <section id="admin-orders-panel" class="admin-panel" hidden>
-    <h2>Customer Orders</h2>
-    <p>View customer purchases and update their order status.</p>
 
-    <label for="order-number-search">Search by order number</label>
-    <input
-        type="search"
-        id="order-number-search"
-        placeholder="Enter an order number, e.g. FS-..."
-        autocomplete="off"
-    >
+    <h2>Customer Orders</h2>
 
-    <button type="button" id="refresh-orders-button" class="admin-button">
-        Refresh Orders
-    </button>
+    <p>View customer purchases and update their order status.</p>
 
 
-    <div id="admin-orders-list">
-        <p>Orders will appear here.</p>
-    </div>
+
+    <label for="order-number-search">Search by order number</label>
+
+    <input
+
+        type="search"
+
+        id="order-number-search"
+
+        placeholder="Enter an order number, e.g. FS-..."
+
+        autocomplete="off"
+
+    >
+
+
+
+    <button type="button" id="refresh-orders-button" class="admin-button">
+
+        Refresh Orders
+
+    </button>
+
+
+
+
+
+    <div id="admin-orders-list">
+
+        <p>Orders will appear here.</p>
+
+    </div>
+
 </section>
+
+
+
 
 
 <section id="customer-accounts-panel" class="admin-panel" hidden>
-    <h2>Registered Customers</h2>
-    <p>View registered customers and their contact details.</p>
 
-    <button
-        type="button"
-        id="refresh-customers-button"
-        class="admin-button"
-    >
-        Refresh Customers
-    </button>
+    <h2>Registered Customers</h2>
 
-    <p id="customer-accounts-message" role="status">
-        Customer accounts will appear here.
-    </p>
+    <p>View registered customers and their contact details.</p>
 
-    <div id="customer-accounts-list">
-        <p>Customer accounts have not been loaded yet.</p>
-    </div>
+
+
+    <button
+
+        type="button"
+
+        id="refresh-customers-button"
+
+        class="admin-button"
+
+    >
+
+        Refresh Customers
+
+    </button>
+
+
+
+    <p id="customer-accounts-message" role="status">
+
+        Customer accounts will appear here.
+
+    </p>
+
+
+
+    <div id="customer-accounts-list">
+
+        <p>Customer accounts have not been loaded yet.</p>
+
+    </div>
+
 </section>
 
 
-        <p>
-            <a href="index.html">← Return to the store</a>
-        </p>
-    </main>
 
-    
-    
+
+
+        <p>
+
+            <a href="index.html">← Return to the store</a>
+
+        </p>
+
+    </main>
+
+
+
+
+
+
+
+
+</div>
+<footer class="admin-footer" hidden><span>FIRST STANDARD MULTI STORES · Admin workspace</span></footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-config.js"></script>
 
 
+
+
+
 <script>
-    // Connect to Supabase
-    const supabaseClient = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
 
-    // Find the page elements
-    const loginPanel = document.getElementById("admin-login-panel");
-    const loginForm = document.getElementById("admin-login-form");
-    const loginMessage = document.getElementById("admin-login-message");
+    // Connect to Supabase
 
-    const productPanel = document.getElementById("product-management-panel");
-    const savedProductsPanel = document.getElementById("saved-products-panel");
-    const discountSettingsPanel = document.getElementById("discount-settings-panel");
+    const supabaseClient = window.supabase.createClient(
+
+        SUPABASE_URL,
+
+        SUPABASE_PUBLISHABLE_KEY
+
+    );
+
+
+
+    // Find the page elements
+
+    const loginPanel = document.getElementById("admin-login-panel");
+
+    const loginForm = document.getElementById("admin-login-form");
+
+    const loginMessage = document.getElementById("admin-login-message");
+
+
+
+    const productPanel = document.getElementById("product-management-panel");
+
+    const savedProductsPanel = document.getElementById("saved-products-panel");
+
+    const discountSettingsPanel = document.getElementById("discount-settings-panel");
+
+
+    const fixedOffersPanel = document.getElementById("fixed-discount-offers-panel");
+    const fixedOfferForm = document.getElementById("fixed-discount-offer-form");
+    const fixedOfferIdInput = document.getElementById("fixed-offer-id");
+    const fixedOfferNameInput = document.getElementById("fixed-offer-name");
+    const fixedOfferDiscountInput = document.getElementById("fixed-offer-discount");
+    const fixedOfferMinimumInput = document.getElementById("fixed-offer-minimum");
+    const fixedOfferAllProductsInput = document.getElementById("fixed-offer-all-products");
+    const fixedOfferProductsContainer = document.getElementById("fixed-offer-products-container");
+    const fixedOfferProductsInput = document.getElementById("fixed-offer-products");
+    const fixedOfferFormMessage = document.getElementById("fixed-offer-form-message");
+    const fixedOffersList = document.getElementById("fixed-discount-offers-list");
+    const refreshFixedOffersButton = document.getElementById("refresh-fixed-offers");
+    const cancelFixedOfferEditButton = document.getElementById("cancel-fixed-offer-edit");
+
+    fixedOfferAllProductsInput.addEventListener("change", function () {
+        fixedOfferProductsContainer.hidden = fixedOfferAllProductsInput.value === "true";
+    });
+    cancelFixedOfferEditButton.addEventListener("click", resetFixedOfferForm);
+    refreshFixedOffersButton.addEventListener("click", loadFixedDiscountOffers);
+
 const discountSettingsForm = document.getElementById("discount-settings-form");
+
 const discountEnabledInput = document.getElementById("bulk-discount-enabled");
+
 const discountPercentInput = document.getElementById("bulk-discount-percent");
+
 const discountMinQuantityInput = document.getElementById("bulk-discount-min-quantity");
+
 const discountSettingsMessage = document.getElementById("discount-settings-message");
-    const categoryManagementPanel = document.getElementById("category-management-panel");
-    const categoryForm = document.getElementById("category-form");
+
+    const categoryManagementPanel = document.getElementById("category-management-panel");
+
+    const categoryForm = document.getElementById("category-form");
+
 const categoryNameInput = document.getElementById("category-name");
+
 const categoryManagementList = document.getElementById("category-management-list");
 
-    const productForm = document.getElementById("product-form");
-    const productName = document.getElementById("product-name");
-    const productCategory = document.getElementById("product-category");
-    const productPrice = document.getElementById("product-price");
-    const productStock = document.getElementById("product-stock");
-    const productImageUrl = document.getElementById("product-image");
-    const productImageFile = document.getElementById("product-image-file");
-    const productDescription = document.getElementById("product-description");
-    const previewImage = document.getElementById("preview-image");
-    const savedProductsList = document.getElementById("saved-products-list");
 
-    let selectedImageFile = null;
-    let editingProductId = null;
 
-    // Add a Sign Out button
-    const logoutButton = document.createElement("button");
-    logoutButton.type = "button";
-    logoutButton.textContent = "Sign Out";
-    logoutButton.style.cssText =
-        "display:none;margin-bottom:20px;padding:10px 16px;cursor:pointer;";
+    const productForm = document.getElementById("product-form");
 
-    document.querySelector(".admin-header").appendChild(logoutButton);
+    const productName = document.getElementById("product-name");
 
-    // Show or hide the management area
-    function setAdminView(isLoggedIn) {
-        loginPanel.hidden = isLoggedIn;
-        productPanel.hidden = !isLoggedIn;
-        savedProductsPanel.hidden = !isLoggedIn;
-        discountSettingsPanel.hidden = !isLoggedIn;
-        categoryManagementPanel.hidden = !isLoggedIn;
-        document.getElementById("admin-orders-panel").hidden = !isLoggedIn;
-        document.getElementById("customer-accounts-panel").hidden = !isLoggedIn;
-        logoutButton.style.display = isLoggedIn ? "inline-block" : "none";
+    const productCategory = document.getElementById("product-category");
+
+    const productPrice = document.getElementById("product-price");
+
+    const productStock = document.getElementById("product-stock");
+
+    const productImageUrl = document.getElementById("product-image");
+
+    const productImageFile = document.getElementById("product-image-file");
+
+    const productDescription = document.getElementById("product-description");
+
+    const previewImage = document.getElementById("preview-image");
+
+    const savedProductsList = document.getElementById("saved-products-list");
+
+
+
+    let selectedImageFile = null;
+
+    let editingProductId = null;
+
+
+
+    // Add a Sign Out button
+
+    const logoutButton = document.createElement("button");
+
+    logoutButton.type = "button";
+
+    logoutButton.textContent = "Sign Out";
+
+    logoutButton.style.cssText =
+
+        "display:none;margin-bottom:20px;padding:10px 16px;cursor:pointer;";
+
+
+
+    document.querySelector(".admin-header").appendChild(logoutButton);
+
+
+
+    // Show or hide the management area
+
+        // Admin navigation and authenticated workspace visibility
+    let currentAdminView = "dashboard";
+
+    function showAdminSection(view) {
+        currentAdminView = view;
+        const panels = {
+            dashboard: ["dashboard-panel"],
+            products: ["product-management-panel", "saved-products-panel"],
+            categories: ["category-management-panel"],
+            orders: ["admin-orders-panel"],
+            customers: ["customer-accounts-panel"],
+            discounts: ["discount-settings-panel", "fixed-discount-offers-panel"],
+            settings: ["admin-settings-panel"]
+        };
+        const allIds = ["dashboard-panel", "product-management-panel", "saved-products-panel", "category-management-panel", "admin-orders-panel", "customer-accounts-panel", "discount-settings-panel", "fixed-discount-offers-panel", "admin-settings-panel"];
+        allIds.forEach(id => { const panel = document.getElementById(id); if (panel) panel.hidden = true; });
+        (panels[view] || panels.dashboard).forEach(id => { const panel = document.getElementById(id); if (panel) panel.hidden = false; });
+        document.querySelectorAll(".admin-nav button").forEach(button => button.classList.toggle("active", button.dataset.view === view));
     }
 
-    // Load bulk discount settings from Supabase
-async function loadDiscountSettings() {
-    discountSettingsMessage.textContent = "Loading discount settings...";
+    document.querySelectorAll(".admin-nav button").forEach(button => {
+        button.addEventListener("click", () => showAdminSection(button.dataset.view));
+    });
+    document.querySelectorAll(".dashboard-action").forEach(button => {
+        button.addEventListener("click", () => showAdminSection(button.dataset.go));
+    });
 
+    function setAdminView(isLoggedIn) {
+        loginPanel.hidden = isLoggedIn;
+        const sidebar = document.getElementById("admin-sidebar");
+        const footer = document.querySelector(".admin-footer");
+        if (sidebar) sidebar.hidden = !isLoggedIn;
+        if (footer) footer.hidden = !isLoggedIn;
+        logoutButton.style.display = isLoggedIn ? "inline-block" : "none";
+        if (isLoggedIn) {
+    showAdminSection(currentAdminView);
+} else {
+    const allIds = [
+        "dashboard-panel",
+        "product-management-panel",
+        "saved-products-panel",
+        "category-management-panel",
+        "admin-orders-panel",
+        "customer-accounts-panel",
+        "discount-settings-panel",
+        "fixed-discount-offers-panel",
+        "admin-settings-panel"
+    ];
+
+    allIds.forEach(id => {
+        const panel = document.getElementById(id);
+        if (panel) panel.hidden = true;
+    });
+}
+    }
+
+
+function resetFixedOfferForm() {
+    fixedOfferForm.reset();
+    fixedOfferIdInput.value = "";
+    fixedOfferAllProductsInput.value = "true";
+    fixedOfferProductsContainer.hidden = true;
+    Array.from(fixedOfferProductsInput.options).forEach(option => option.selected = false);
+    fixedOfferFormMessage.textContent = "";
+}
+
+async function loadFixedDiscountOffers() {
+    fixedOffersList.textContent = "Loading offers...";
     try {
-        const { data, error } = await supabaseClient
-            .from("store_settings")
-            .select("setting_key, setting_value")
-            .in("setting_key", [
-                "bulk_discount_enabled",
-                "bulk_discount_percent",
-                "bulk_discount_min_quantity"
-            ]);
-
-        if (error) {
-            throw error;
+        const { data, error } = await supabaseClient.functions.invoke("admin-discounts", { body: { action: "list" } });
+        if (error) throw error;
+        if (data?.error) throw new Error(data.error);
+        const offers = data?.offers || [];
+        fixedOffersList.replaceChildren();
+        if (!offers.length) {
+            fixedOffersList.textContent = "No fixed-value offers created yet.";
+            return;
         }
-
-        const settings = {};
-
-        (data || []).forEach(function (setting) {
-            settings[setting.setting_key] = setting.setting_value;
+        offers.forEach(function (offer) {
+            const card = document.createElement("div");
+            card.style.cssText = "border:1px solid var(--line);padding:16px;margin:12px 0;border-radius:10px;background:#fff;";
+            const heading = document.createElement("h3");
+            heading.textContent = offer.offer_name;
+            card.appendChild(heading);
+            const details = document.createElement("p");
+            details.textContent = "₦" + Number(offer.discount_per_item).toLocaleString("en-NG") + " off each item • Minimum quantity: " + offer.minimum_quantity;
+            card.appendChild(details);
+            const coverage = document.createElement("p");
+            coverage.textContent = offer.applies_to_all_products ? "Applies to all products" : "Applies to selected products";
+            card.appendChild(coverage);
+            const status = document.createElement("p");
+            status.textContent = offer.is_active ? "Status: Active" : "Status: Disabled";
+            card.appendChild(status);
+            const buttons = document.createElement("div");
+            buttons.style.cssText = "display:flex;gap:8px;flex-wrap:wrap;";
+            const editButton = document.createElement("button");
+            editButton.type = "button"; editButton.className = "admin-button"; editButton.textContent = "Edit";
+            editButton.addEventListener("click", function () {
+                fixedOfferIdInput.value = offer.id;
+                fixedOfferNameInput.value = offer.offer_name;
+                fixedOfferDiscountInput.value = offer.discount_per_item;
+                fixedOfferMinimumInput.value = offer.minimum_quantity;
+                fixedOfferAllProductsInput.value = offer.applies_to_all_products ? "true" : "false";
+                fixedOfferProductsContainer.hidden = offer.applies_to_all_products;
+                Array.from(fixedOfferProductsInput.options).forEach(option => {
+                    option.selected = (offer.product_ids || []).map(String).includes(option.value);
+                });
+                fixedOfferFormMessage.textContent = "Editing: " + offer.offer_name;
+                fixedOfferForm.scrollIntoView({ behavior: "smooth", block: "center" });
+            });
+            buttons.appendChild(editButton);
+            const toggleButton = document.createElement("button");
+            toggleButton.type = "button"; toggleButton.className = "admin-button";
+            toggleButton.textContent = offer.is_active ? "Disable" : "Enable";
+            toggleButton.addEventListener("click", async function () {
+                toggleButton.disabled = true;
+                try {
+                    const { data, error } = await supabaseClient.functions.invoke("admin-discounts", { body: { action: "set_active", id: offer.id, is_active: !offer.is_active } });
+                    if (error) throw error;
+                    if (data?.error) throw new Error(data.error);
+                    await loadFixedDiscountOffers();
+                } catch (error) {
+                    alert("Could not change offer status: " + error.message);
+                    toggleButton.disabled = false;
+                }
+            });
+            buttons.appendChild(toggleButton);
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button"; deleteButton.className = "admin-button"; deleteButton.textContent = "Delete";
+            deleteButton.addEventListener("click", async function () {
+                if (!confirm('Are you sure you want to delete "' + offer.offer_name + '"?')) return;
+                deleteButton.disabled = true;
+                try {
+                    const { data, error } = await supabaseClient.functions.invoke("admin-discounts", { body: { action: "delete", id: offer.id } });
+                    if (error) throw error;
+                    if (data?.error) throw new Error(data.error);
+                    await loadFixedDiscountOffers();
+                } catch (error) {
+                    alert("Could not delete offer: " + error.message);
+                    deleteButton.disabled = false;
+                }
+            });
+            buttons.appendChild(deleteButton);
+            card.appendChild(buttons);
+            fixedOffersList.appendChild(card);
         });
-
-        const enabled = settings.bulk_discount_enabled;
-
-        discountEnabledInput.value =
-            enabled === true || enabled === "true" ? "true" : "false";
-
-        discountPercentInput.value =
-            settings.bulk_discount_percent ?? 5;
-
-        discountMinQuantityInput.value =
-            settings.bulk_discount_min_quantity ?? 5;
-
-        discountSettingsMessage.textContent =
-            "Discount settings loaded.";
     } catch (error) {
-        console.error("Loading discount settings failed:", error);
-
-        discountSettingsMessage.textContent =
-            "Could not load settings: " + error.message;
+        console.error("Loading fixed offers failed:", error);
+        fixedOffersList.textContent = "Could not load offers: " + error.message;
     }
 }
 
-// Save bulk discount settings to Supabase
-discountSettingsForm.addEventListener("submit", async function (event) {
-    event.preventDefault();
-
-    const enabled = discountEnabledInput.value === "true";
-    const percent = Number(discountPercentInput.value);
-    const minimumQuantity = Number(discountMinQuantityInput.value);
-
-    if (
-        !Number.isFinite(percent) ||
-        percent < 0 ||
-        percent > 100 ||
-        !Number.isInteger(minimumQuantity) ||
-        minimumQuantity < 1
-    ) {
-        discountSettingsMessage.textContent =
-            "Enter a discount from 0 to 100 and a minimum quantity of at least 1.";
+async function loadFixedOfferProducts() {
+    fixedOfferProductsInput.replaceChildren();
+    const { data, error } = await supabaseClient.from("products").select("id, name").order("name", { ascending: true });
+    if (error) {
+        console.error("Loading offer products failed:", error);
+        fixedOfferFormMessage.textContent = "Could not load products: " + error.message;
         return;
     }
+    (data || []).forEach(function (product) {
+        const option = document.createElement("option");
+        option.value = product.id;
+        option.textContent = product.name;
+        fixedOfferProductsInput.appendChild(option);
+    });
+}
 
-    const saveButton = discountSettingsForm.querySelector(
-        'button[type="submit"]'
-    );
-
-    saveButton.disabled = true;
-    saveButton.textContent = "Saving...";
-    discountSettingsMessage.textContent = "Saving settings...";
-
-    const settingsToSave = [
-        {
-            setting_key: "bulk_discount_enabled",
-            setting_value: enabled
-        },
-        {
-            setting_key: "bulk_discount_percent",
-            setting_value: percent
-        },
-        {
-            setting_key: "bulk_discount_min_quantity",
-            setting_value: minimumQuantity
-        }
-    ];
-
+fixedOfferForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    fixedOfferFormMessage.textContent = "Saving offer...";
+    const appliesToAll = fixedOfferAllProductsInput.value === "true";
+    const selectedProducts = Array.from(fixedOfferProductsInput.selectedOptions).map(option => option.value);
+    if (!appliesToAll && !selectedProducts.length) {
+        fixedOfferFormMessage.textContent = "Please select at least one product.";
+        return;
+    }
+    const offer = {
+        offer_name: fixedOfferNameInput.value.trim(),
+        discount_per_item: Number(fixedOfferDiscountInput.value),
+        minimum_quantity: Number(fixedOfferMinimumInput.value),
+        applies_to_all_products: appliesToAll,
+        product_ids: appliesToAll ? [] : selectedProducts
+    };
+    const offerId = fixedOfferIdInput.value;
+    if (offerId) offer.id = offerId;
     try {
-        for (const setting of settingsToSave) {
-            const { data, error } = await supabaseClient
-                .from("store_settings")
-                .update({ setting_value: setting.setting_value })
-                .eq("setting_key", setting.setting_key)
-                .select("setting_key");
-
-            if (error) {
-                throw error;
-            }
-
-            if (!data || data.length === 0) {
-                const { error: insertError } = await supabaseClient
-                    .from("store_settings")
-                    .insert(setting);
-
-                if (insertError) {
-                    throw insertError;
-                }
-            }
-        }
-
-        discountSettingsMessage.textContent =
-            "Discount settings saved successfully.";
-
+        const { data, error } = await supabaseClient.functions.invoke("admin-discounts", {
+            body: { action: offerId ? "update" : "create", ...offer }
+        });
+        if (error) throw error;
+        if (data?.error) throw new Error(data.error);
+        fixedOfferFormMessage.textContent = data?.message || "Offer saved successfully.";
+        resetFixedOfferForm();
+        await loadFixedDiscountOffers();
     } catch (error) {
-        console.error("Saving discount settings failed:", error);
-
-        discountSettingsMessage.textContent =
-            "Could not save settings: " + error.message;
-    } finally {
-        saveButton.disabled = false;
-        saveButton.textContent = "Save Discount Settings";
+        console.error("Saving fixed offer failed:", error);
+        fixedOfferFormMessage.textContent = "Could not save offer: " + error.message;
     }
 });
-    // Load products from the Supabase database
-    async function loadProducts() {
-        savedProductsList.replaceChildren();
 
-        const loadingMessage = document.createElement("p");
-        loadingMessage.textContent = "Loading products...";
-        savedProductsList.appendChild(loadingMessage);
+async function loadDiscountSettings() {
 
-        const { data, error } = await supabaseClient
-            .from("products")
-            .select("*")
-            .order("created_at", { ascending: false });
-            console.log("Categories returned for products:", data?.map(product => ({
-    name: product.name,
-    category: product.category
+    discountSettingsMessage.textContent = "Loading discount settings...";
+
+
+
+    try {
+
+        const { data, error } = await supabaseClient
+
+            .from("store_settings")
+
+            .select("setting_key, setting_value")
+
+            .in("setting_key", [
+
+                "bulk_discount_enabled",
+
+                "bulk_discount_percent",
+
+                "bulk_discount_min_quantity"
+
+            ]);
+
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+
+        const settings = {};
+
+
+
+        (data || []).forEach(function (setting) {
+
+            settings[setting.setting_key] = setting.setting_value;
+
+        });
+
+
+
+        const enabled = settings.bulk_discount_enabled;
+
+
+
+        discountEnabledInput.value =
+
+            enabled === true || enabled === "true" ? "true" : "false";
+
+
+
+        discountPercentInput.value =
+
+            settings.bulk_discount_percent ?? 5;
+
+
+
+        discountMinQuantityInput.value =
+
+            settings.bulk_discount_min_quantity ?? 5;
+
+
+
+        discountSettingsMessage.textContent =
+
+            "Discount settings loaded.";
+
+    } catch (error) {
+
+        console.error("Loading discount settings failed:", error);
+
+
+
+        discountSettingsMessage.textContent =
+
+            "Could not load settings: " + error.message;
+
+    }
+
+}
+
+
+
+// Save bulk discount settings to Supabase
+
+discountSettingsForm.addEventListener("submit", async function (event) {
+
+    event.preventDefault();
+
+
+
+    const enabled = discountEnabledInput.value === "true";
+
+    const percent = Number(discountPercentInput.value);
+
+    const minimumQuantity = Number(discountMinQuantityInput.value);
+
+
+
+    if (
+
+        !Number.isFinite(percent) ||
+
+        percent < 0 ||
+
+        percent > 100 ||
+
+        !Number.isInteger(minimumQuantity) ||
+
+        minimumQuantity < 1
+
+    ) {
+
+        discountSettingsMessage.textContent =
+
+            "Enter a discount from 0 to 100 and a minimum quantity of at least 1.";
+
+        return;
+
+    }
+
+
+
+    const saveButton = discountSettingsForm.querySelector(
+
+        'button[type="submit"]'
+
+    );
+
+
+
+    saveButton.disabled = true;
+
+    saveButton.textContent = "Saving...";
+
+    discountSettingsMessage.textContent = "Saving settings...";
+
+
+
+    const settingsToSave = [
+
+        {
+
+            setting_key: "bulk_discount_enabled",
+
+            setting_value: enabled
+
+        },
+
+        {
+
+            setting_key: "bulk_discount_percent",
+
+            setting_value: percent
+
+        },
+
+        {
+
+            setting_key: "bulk_discount_min_quantity",
+
+            setting_value: minimumQuantity
+
+        }
+
+    ];
+
+
+
+    try {
+
+        for (const setting of settingsToSave) {
+
+            const { data, error } = await supabaseClient
+
+                .from("store_settings")
+
+                .update({ setting_value: setting.setting_value })
+
+                .eq("setting_key", setting.setting_key)
+
+                .select("setting_key");
+
+
+
+            if (error) {
+
+                throw error;
+
+            }
+
+
+
+            if (!data || data.length === 0) {
+
+                const { error: insertError } = await supabaseClient
+
+                    .from("store_settings")
+
+                    .insert(setting);
+
+
+
+                if (insertError) {
+
+                    throw insertError;
+
+                }
+
+            }
+
+        }
+
+
+
+        discountSettingsMessage.textContent =
+
+            "Discount settings saved successfully.";
+
+
+
+    } catch (error) {
+
+        console.error("Saving discount settings failed:", error);
+
+
+
+        discountSettingsMessage.textContent =
+
+            "Could not save settings: " + error.message;
+
+    } finally {
+
+        saveButton.disabled = false;
+
+        saveButton.textContent = "Save Discount Settings";
+
+    }
+
+});
+
+    // Load products from the Supabase database
+
+    async function loadProducts() {
+
+        savedProductsList.replaceChildren();
+
+
+
+        const loadingMessage = document.createElement("p");
+
+        loadingMessage.textContent = "Loading products...";
+
+        savedProductsList.appendChild(loadingMessage);
+
+
+
+        const { data, error } = await supabaseClient
+
+            .from("products")
+
+            .select("*")
+
+            .order("created_at", { ascending: false });
+
+            console.log("Categories returned for products:", data?.map(product => ({
+
+    name: product.name,
+
+    category: product.category
+
 })));
 
-        if (error) {
-            savedProductsList.replaceChildren();
 
-            const errorMessage = document.createElement("p");
-            errorMessage.textContent =
-                "Could not load products: " + error.message;
-            savedProductsList.appendChild(errorMessage);
-            return;
-        }
 
-        savedProductsList.replaceChildren();
+        if (error) {
 
-        if (!data || data.length === 0) {
-            const message = document.createElement("p");
-            message.textContent = "No products saved yet.";
-            savedProductsList.appendChild(message);
-            return;
-        }
+            savedProductsList.replaceChildren();
 
-        data.forEach(function (product) {
-            const card = document.createElement("div");
-            card.style.cssText =
-                "border:1px solid #ddd;padding:15px;margin:12px 0;border-radius:8px;";
 
-            if (product.image_url) {
-                const image = document.createElement("img");
-                image.src = product.image_url;
-                image.alt = product.name;
-                image.style.cssText =
-                    "width:100px;height:100px;object-fit:cover;border-radius:6px;";
-                card.appendChild(image);
-            }
 
-            const name = document.createElement("h3");
-            name.textContent = product.name;
-            card.appendChild(name);
+            const errorMessage = document.createElement("p");
 
-            const category = document.createElement("p");
-            category.textContent = "Category: " + product.category;
-            card.appendChild(category);
+            errorMessage.textContent =
 
-            const price = document.createElement("p");
-            price.textContent =
-                "Price: ₦" + Number(product.price).toLocaleString("en-NG");
-            card.appendChild(price);
+                "Could not load products: " + error.message;
 
-            const description = document.createElement("p");
-            description.textContent = product.description || "";
-            card.appendChild(description);
+            savedProductsList.appendChild(errorMessage);
 
-            const editButton = document.createElement("button");
+            return;
+
+        }
+
+
+
+        savedProductsList.replaceChildren();
+
+
+
+        if (!data || data.length === 0) {
+
+            const message = document.createElement("p");
+
+            message.textContent = "No products saved yet.";
+
+            savedProductsList.appendChild(message);
+
+            return;
+
+        }
+
+
+
+        data.forEach(function (product) {
+
+            const card = document.createElement("div");
+
+            card.style.cssText =
+
+                "border:1px solid #ddd;padding:15px;margin:12px 0;border-radius:8px;";
+
+
+
+            if (product.image_url) {
+
+                const image = document.createElement("img");
+
+                image.src = product.image_url;
+
+                image.alt = product.name;
+
+                image.style.cssText =
+
+                    "width:100px;height:100px;object-fit:cover;border-radius:6px;";
+
+                card.appendChild(image);
+
+            }
+
+
+
+            const name = document.createElement("h3");
+
+            name.textContent = product.name;
+
+            card.appendChild(name);
+
+
+
+            const category = document.createElement("p");
+
+            category.textContent = "Category: " + product.category;
+
+            card.appendChild(category);
+
+
+
+            const price = document.createElement("p");
+
+            price.textContent =
+
+                "Price: ₦" + Number(product.price).toLocaleString("en-NG");
+
+            card.appendChild(price);
+
+
+
+            const description = document.createElement("p");
+
+            description.textContent = product.description || "";
+
+            card.appendChild(description);
+
+
+
+            const editButton = document.createElement("button");
+
 editButton.type = "button";
+
 editButton.textContent = "Edit Product";
+
 editButton.style.cssText = "padding:10px 14px;margin-right:8px;cursor:pointer;";
 
+
+
 editButton.addEventListener("click", function () {
-    editingProductId = product.id;
 
-    productName.value = product.name;
-    productCategory.value = product.category;
-    productPrice.value = product.price;
-    productStock.value = product.stock_quantity ?? 0;
-    productDescription.value = product.description || "";
-    productImageUrl.value = product.image_url || "";
+    editingProductId = product.id;
 
-    selectedImageFile = null;
-    productImageFile.value = "";
-    previewImage.src = product.image_url || "";
-    previewImage.style.display = product.image_url ? "block" : "none";
 
-    productForm.querySelector('button[type="submit"]').textContent = "Update Product";
-    productForm.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    productName.value = product.name;
+
+    productCategory.value = product.category;
+
+    productPrice.value = product.price;
+
+    productStock.value = product.stock_quantity ?? 0;
+
+    productDescription.value = product.description || "";
+
+    productImageUrl.value = product.image_url || "";
+
+
+
+    selectedImageFile = null;
+
+    productImageFile.value = "";
+
+    previewImage.src = product.image_url || "";
+
+    previewImage.style.display = product.image_url ? "block" : "none";
+
+
+
+    productForm.querySelector('button[type="submit"]').textContent = "Update Product";
+
+    productForm.scrollIntoView({ behavior: "smooth", block: "start" });
+
 });
-            const deleteButton = document.createElement("button");
-            deleteButton.type = "button";
-            deleteButton.textContent = "Delete Product";
-            deleteButton.style.cssText =
-                "padding:10px 14px;cursor:pointer;";
 
-            deleteButton.addEventListener("click", async function () {
-                if (!confirm("Delete " + product.name + "?")) {
-                    return;
-                }
+            const deleteButton = document.createElement("button");
 
-                deleteButton.disabled = true;
-                deleteButton.textContent = "Deleting...";
+            deleteButton.type = "button";
 
-                const { error } = await supabaseClient
-                    .from("products")
-                    .delete()
-                    .eq("id", product.id);
+            deleteButton.textContent = "Delete Product";
 
-                if (error) {
-                    alert("Could not delete product: " + error.message);
-                    deleteButton.disabled = false;
-                    deleteButton.textContent = "Delete Product";
-                    return;
-                }
+            deleteButton.style.cssText =
 
-                await loadProducts();
-            });
+                "padding:10px 14px;cursor:pointer;";
 
 
-            card.appendChild(editButton);
-            card.appendChild(deleteButton);
-            savedProductsList.appendChild(card);
-        });
-    }
+
+            deleteButton.addEventListener("click", async function () {
+
+                if (!confirm("Delete " + product.name + "?")) {
+
+                    return;
+
+                }
 
 
-        // Load categories from Supabase
-    async function loadCategories() {
-        categoryManagementList.replaceChildren();
 
-        const loadingMessage = document.createElement("p");
-        loadingMessage.textContent = "Loading categories...";
-        categoryManagementList.appendChild(loadingMessage);
+                deleteButton.disabled = true;
 
-        const { data, error } = await supabaseClient
-            .from("categories")
-            .select("*")
-            .order("name", { ascending: true });
+                deleteButton.textContent = "Deleting...";
 
-        if (error) {
-            categoryManagementList.replaceChildren();
 
-            const errorMessage = document.createElement("p");
-            errorMessage.textContent =
-                "Could not load categories: " + error.message;
-            categoryManagementList.appendChild(errorMessage);
-            return;
-        }
 
-        categoryManagementList.replaceChildren();
-                // Keep the product category dropdown synchronized
-        productCategory.replaceChildren();
+                const { error } = await supabaseClient
 
-        const placeholderOption = document.createElement("option");
-        placeholderOption.value = "";
-        placeholderOption.textContent = "Select a category";
-        productCategory.appendChild(placeholderOption);
+                    .from("products")
 
-        data.forEach(function (category) {
-            const option = document.createElement("option");
-            option.value = category.name;
-            option.textContent = category.name;
-            productCategory.appendChild(option);
-        });
+                    .delete()
 
-        if (!data || data.length === 0) {
-            const emptyMessage = document.createElement("p");
-            emptyMessage.textContent = "No categories found.";
-            categoryManagementList.appendChild(emptyMessage);
-            return;
-        }
+                    .eq("id", product.id);
 
-        data.forEach(function (category) {
-            const row = document.createElement("div");
-            row.style.cssText =
-                "display:flex;flex-wrap:wrap;gap:8px;align-items:center;" +
-                "border:1px solid #ddd;padding:12px;margin:10px 0;border-radius:8px;";
 
-            const name = document.createElement("span");
-            name.textContent = category.name;
-            name.style.cssText = "flex:1;min-width:150px;font-weight:bold;";
 
-            const renameButton = document.createElement("button");
-            renameButton.type = "button";
-            renameButton.textContent = "Rename";
-            renameButton.className = "admin-button";
+                if (error) {
 
-            
+                    alert("Could not delete product: " + error.message);
+
+                    deleteButton.disabled = false;
+
+                    deleteButton.textContent = "Delete Product";
+
+                    return;
+
+                }
+
+
+
+                await loadProducts();
+
+            });
+
+
+
+
+
+            card.appendChild(editButton);
+
+            card.appendChild(deleteButton);
+
+            savedProductsList.appendChild(card);
+
+        });
+
+    }
+
+
+
+
+
+        // Load categories from Supabase
+
+    async function loadCategories() {
+
+        categoryManagementList.replaceChildren();
+
+
+
+        const loadingMessage = document.createElement("p");
+
+        loadingMessage.textContent = "Loading categories...";
+
+        categoryManagementList.appendChild(loadingMessage);
+
+
+
+        const { data, error } = await supabaseClient
+
+            .from("categories")
+
+            .select("*")
+
+            .order("name", { ascending: true });
+
+
+
+        if (error) {
+
+            categoryManagementList.replaceChildren();
+
+
+
+            const errorMessage = document.createElement("p");
+
+            errorMessage.textContent =
+
+                "Could not load categories: " + error.message;
+
+            categoryManagementList.appendChild(errorMessage);
+
+            return;
+
+        }
+
+
+
+        categoryManagementList.replaceChildren();
+
+                // Keep the product category dropdown synchronized
+
+        productCategory.replaceChildren();
+
+
+
+        const placeholderOption = document.createElement("option");
+
+        placeholderOption.value = "";
+
+        placeholderOption.textContent = "Select a category";
+
+        productCategory.appendChild(placeholderOption);
+
+
+
+        data.forEach(function (category) {
+
+            const option = document.createElement("option");
+
+            option.value = category.name;
+
+            option.textContent = category.name;
+
+            productCategory.appendChild(option);
+
+        });
+
+
+
+        if (!data || data.length === 0) {
+
+            const emptyMessage = document.createElement("p");
+
+            emptyMessage.textContent = "No categories found.";
+
+            categoryManagementList.appendChild(emptyMessage);
+
+            return;
+
+        }
+
+
+
+        data.forEach(function (category) {
+
+            const row = document.createElement("div");
+
+            row.style.cssText =
+
+                "display:flex;flex-wrap:wrap;gap:8px;align-items:center;" +
+
+                "border:1px solid #ddd;padding:12px;margin:10px 0;border-radius:8px;";
+
+
+
+            const name = document.createElement("span");
+
+            name.textContent = category.name;
+
+            name.style.cssText = "flex:1;min-width:150px;font-weight:bold;";
+
+
+
+            const renameButton = document.createElement("button");
+
+            renameButton.type = "button";
+
+            renameButton.textContent = "Rename";
+
+            renameButton.className = "admin-button";
+
+
+
+
+
+
+
+
 
 
 
 renameButton.addEventListener("click", async function () {
-    const oldName = category.name;
 
-    const newName = prompt(
-        "Enter the new name for " + oldName + ":",
-        oldName
-    );
+    const oldName = category.name;
 
-    if (newName === null) return;
 
-    const trimmedName = newName.trim();
 
-    if (!trimmedName) {
-        alert("Category name cannot be empty.");
-        return;
-    }
+    const newName = prompt(
 
-    if (trimmedName === oldName) return;
+        "Enter the new name for " + oldName + ":",
 
-    renameButton.disabled = true;
-    renameButton.textContent = "Renaming...";
+        oldName
 
-    try {
-        // Check whether the new category name already exists.
-        const { data: existingCategories, error: checkError } =
-            await supabaseClient
-                .from("categories")
-                .select("id, name")
-                .ilike("name", trimmedName);
+    );
 
-        if (checkError) throw checkError;
 
-        const duplicate = (existingCategories || []).some(
-            item =>
-                item.id !== category.id &&
-                item.name.trim().toLowerCase() ===
-                    trimmedName.toLowerCase()
-        );
 
-        if (duplicate) {
-            throw new Error("A category with that name already exists.");
-        }
+    if (newName === null) return;
 
-        // Rename the category in the categories table.
-        const { data: renamedCategory, error: renameError } =
-            await supabaseClient
-                .from("categories")
-                .update({ name: trimmedName })
-                .eq("id", category.id)
-                .select("id, name");
 
-        if (renameError) throw renameError;
 
-        if (!renamedCategory || renamedCategory.length === 0) {
-            throw new Error(
-                "No category was renamed. Check your admin permissions."
-            );
-        }
+    const trimmedName = newName.trim();
 
-        // Update products that use the old category name.
-        const { error: productsError } = await supabaseClient
-            .from("products")
-            .update({ category: trimmedName })
-            .eq("category", oldName);
 
-        if (productsError) {
-            console.error(
-                "Category renamed, but products were not updated:",
-                productsError
-            );
 
-            alert(
-                'The category was renamed to "' + trimmedName +
-                '", but some products may still use "' + oldName +
-                '". Please check your product records.'
-            );
+    if (!trimmedName) {
 
-            await loadCategories();
-            return;
-        }
+        alert("Category name cannot be empty.");
 
-        await loadCategories();
+        return;
 
-        alert(
-            'Category "' + oldName + '" was renamed to "' +
-            trimmedName + '". Existing products were updated.'
-        );
-    } catch (error) {
-        console.error("Category rename error:", error);
-        alert("Rename failed: " + error.message);
-    } finally {
-        renameButton.disabled = false;
-        renameButton.textContent = "Rename";
-    }
+    }
+
+
+
+    if (trimmedName === oldName) return;
+
+
+
+    renameButton.disabled = true;
+
+    renameButton.textContent = "Renaming...";
+
+
+
+    try {
+
+        // Check whether the new category name already exists.
+
+        const { data: existingCategories, error: checkError } =
+
+            await supabaseClient
+
+                .from("categories")
+
+                .select("id, name")
+
+                .ilike("name", trimmedName);
+
+
+
+        if (checkError) throw checkError;
+
+
+
+        const duplicate = (existingCategories || []).some(
+
+            item =>
+
+                item.id !== category.id &&
+
+                item.name.trim().toLowerCase() ===
+
+                    trimmedName.toLowerCase()
+
+        );
+
+
+
+        if (duplicate) {
+
+            throw new Error("A category with that name already exists.");
+
+        }
+
+
+
+        // Rename the category in the categories table.
+
+        const { data: renamedCategory, error: renameError } =
+
+            await supabaseClient
+
+                .from("categories")
+
+                .update({ name: trimmedName })
+
+                .eq("id", category.id)
+
+                .select("id, name");
+
+
+
+        if (renameError) throw renameError;
+
+
+
+        if (!renamedCategory || renamedCategory.length === 0) {
+
+            throw new Error(
+
+                "No category was renamed. Check your admin permissions."
+
+            );
+
+        }
+
+
+
+        // Update products that use the old category name.
+
+        const { error: productsError } = await supabaseClient
+
+            .from("products")
+
+            .update({ category: trimmedName })
+
+            .eq("category", oldName);
+
+
+
+        if (productsError) {
+
+            console.error(
+
+                "Category renamed, but products were not updated:",
+
+                productsError
+
+            );
+
+
+
+            alert(
+
+                'The category was renamed to "' + trimmedName +
+
+                '", but some products may still use "' + oldName +
+
+                '". Please check your product records.'
+
+            );
+
+
+
+            await loadCategories();
+
+            return;
+
+        }
+
+
+
+        await loadCategories();
+
+
+
+        alert(
+
+            'Category "' + oldName + '" was renamed to "' +
+
+            trimmedName + '". Existing products were updated.'
+
+        );
+
+    } catch (error) {
+
+        console.error("Category rename error:", error);
+
+        alert("Rename failed: " + error.message);
+
+    } finally {
+
+        renameButton.disabled = false;
+
+        renameButton.textContent = "Rename";
+
+    }
+
 });
 
 
 
 
 
-            const deleteButton = document.createElement("button");
-            deleteButton.type = "button";
-            deleteButton.textContent = "Delete";
-            deleteButton.className = "admin-button";
 
-            
+
+
+
+
+
+            const deleteButton = document.createElement("button");
+
+            deleteButton.type = "button";
+
+            deleteButton.textContent = "Delete";
+
+            deleteButton.className = "admin-button";
+
+
+
+
+
 deleteButton.addEventListener("click", async function () {
-    const confirmed = confirm(
-        'Delete category "' + category.name + '"?'
-    );
 
-    if (!confirmed) return;
+    const confirmed = confirm(
 
-    deleteButton.disabled = true;
+        'Delete category "' + category.name + '"?'
 
-    try {
-        const { data: linkedProducts, error: checkError } =
-            await supabaseClient
-                .from("products")
-                .select("id")
-                .eq("category", category.name.trim())
-                .limit(1);
+    );
 
-        if (checkError) {
-            throw checkError;
-        }
 
-        if (linkedProducts && linkedProducts.length > 0) {
-            alert(
-                'Cannot delete "' + category.name +
-                '" because products are assigned to it. ' +
-                "Reassign those products first."
-            );
-            return;
-        }
 
-        const { error: deleteError } = await supabaseClient
-            .from("categories")
-            .delete()
-            .eq("id", category.id);
+    if (!confirmed) return;
 
-        if (deleteError) {
-            throw deleteError;
-        }
 
-        await loadCategories();
 
-        alert('Category "' + category.name + '" deleted.');
-    } catch (error) {
-        alert("Could not delete category: " + error.message);
-    } finally {
-        deleteButton.disabled = false;
-    }
+    deleteButton.disabled = true;
+
+
+
+    try {
+
+        const { data: linkedProducts, error: checkError } =
+
+            await supabaseClient
+
+                .from("products")
+
+                .select("id")
+
+                .eq("category", category.name.trim())
+
+                .limit(1);
+
+
+
+        if (checkError) {
+
+            throw checkError;
+
+        }
+
+
+
+        if (linkedProducts && linkedProducts.length > 0) {
+
+            alert(
+
+                'Cannot delete "' + category.name +
+
+                '" because products are assigned to it. ' +
+
+                "Reassign those products first."
+
+            );
+
+            return;
+
+        }
+
+
+
+        const { error: deleteError } = await supabaseClient
+
+            .from("categories")
+
+            .delete()
+
+            .eq("id", category.id);
+
+
+
+        if (deleteError) {
+
+            throw deleteError;
+
+        }
+
+
+
+        await loadCategories();
+
+
+
+        alert('Category "' + category.name + '" deleted.');
+
+    } catch (error) {
+
+        alert("Could not delete category: " + error.message);
+
+    } finally {
+
+        deleteButton.disabled = false;
+
+    }
+
 });
 
 
-            row.appendChild(name);
-            row.appendChild(renameButton);
-            row.appendChild(deleteButton);
-            categoryManagementList.appendChild(row);
-        });
-    }
 
-        // Add a new category to Supabase
-    categoryForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
 
-        const name = categoryNameInput.value.trim();
 
-        if (!name) {
-            alert("Enter a category name.");
-            return;
-        }
+            row.appendChild(name);
 
-        const addButton = categoryForm.querySelector(
-            'button[type="submit"]'
-        );
+            row.appendChild(renameButton);
 
-        addButton.disabled = true;
-        addButton.textContent = "Adding...";
+            row.appendChild(deleteButton);
 
-        try {
-            const { error } = await supabaseClient
-                .from("categories")
-                .insert({ name: name });
+            categoryManagementList.appendChild(row);
 
-            if (error) {
-                throw error;
-            }
+        });
 
-            categoryForm.reset();
-            await loadCategories();
+    }
 
-            alert('Category "' + name + '" added successfully.');
-        } catch (error) {
-            alert("Could not add category: " + error.message);
-        } finally {
-            addButton.disabled = false;
-            addButton.textContent = "Add Category";
-        }
-    });
-    // Load customer orders from Supabase
-    async function loadAdminOrders() {
-        const ordersList = document.getElementById("admin-orders-list");
-        const refreshButton = document.getElementById("refresh-orders-button");
 
-        ordersList.replaceChildren();
 
-        const loadingMessage = document.createElement("p");
-        loadingMessage.textContent = "Loading customer orders...";
-        ordersList.appendChild(loadingMessage);
+        // Add a new category to Supabase
 
-        refreshButton.disabled = true;
+    categoryForm.addEventListener("submit", async function (event) {
 
-        try {
-            const { data, error } = await supabaseClient
-                .from("orders")
-                .select("*")
-                .order("created_at", { ascending: false });
+        event.preventDefault();
 
-            if (error) {
-                throw error;
-            }
 
-            ordersList.replaceChildren();
 
-            if (!data || data.length === 0) {
-                const emptyMessage = document.createElement("p");
-                emptyMessage.textContent = "No customer orders found yet.";
-                ordersList.appendChild(emptyMessage);
-                return;
-            }
+        const name = categoryNameInput.value.trim();
 
-            data.forEach(function (order) {
-                const card = document.createElement("div");
+
+
+        if (!name) {
+
+            alert("Enter a category name.");
+
+            return;
+
+        }
+
+
+
+        const addButton = categoryForm.querySelector(
+
+            'button[type="submit"]'
+
+        );
+
+
+
+        addButton.disabled = true;
+
+        addButton.textContent = "Adding...";
+
+
+
+        try {
+
+            const { error } = await supabaseClient
+
+                .from("categories")
+
+                .insert({ name: name });
+
+
+
+            if (error) {
+
+                throw error;
+
+            }
+
+
+
+            categoryForm.reset();
+
+            await loadCategories();
+
+
+
+            alert('Category "' + name + '" added successfully.');
+
+        } catch (error) {
+
+            alert("Could not add category: " + error.message);
+
+        } finally {
+
+            addButton.disabled = false;
+
+            addButton.textContent = "Add Category";
+
+        }
+
+    });
+
+    // Load customer orders from Supabase
+
+    async function loadAdminOrders() {
+
+        const ordersList = document.getElementById("admin-orders-list");
+
+        const refreshButton = document.getElementById("refresh-orders-button");
+
+
+
+        ordersList.replaceChildren();
+
+
+
+        const loadingMessage = document.createElement("p");
+
+        loadingMessage.textContent = "Loading customer orders...";
+
+        ordersList.appendChild(loadingMessage);
+
+
+
+        refreshButton.disabled = true;
+
+
+
+        try {
+
+            const { data, error } = await supabaseClient
+
+                .from("orders")
+
+                .select("*")
+
+                .order("created_at", { ascending: false });
+
+
+
+            if (error) {
+
+                throw error;
+
+            }
+
+
+
+            ordersList.replaceChildren();
+
+
+
+            if (!data || data.length === 0) {
+
+                const emptyMessage = document.createElement("p");
+
+                emptyMessage.textContent = "No customer orders found yet.";
+
+                ordersList.appendChild(emptyMessage);
+
+                return;
+
+            }
+
+
+
+            data.forEach(function (order) {
+
+                const card = document.createElement("div");
+
 card.className = "admin-order-card";
 
-                const heading = document.createElement("h3");
-                heading.textContent = "Order " + order.order_number;
-                card.appendChild(heading);
 
-                const total = document.createElement("p");
-                total.textContent =
-                    "Total: ₦" + Number(order.total).toLocaleString("en-NG");
-                card.appendChild(total);
 
-                
-                // Payment verification controls
-                const paymentLabel = document.createElement("label");
-                paymentLabel.textContent = "Payment status:";
-                paymentLabel.style.display = "block";
-                paymentLabel.style.marginTop = "12px";
+                const heading = document.createElement("h3");
 
-                const paymentSelect = document.createElement("select");
-                paymentSelect.style.padding = "10px";
-                paymentSelect.style.marginRight = "8px";
+                heading.textContent = "Order " + order.order_number;
 
-                ["Unverified", "Paid"].forEach(function (paymentOption) {
-                    const option = document.createElement("option");
-                    option.value = paymentOption;
-                    option.textContent = paymentOption;
-                    option.selected =
-                        paymentOption === (order.payment_status || "Unverified");
-                    paymentSelect.appendChild(option);
-                });
+                card.appendChild(heading);
 
-                const updatePaymentButton = document.createElement("button");
-                updatePaymentButton.type = "button";
-                updatePaymentButton.textContent = "Update Payment";
-                updatePaymentButton.style.cssText =
-                    "padding:10px 14px;margin-top:10px;cursor:pointer;";
 
-                updatePaymentButton.addEventListener("click", async function () {
-                    const selectedPayment = paymentSelect.value;
 
-                    if (selectedPayment === "Paid") {
-                        const confirmed = confirm(
-                            "Have you verified that the bank transfer was received?"
-                        );
+                const total = document.createElement("p");
 
-                        if (!confirmed) {
-                            paymentSelect.value =
-                                order.payment_status || "Unverified";
-                            return;
-                        }
-                    }
+                total.textContent =
 
-                    updatePaymentButton.disabled = true;
-                    updatePaymentButton.textContent = "Updating...";
+                    "Total: ₦" + Number(order.total).toLocaleString("en-NG");
 
-                    try {
-                        const { data, error } = await supabaseClient
-                            .from("orders")
-                            .update({ payment_status: selectedPayment })
-                            .eq("id", order.id)
-                            .select("id, payment_status");
+                card.appendChild(total);
 
-                        if (error) {
-                            throw error;
-                        }
 
-                        if (!data || data.length === 0) {
-                            throw new Error(
-                                "No order was updated. Check the Supabase permissions."
-                            );
-                        }
 
-                        alert(
-                            "Payment status updated to: " +
-                            data[0].payment_status
-                        );
 
-                        await loadAdminOrders();
-                    } catch (error) {
-                        alert(
-                            "Could not update payment status: " + error.message
-                        );
-                    } finally {
-                        updatePaymentButton.disabled = false;
-                        updatePaymentButton.textContent = "Update Payment";
-                    }
-                });
 
-                card.appendChild(paymentLabel);
-                card.appendChild(paymentSelect);
-                card.appendChild(updatePaymentButton);
+                // Payment verification controls
 
-                const statusLabel = document.createElement("label");
+                const paymentLabel = document.createElement("label");
+
+                paymentLabel.textContent = "Payment status:";
+
+                paymentLabel.style.display = "block";
+
+                paymentLabel.style.marginTop = "12px";
+
+
+
+                const paymentSelect = document.createElement("select");
+
+                paymentSelect.style.padding = "10px";
+
+                paymentSelect.style.marginRight = "8px";
+
+
+
+                ["Unverified", "Paid"].forEach(function (paymentOption) {
+
+                    const option = document.createElement("option");
+
+                    option.value = paymentOption;
+
+                    option.textContent = paymentOption;
+
+                    option.selected =
+
+                        paymentOption === (order.payment_status || "Unverified");
+
+                    paymentSelect.appendChild(option);
+
+                });
+
+
+
+                const updatePaymentButton = document.createElement("button");
+
+                updatePaymentButton.type = "button";
+
+                updatePaymentButton.textContent = "Update Payment";
+
+                updatePaymentButton.style.cssText =
+
+                    "padding:10px 14px;margin-top:10px;cursor:pointer;";
+
+
+
+                updatePaymentButton.addEventListener("click", async function () {
+
+                    const selectedPayment = paymentSelect.value;
+
+
+
+                    if (selectedPayment === "Paid") {
+
+                        const confirmed = confirm(
+
+                            "Have you verified that the bank transfer was received?"
+
+                        );
+
+
+
+                        if (!confirmed) {
+
+                            paymentSelect.value =
+
+                                order.payment_status || "Unverified";
+
+                            return;
+
+                        }
+
+                    }
+
+
+
+                    updatePaymentButton.disabled = true;
+
+                    updatePaymentButton.textContent = "Updating...";
+
+
+
+                    try {
+
+                        const { data, error } = await supabaseClient
+
+                            .from("orders")
+
+                            .update({ payment_status: selectedPayment })
+
+                            .eq("id", order.id)
+
+                            .select("id, payment_status");
+
+
+
+                        if (error) {
+
+                            throw error;
+
+                        }
+
+
+
+                        if (!data || data.length === 0) {
+
+                            throw new Error(
+
+                                "No order was updated. Check the Supabase permissions."
+
+                            );
+
+                        }
+
+
+
+                        alert(
+
+                            "Payment status updated to: " +
+
+                            data[0].payment_status
+
+                        );
+
+
+
+                        await loadAdminOrders();
+
+                    } catch (error) {
+
+                        alert(
+
+                            "Could not update payment status: " + error.message
+
+                        );
+
+                    } finally {
+
+                        updatePaymentButton.disabled = false;
+
+                        updatePaymentButton.textContent = "Update Payment";
+
+                    }
+
+                });
+
+
+
+                card.appendChild(paymentLabel);
+
+                card.appendChild(paymentSelect);
+
+                card.appendChild(updatePaymentButton);
+
+
+
+                const statusLabel = document.createElement("label");
+
 statusLabel.textContent = "Order status:";
+
 statusLabel.style.display = "block";
+
 statusLabel.style.marginTop = "12px";
 
+
+
 const statusSelect = document.createElement("select");
+
 statusSelect.style.padding = "10px";
+
 statusSelect.style.marginRight = "8px";
 
+
+
 [
-    "Pending",
-    "Processing",
-    "Shipped",
-    "Delivered",
-    "Cancelled"
+
+    "Pending",
+
+    "Processing",
+
+    "Shipped",
+
+    "Delivered",
+
+    "Cancelled"
+
 ].forEach(function (statusOption) {
-    const option = document.createElement("option");
-    option.value = statusOption;
-    option.textContent = statusOption;
-    option.selected = statusOption === order.status;
-    statusSelect.appendChild(option);
+
+    const option = document.createElement("option");
+
+    option.value = statusOption;
+
+    option.textContent = statusOption;
+
+    option.selected = statusOption === order.status;
+
+    statusSelect.appendChild(option);
+
 });
 
+
+
 const updateStatusButton = document.createElement("button");
+
 updateStatusButton.type = "button";
+
 updateStatusButton.textContent = "Update Status";
+
 updateStatusButton.style.cssText =
-    "padding:10px 14px;margin-top:10px;cursor:pointer;";
+
+    "padding:10px 14px;margin-top:10px;cursor:pointer;";
+
+
+
 
 
 updateStatusButton.addEventListener("click", async function () {
-    updateStatusButton.disabled = true;
-    updateStatusButton.textContent = "Updating...";
 
-    try {
-        const selectedStatus = statusSelect.value;
+    updateStatusButton.disabled = true;
 
-        const { data, error } = await supabaseClient
-            .from("orders")
-            .update({ status: selectedStatus })
-            .eq("id", order.id)
-            .select("id, status");
+    updateStatusButton.textContent = "Updating...";
 
-        if (error) {
-            throw error;
-        }
 
-        if (!data || data.length === 0) {
-    alert(
-        "No order was updated.\n" +
-        "Order ID: " + order.id + "\n" +
-        "Selected status: " + selectedStatus + "\n" +
-        "Supabase returned no updated row."
-    );
-    return;
+
+    try {
+
+        const selectedStatus = statusSelect.value;
+
+
+
+        const { data, error } = await supabaseClient
+
+            .from("orders")
+
+            .update({ status: selectedStatus })
+
+            .eq("id", order.id)
+
+            .select("id, status");
+
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+
+        if (!data || data.length === 0) {
+
+    alert(
+
+        "No order was updated.\n" +
+
+        "Order ID: " + order.id + "\n" +
+
+        "Selected status: " + selectedStatus + "\n" +
+
+        "Supabase returned no updated row."
+
+    );
+
+    return;
+
 }
 
-        alert(
-            "Order updated successfully.\n" +
-            "Order ID: " + data[0].id + "\n" +
-            "Saved status: " + data[0].status
-        );
 
-        await loadAdminOrders();
 
-    } catch (error) {
-        alert("Could not update order status: " + error.message);
-    } finally {
-        updateStatusButton.disabled = false;
-        updateStatusButton.textContent = "Update Status";
-    }
+        alert(
+
+            "Order updated successfully.\n" +
+
+            "Order ID: " + data[0].id + "\n" +
+
+            "Saved status: " + data[0].status
+
+        );
+
+
+
+        await loadAdminOrders();
+
+
+
+    } catch (error) {
+
+        alert("Could not update order status: " + error.message);
+
+    } finally {
+
+        updateStatusButton.disabled = false;
+
+        updateStatusButton.textContent = "Update Status";
+
+    }
+
 });
 
 
+
+
+
 card.appendChild(statusLabel);
+
 card.appendChild(statusSelect);
+
 card.appendChild(updateStatusButton);
 
-                const date = document.createElement("p");
-                date.textContent =
-                    "Date: " + new Date(order.created_at).toLocaleString();
-                card.appendChild(date);
 
-                
+
+                const date = document.createElement("p");
+
+                date.textContent =
+
+                    "Date: " + new Date(order.created_at).toLocaleString();
+
+                card.appendChild(date);
+
+
+
+
+
 const address = document.createElement("p");
+
 const delivery = order.delivery_address || {};
 
-const addressParts =
-    typeof delivery === "object" && !Array.isArray(delivery)
-        ? Object.entries(delivery)
-            .filter(function ([key, value]) {
-                return value !== null && value !== "";
-            })
-            .map(function ([key, value]) {
-                const label = key
-                    .replace(/_/g, " ")
-                    .replace(/\b\w/g, function (letter) {
-                        return letter.toUpperCase();
-                    });
 
-                return label + ": " +
-                    (typeof value === "object"
-                        ? JSON.stringify(value)
-                        : value);
-            })
-        : [String(delivery)];
+
+const addressParts =
+
+    typeof delivery === "object" && !Array.isArray(delivery)
+
+        ? Object.entries(delivery)
+
+            .filter(function ([key, value]) {
+
+                return value !== null && value !== "";
+
+            })
+
+            .map(function ([key, value]) {
+
+                const label = key
+
+                    .replace(/\_/g, " ")
+
+                    .replace(/\b\w/g, function (letter) {
+
+                        return letter.toUpperCase();
+
+                    });
+
+
+
+                return label + ": " +
+
+                    (typeof value === "object"
+
+                        ? JSON.stringify(value)
+
+                        : value);
+
+            })
+
+        : [String(delivery)];
+
+
 
 address.textContent =
-    "Delivery details: " + addressParts.join(" | ");
+
+    "Delivery details: " + addressParts.join(" | ");
+
+
 
 card.appendChild(address);
 
 
-               
+
+
+
+
+
 const items = document.createElement("div");
+
 items.style.cssText =
-    "white-space:pre-wrap;overflow-wrap:anywhere;margin:12px 0;";
+
+    "white-space:pre-wrap;overflow-wrap:anywhere;margin:12px 0;";
+
+
 
 const orderItems = Array.isArray(order.items)
-    ? order.items
-    : [];
+
+    ? order.items
+
+    : [];
+
+
 
 items.textContent = "Items:\n" + (
-    orderItems.length
-        ? orderItems.map(function (item) {
-            const name = item.name || item.title || "Product";
-            const quantity = Number(item.quantity || item.qty || 1);
-            const price = Number(item.price || 0);
 
-            return name + " — Qty: " + quantity +
-                " — Unit price: ₦" +
-                price.toLocaleString("en-NG");
-        }).join("\n")
-        : "No item details available."
+    orderItems.length
+
+        ? orderItems.map(function (item) {
+
+            const name = item.name || item.title || "Product";
+
+            const quantity = Number(item.quantity || item.qty || 1);
+
+            const price = Number(item.price || 0);
+
+
+
+            return name + " — Qty: " + quantity +
+
+                " — Unit price: ₦" +
+
+                price.toLocaleString("en-NG");
+
+        }).join("\n")
+
+        : "No item details available."
+
 );
 
+
+
 card.appendChild(items);
+
 ordersList.appendChild(card);
 
-            });
 
-        filterAdminOrderCards();
 
-        } catch (error) {
-            ordersList.replaceChildren();
+            });
 
-            const errorMessage = document.createElement("p");
-            errorMessage.textContent =
-                "Could not load orders: " + error.message;
-            ordersList.appendChild(errorMessage);
-        } finally {
-            refreshButton.disabled = false;
-        }
-    }
 
-    document.getElementById("refresh-orders-button")
-        .addEventListener("click", loadAdminOrders);
-        const orderNumberSearch = document.getElementById("order-number-search");
+
+        filterAdminOrderCards();
+
+
+
+        } catch (error) {
+
+            ordersList.replaceChildren();
+
+
+
+            const errorMessage = document.createElement("p");
+
+            errorMessage.textContent =
+
+                "Could not load orders: " + error.message;
+
+            ordersList.appendChild(errorMessage);
+
+        } finally {
+
+            refreshButton.disabled = false;
+
+        }
+
+    }
+
+
+
+    document.getElementById("refresh-orders-button")
+
+        .addEventListener("click", loadAdminOrders);
+
+        const orderNumberSearch = document.getElementById("order-number-search");
+
+
 
 function filterAdminOrderCards() {
-    const searchTerm = orderNumberSearch.value.trim().toLowerCase();
 
-    const orderCards = document.querySelectorAll(
-        "#admin-orders-list > div"
-    );
+    const searchTerm = orderNumberSearch.value.trim().toLowerCase();
 
-    orderCards.forEach(function (card) {
-        const heading = card.querySelector("h3");
-        const orderNumber = heading
-            ? heading.textContent.toLowerCase()
-            : "";
 
-        card.hidden =
-            searchTerm !== "" && !orderNumber.includes(searchTerm);
-    });
+
+    const orderCards = document.querySelectorAll(
+
+        "#admin-orders-list > div"
+
+    );
+
+
+
+    orderCards.forEach(function (card) {
+
+        const heading = card.querySelector("h3");
+
+        const orderNumber = heading
+
+            ? heading.textContent.toLowerCase()
+
+            : "";
+
+
+
+        card.hidden =
+
+            searchTerm !== "" && !orderNumber.includes(searchTerm);
+
+    });
+
 }
+
+
 
 orderNumberSearch.addEventListener("input", filterAdminOrderCards);
 
 
-    // Load registered customers through the secure Supabase Edge Function
-    async function loadAdminCustomers() {
-        const customersList = document.getElementById("customer-accounts-list");
-        const customersMessage = document.getElementById("customer-accounts-message");
-        const refreshButton = document.getElementById("refresh-customers-button");
-
-        customersList.replaceChildren();
-        customersMessage.textContent = "Loading registered customers...";
-        refreshButton.disabled = true;
-
-        try {
-            const { data, error } = await supabaseClient.functions.invoke(
-                "admin-customers"
-            );
-
-            if (error) {
-                throw error;
-            }
-
-            if (data?.error) {
-                throw new Error(data.error);
-            }
-
-            const customers = data?.customers || [];
-            customersList.replaceChildren();
-
-            if (customers.length === 0) {
-                customersMessage.textContent = "No registered customers found.";
-                return;
-            }
-
-            customersMessage.textContent =
-                "Registered customers: " + customers.length;
-
-            customers.forEach(function (customer) {
-                const card = document.createElement("div");
-                card.style.cssText =
-                    "border:1px solid #f0c4d8;padding:16px;margin:12px 0;" +
-                    "border-radius:10px;background:#fffafd;overflow-wrap:anywhere;";
-
-                const name = document.createElement("h3");
-                name.textContent = customer.name || "Name not provided";
-                card.appendChild(name);
-
-                const email = document.createElement("p");
-                email.textContent = "Email: " + (customer.email || "Not provided");
-                card.appendChild(email);
-
-                const phone = document.createElement("p");
-                phone.textContent = "Phone: " + (customer.phone || "Not provided");
-                card.appendChild(phone);
-
-                const registered = document.createElement("p");
-                registered.textContent = "Registered: " +
-                    (customer.created_at
-                        ? new Date(customer.created_at).toLocaleString()
-                        : "Date unavailable");
-                card.appendChild(registered);
-
-                customersList.appendChild(card);
-            });
-        } catch (error) {
-            console.error("Loading registered customers failed:", error);
-            customersMessage.textContent =
-                "Could not load customers: " + error.message;
-        } finally {
-            refreshButton.disabled = false;
-        }
-    }
-
-    document.getElementById("refresh-customers-button")
-        .addEventListener("click", loadAdminCustomers);
 
 
-    // Administrator login
-    loginForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
 
-        const email = document.getElementById("admin-email").value.trim();
-        const password = document.getElementById("admin-password").value;
+    // Load registered customers through the secure Supabase Edge Function
 
-        loginMessage.textContent = "Signing in...";
+    async function loadAdminCustomers() {
 
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-        });
+        const customersList = document.getElementById("customer-accounts-list");
 
-        if (error) {
-            loginMessage.textContent =
-                "Sign-in failed: " + error.message;
-            return;
-        }
+        const customersMessage = document.getElementById("customer-accounts-message");
 
-        if (!data.user) {
-            loginMessage.textContent = "Could not verify administrator.";
-            return;
-        }
-        alert("Administrator user ID: " + data.user.id);
+        const refreshButton = document.getElementById("refresh-customers-button");
 
-        loginMessage.textContent = "";
-        loginForm.reset();
 
-        setAdminView(true);
+
+        customersList.replaceChildren();
+
+        customersMessage.textContent = "Loading registered customers...";
+
+        refreshButton.disabled = true;
+
+
+
+        try {
+
+            const { data, error } = await supabaseClient.functions.invoke(
+
+                "admin-customers"
+
+            );
+
+
+
+            if (error) {
+
+                throw error;
+
+            }
+
+
+
+            if (data?.error) {
+
+                throw new Error(data.error);
+
+            }
+
+
+
+            const customers = data?.customers || [];
+
+            customersList.replaceChildren();
+
+
+
+            if (customers.length === 0) {
+
+                customersMessage.textContent = "No registered customers found.";
+
+                return;
+
+            }
+
+
+
+            customersMessage.textContent =
+
+                "Registered customers: " + customers.length;
+
+
+
+            customers.forEach(function (customer) {
+
+                const card = document.createElement("div");
+
+                card.style.cssText =
+
+                    "border:1px solid #f0c4d8;padding:16px;margin:12px 0;" +
+
+                    "border-radius:10px;background:#fffafd;overflow-wrap:anywhere;";
+
+
+
+                const name = document.createElement("h3");
+
+                name.textContent = customer.name || "Name not provided";
+
+                card.appendChild(name);
+
+
+
+                const email = document.createElement("p");
+
+                email.textContent = "Email: " + (customer.email || "Not provided");
+
+                card.appendChild(email);
+
+
+
+                const phone = document.createElement("p");
+
+                phone.textContent = "Phone: " + (customer.phone || "Not provided");
+
+                card.appendChild(phone);
+
+
+
+                const registered = document.createElement("p");
+
+                registered.textContent = "Registered: " +
+
+                    (customer.created_at
+
+                        ? new Date(customer.created_at).toLocaleString()
+
+                        : "Date unavailable");
+
+                card.appendChild(registered);
+
+
+
+                customersList.appendChild(card);
+
+            });
+
+        } catch (error) {
+
+            console.error("Loading registered customers failed:", error);
+
+            customersMessage.textContent =
+
+                "Could not load customers: " + error.message;
+
+        } finally {
+
+            refreshButton.disabled = false;
+
+        }
+
+    }
+
+
+
+    document.getElementById("refresh-customers-button")
+
+        .addEventListener("click", loadAdminCustomers);
+
+
+
+
+
+    // Administrator login
+
+    loginForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+
+
+        const email = document.getElementById("admin-email").value.trim();
+
+        const password = document.getElementById("admin-password").value;
+
+
+
+        loginMessage.textContent = "Signing in...";
+
+
+
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+        });
+
+
+
+        if (error) {
+
+            loginMessage.textContent =
+
+                "Sign-in failed: " + error.message;
+
+            return;
+
+        }
+
+
+
+        if (!data.user) {
+
+            loginMessage.textContent = "Could not verify administrator.";
+
+            return;
+
+        }
+
+        alert("Administrator user ID: " + data.user.id);
+
+
+
+        loginMessage.textContent = "";
+
+        loginForm.reset();
+
+
+
+        setAdminView(true);
+
 await loadProducts();
+
 await loadCategories();
+
 await loadAdminOrders();
+
+await loadFixedOfferProducts();
+await loadFixedDiscountOffers();
 await loadDiscountSettings();
+
 await loadAdminCustomers();
-    });
 
-    // Administrator sign out
-    logoutButton.addEventListener("click", async function () {
-        logoutButton.disabled = true;
+    });
 
-        const { error } = await supabaseClient.auth.signOut();
 
-        logoutButton.disabled = false;
 
-        if (error) {
-            alert("Could not sign out: " + error.message);
-            return;
-        }
+    // Administrator sign out
 
-        setAdminView(false);
-        loginMessage.textContent = "";
-    });
+    logoutButton.addEventListener("click", async function () {
 
-    // Preview a selected image
-    productImageFile.addEventListener("change", function () {
-        const file = productImageFile.files[0];
+        logoutButton.disabled = true;
 
-        selectedImageFile = null;
 
-        if (!file) {
-            return;
-        }
 
-        const allowedTypes = [
-            "image/jpeg",
-            "image/png",
-            "image/webp"
-        ];
+        const { error } = await supabaseClient.auth.signOut();
 
-        if (!allowedTypes.includes(file.type)) {
-            alert("Choose a JPG, PNG, or WebP image.");
-            productImageFile.value = "";
-            return;
-        }
 
-   if (file.size > 3 * 1024 * 1024) {
-    alert("Please choose an image smaller than 3 MB.");
-    productImageFile.value = "";
-    return;
+
+        logoutButton.disabled = false;
+
+
+
+        if (error) {
+
+            alert("Could not sign out: " + error.message);
+
+            return;
+
+        }
+
+
+
+        setAdminView(false);
+
+        loginMessage.textContent = "";
+
+    });
+
+
+
+    // Preview a selected image
+
+    productImageFile.addEventListener("change", function () {
+
+        const file = productImageFile.files[0];
+
+
+
+        selectedImageFile = null;
+
+
+
+        if (!file) {
+
+            return;
+
+        }
+
+
+
+        const allowedTypes = [
+
+            "image/jpeg",
+
+            "image/png",
+
+            "image/webp"
+
+        ];
+
+
+
+        if (!allowedTypes.includes(file.type)) {
+
+            alert("Choose a JPG, PNG, or WebP image.");
+
+            productImageFile.value = "";
+
+            return;
+
+        }
+
+
+
+   if (file.size > 3 * 1024 * 1024) {
+
+    alert("Please choose an image smaller than 3 MB.");
+
+    productImageFile.value = "";
+
+    return;
+
 }
 
-        selectedImageFile = file;
-        productImageUrl.value = "";
-
-        previewImage.src = URL.createObjectURL(file);
-        previewImage.style.display = "block";
-    });
-
-    // Preview an image URL
-    productImageUrl.addEventListener("input", function () {
-        selectedImageFile = null;
-        productImageFile.value = "";
-
-        const imageUrl = productImageUrl.value.trim();
-
-        if (imageUrl) {
-            previewImage.src = imageUrl;
-            previewImage.style.display = "block";
-        } else {
-            previewImage.removeAttribute("src");
-            previewImage.style.display = "none";
-        }
-    });
-
-    // Save a new product to Supabase
-    productForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
-
-        const name = productName.value.trim();
-        const category = productCategory.value;
-        const price = Number(productPrice.value);
-        const description = productDescription.value.trim();
-
-        if (!name || !category || !Number.isFinite(price) || price <= 0) {
-            alert("Enter a product name, category, and valid price.");
-            return;
-        }
-
-        if (!selectedImageFile && !productImageUrl.value.trim()) {
-            alert("Choose an image file or enter an image URL.");
-            return;
-        }
-
-        const saveButton = productForm.querySelector(
-            'button[type="submit"]'
-        );
-
-        saveButton.disabled = true;
-        saveButton.textContent = "Saving...";
-
-        try {
-            let imageUrl = productImageUrl.value.trim();
-
-            // Upload an image file to Supabase Storage when selected
-            if (selectedImageFile) {
-                const safeFileName = selectedImageFile.name.replace(
-                    /[^a-zA-Z0-9._-]/g,
-                    "-"
-                );
-
-                const filePath = Date.now() + "-" + safeFileName;
-
-                const { error: uploadError } = await supabaseClient
-                    .storage
-                    .from("product-images")
-                    .upload(filePath, selectedImageFile, {
-                        cacheControl: "3600",
-                        upsert: false,
-                        contentType: selectedImageFile.type
-                    });
-
-                if (uploadError) {
-                    throw new Error(
-                        "Image upload failed: " + uploadError.message
-                    );
-                }
-
-                const { data: publicImage } = supabaseClient
-                    .storage
-                    .from("product-images")
-                    .getPublicUrl(filePath);
-
-                imageUrl = publicImage.publicUrl;
-            }
 
 
-            // Add a new product or update an existing product
+        selectedImageFile = file;
+
+        productImageUrl.value = "";
+
+
+
+        previewImage.src = URL.createObjectURL(file);
+
+        previewImage.style.display = "block";
+
+    });
+
+
+
+    // Preview an image URL
+
+    productImageUrl.addEventListener("input", function () {
+
+        selectedImageFile = null;
+
+        productImageFile.value = "";
+
+
+
+        const imageUrl = productImageUrl.value.trim();
+
+
+
+        if (imageUrl) {
+
+            previewImage.src = imageUrl;
+
+            previewImage.style.display = "block";
+
+        } else {
+
+            previewImage.removeAttribute("src");
+
+            previewImage.style.display = "none";
+
+        }
+
+    });
+
+
+
+    // Save a new product to Supabase
+
+    productForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+
+
+        const name = productName.value.trim();
+
+        const category = productCategory.value;
+
+        const price = Number(productPrice.value);
+
+        const description = productDescription.value.trim();
+
+
+
+        if (!name || !category || !Number.isFinite(price) || price <= 0) {
+
+            alert("Enter a product name, category, and valid price.");
+
+            return;
+
+        }
+
+
+
+        if (!selectedImageFile && !productImageUrl.value.trim()) {
+
+            alert("Choose an image file or enter an image URL.");
+
+            return;
+
+        }
+
+
+
+        const saveButton = productForm.querySelector(
+
+            'button[type="submit"]'
+
+        );
+
+
+
+        saveButton.disabled = true;
+
+        saveButton.textContent = "Saving...";
+
+
+
+        try {
+
+            let imageUrl = productImageUrl.value.trim();
+
+
+
+            // Upload an image file to Supabase Storage when selected
+
+            if (selectedImageFile) {
+
+                const safeFileName = selectedImageFile.name.replace(
+
+                    /[^a-zA-Z0-9.\_-]/g,
+
+                    "-"
+
+                );
+
+
+
+                const filePath = Date.now() + "-" + safeFileName;
+
+
+
+                const { error: uploadError } = await supabaseClient
+
+                    .storage
+
+                    .from("product-images")
+
+                    .upload(filePath, selectedImageFile, {
+
+                        cacheControl: "3600",
+
+                        upsert: false,
+
+                        contentType: selectedImageFile.type
+
+                    });
+
+
+
+                if (uploadError) {
+
+                    throw new Error(
+
+                        "Image upload failed: " + uploadError.message
+
+                    );
+
+                }
+
+
+
+                const { data: publicImage } = supabaseClient
+
+                    .storage
+
+                    .from("product-images")
+
+                    .getPublicUrl(filePath);
+
+
+
+                imageUrl = publicImage.publicUrl;
+
+            }
+
+
+
+
+
+            // Add a new product or update an existing product
+
 const productDetails = {
-    name: name,
-    category: category,
-    price: price,
-    stock_quantity: Number(productStock.value),
-    image_url: imageUrl,
-    description: description,
-    is_active: true
+
+    name: name,
+
+    category: category,
+
+    price: price,
+
+    stock_quantity: Number(productStock.value),
+
+    image_url: imageUrl,
+
+    description: description,
+
+    is_active: true
+
 };
 
-            let saveError;
-
-            if (editingProductId !== null) {
-                const { error } = await supabaseClient
-                    .from("products")
-                    .update(productDetails)
-                    .eq("id", editingProductId);
-
-                saveError = error;
-            } else {
-                const { error } = await supabaseClient
-                    .from("products")
-                    .insert(productDetails);
-
-                saveError = error;
-            }
-
-            if (saveError) {
-                throw new Error(
-                    "Product save failed: " + saveError.message
-                );
-            }
-
-            const wasEditing = editingProductId !== null;
-
-            productForm.reset();
-            productStock.value = 0;
-            selectedImageFile = null;
-            editingProductId = null;
-            previewImage.removeAttribute("src");
-            previewImage.style.display = "none";
-
-            await loadProducts();
-
-            alert(
-                wasEditing
-                    ? "Product updated successfully!"
-                    : "Product saved to the online database!"
-            );
-        } catch (error) {
-            alert(error.message || "Something went wrong while saving.");
-        } finally {
-            saveButton.disabled = false;
-            saveButton.textContent = "Save Product";
-        }
-    });
 
 
-    // Restore the login state when the page opens or refreshes
-    async function initialiseAdmin() {
-        setAdminView(false);
+            let saveError;
 
-        const { data, error } = await supabaseClient.auth.getSession();
 
-        if (error) {
-            loginMessage.textContent =
-                "Could not check login: " + error.message;
-            return;
-        }
 
-        if (data.session) {
-    setAdminView(true);
-    await loadProducts();
-    await loadCategories();
-    await loadDiscountSettings();
-    await loadAdminCustomers();
+            if (editingProductId !== null) {
+
+                const { error } = await supabaseClient
+
+                    .from("products")
+
+                    .update(productDetails)
+
+                    .eq("id", editingProductId);
+
+
+
+                saveError = error;
+
+            } else {
+
+                const { error } = await supabaseClient
+
+                    .from("products")
+
+                    .insert(productDetails);
+
+
+
+                saveError = error;
+
+            }
+
+
+
+            if (saveError) {
+
+                throw new Error(
+
+                    "Product save failed: " + saveError.message
+
+                );
+
+            }
+
+
+
+            const wasEditing = editingProductId !== null;
+
+
+
+            productForm.reset();
+
+            productStock.value = 0;
+
+            selectedImageFile = null;
+
+            editingProductId = null;
+
+            previewImage.removeAttribute("src");
+
+            previewImage.style.display = "none";
+
+
+
+            await loadProducts();
+
+
+
+            alert(
+
+                wasEditing
+
+                    ? "Product updated successfully!"
+
+                    : "Product saved to the online database!"
+
+            );
+
+        } catch (error) {
+
+            alert(error.message || "Something went wrong while saving.");
+
+        } finally {
+
+            saveButton.disabled = false;
+
+            saveButton.textContent = "Save Product";
+
+        }
+
+    });
+
+
+
+
+
+    // Restore the login state when the page opens or refreshes
+
+    async function initialiseAdmin() {
+
+        setAdminView(false);
+
+
+
+        const { data, error } = await supabaseClient.auth.getSession();
+
+
+
+        if (error) {
+
+            loginMessage.textContent =
+
+                "Could not check login: " + error.message;
+
+            return;
+
+        }
+
+
+
+        if (data.session) {
+
+    setAdminView(true);
+
+    await loadProducts();
+
+    await loadCategories();
+
+    await loadFixedOfferProducts();
+await loadFixedDiscountOffers();
+await loadDiscountSettings();
+
+    await loadAdminCustomers();
+
 }
-    }
 
-    initialiseAdmin();
+    }
+
+
+
+    initialiseAdmin();
+
 </script>
 
+
+
 </body>
+
 </html>
+
 

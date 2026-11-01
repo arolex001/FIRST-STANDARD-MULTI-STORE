@@ -79,6 +79,157 @@ function saveCart() {
 }
 
 
+async function calculateBestDiscount(items) {
+    const subtotal = items.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+    );
+
+    const { data: settingsData, error: settingsError } =
+        await window.storeSupabaseClient
+            .from("store_settings")
+            .select("setting_key, setting_value")
+            .in("setting_key", [
+                "bulk_discount_enabled",
+                "bulk_discount_percent",
+                "bulk_discount_min_quantity"
+            ]);
+
+    if (settingsError) throw settingsError;
+
+    const settings = {};
+
+    (settingsData || []).forEach((setting) => {
+        settings[setting.setting_key] = setting.setting_value;
+    });
+
+    const percentageEnabled =
+        settings.bulk_discount_enabled === true;
+
+    const percentage = Number(
+        settings.bulk_discount_percent ?? 5
+    );
+
+    const percentageMinimum = Number(
+        settings.bulk_discount_min_quantity ?? 5
+    );
+
+    if (
+        !Number.isFinite(percentage) ||
+        percentage < 0 ||
+        percentage > 100 ||
+        !Number.isInteger(percentageMinimum) ||
+        percentageMinimum < 1
+    ) {
+        throw new Error("Invalid percentage discount settings.");
+    }
+
+    const { data: offers, error: offersError } =
+        await window.storeSupabaseClient
+            .from("discount_offers")
+            .select(
+                "id, offer_name, discount_per_item, minimum_quantity, applies_to_all_products, product_ids"
+            )
+            .eq("is_active", true);
+
+    if (offersError) throw offersError;
+
+    const productGroups = new Map();
+
+    items.forEach((item) => {
+        const productId = Number(item.product_id);
+
+        if (!productGroups.has(productId)) {
+            productGroups.set(productId, {
+                quantity: 0,
+                subtotal: 0
+            });
+        }
+
+        const group = productGroups.get(productId);
+
+        group.quantity += Number(item.quantity);
+        group.subtotal += Number(item.price) * Number(item.quantity);
+    });
+
+    let totalDiscount = 0;
+    const discountDetails = [];
+
+    productGroups.forEach((group, productId) => {
+        let percentageSaving = 0;
+        let fixedSaving = 0;
+        let selectedOffer = null;
+
+        if (
+            percentageEnabled &&
+            group.quantity >= percentageMinimum
+        ) {
+            percentageSaving =
+                group.subtotal * percentage / 100;
+        }
+
+        (offers || []).forEach((offer) => {
+            const minimum = Number(offer.minimum_quantity);
+            const amount = Number(offer.discount_per_item);
+
+            const appliesToProduct =
+                offer.applies_to_all_products === true ||
+                (offer.product_ids || []).map(Number).includes(productId);
+
+            if (
+                appliesToProduct &&
+                group.quantity >= minimum &&
+                Number.isFinite(amount) &&
+                amount > 0
+            ) {
+                const possibleSaving = Math.min(
+                    group.subtotal,
+                    amount * group.quantity
+                );
+
+                if (possibleSaving > fixedSaving) {
+                    fixedSaving = possibleSaving;
+                    selectedOffer = offer.offer_name;
+                }
+            }
+        });
+
+        const chosenDiscount = Math.min(
+            group.subtotal,
+            Math.max(percentageSaving, fixedSaving)
+        );
+
+        totalDiscount += chosenDiscount;
+
+        discountDetails.push({
+            product_id: productId,
+            quantity: group.quantity,
+            percentage_saving: percentageSaving,
+            fixed_saving: fixedSaving,
+            applied_discount: chosenDiscount,
+            applied_offer: fixedSaving > percentageSaving
+                ? selectedOffer
+                : percentageSaving > 0
+                    ? percentage + "% bulk discount"
+                    : null
+        });
+    });
+
+    totalDiscount = Math.round(
+        (totalDiscount + Number.EPSILON) * 100
+    ) / 100;
+
+    const finalTotal = Math.round(
+        (subtotal - totalDiscount + Number.EPSILON) * 100
+    ) / 100;
+
+    return {
+        subtotal,
+        discount: totalDiscount,
+        total: finalTotal,
+        details: discountDetails
+    };
+}
 
 
 async function processOrder() {
@@ -160,11 +311,12 @@ async function processOrder() {
 
     // Prepare order items for the secure server-side checkout.
     const orderItems = cart.map((item) => ({
-        product_id: Number(item.product_id),
-        name: item.name,
-        price: Number(item.price),
-        quantity: Number(item.quantity)
-    }));
+    product_id: Number(item.product_id),
+    name: item.name,
+    price: Number(item.price),
+    quantity: Number(item.quantity),
+    selected_colour: item.selected_colour || null
+}));
 
     if (orderItems.some((item) =>
         !Number.isInteger(item.product_id) ||
@@ -183,68 +335,17 @@ async function processOrder() {
 
     
 
-const subtotal = orderItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-);
+let discountResult;
 
-const { data: discountSettings, error: settingsError } =
-    await window.storeSupabaseClient
-        .from("store_settings")
-        .select("setting_key, setting_value")
-        .in("setting_key", [
-            "bulk_discount_enabled",
-            "bulk_discount_percent",
-            "bulk_discount_min_quantity"
-        ]);
-
-if (settingsError) {
-    console.error("Could not load discount settings:", settingsError);
-    alert("We could not load the current discount settings. Please try again.");
+try {
+    discountResult = await calculateBestDiscount(orderItems);
+} catch (error) {
+    console.error("Could not calculate the current discounts:", error);
+    alert("We could not calculate the current discounts. Please try again.");
     return;
 }
 
-const settings = {};
-
-(discountSettings || []).forEach((setting) => {
-    settings[setting.setting_key] = setting.setting_value;
-});
-
-const discountEnabled = settings.bulk_discount_enabled === true;
-const discountPercent = Number(settings.bulk_discount_percent ?? 5);
-const minimumQuantity = Number(settings.bulk_discount_min_quantity ?? 5);
-
-if (
-    !Number.isFinite(discountPercent) ||
-    discountPercent < 0 ||
-    discountPercent > 100 ||
-    !Number.isInteger(minimumQuantity) ||
-    minimumQuantity < 1
-) {
-    alert("The store discount settings are invalid. Please contact the administrator.");
-    return;
-}
-
-
-
-let discount = 0;
-
-if (discountEnabled) {
-    orderItems.forEach(function(item) {
-        if (item.quantity >= minimumQuantity) {
-            discount += item.price * item.quantity *
-                (discountPercent / 100);
-        }
-    });
-}
-
-discount = Math.round(
-    (discount + Number.EPSILON) * 100
-) / 100;
-
-const orderTotal = Math.round(
-    (subtotal - discount + Number.EPSILON) * 100
-) / 100;
+const orderTotal = discountResult.total;
 
 
 
@@ -362,11 +463,9 @@ async function renderCartPanel() {
     if (!cartItemsContainer || !cartTotalElement) return;
 
     cartItemsContainer.innerHTML = "";
-    let total = 0;
 
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
-        total += itemTotal;
 
         const row = document.createElement("div");
         row.className = "cart-item";
@@ -374,6 +473,9 @@ async function renderCartPanel() {
         row.innerHTML = `
             <div>
                 <strong>${item.name}</strong>
+                ${item.selected_colour
+    ? `<p>Colour: ${item.selected_colour}</p>`
+    : ""}
                 <p>₦${item.price.toLocaleString("en-NG")} each</p>
                 <label>
                     Quantity:
@@ -394,70 +496,36 @@ async function renderCartPanel() {
     });
 
     try {
-        const { data: discountSettings, error } =
-            await window.storeSupabaseClient
-                .from("store_settings")
-                .select("setting_key, setting_value")
-                .in("setting_key", [
-                    "bulk_discount_enabled",
-                    "bulk_discount_percent",
-                    "bulk_discount_min_quantity"
-                ]);
+        const supabaseItems = cart.filter(
+            item => Number.isInteger(Number(item.product_id)) &&
+                    Number(item.product_id) > 0
+        );
 
-        if (error) throw error;
+        const discountResult = await calculateBestDiscount(supabaseItems);
 
-        const settings = {};
-        (discountSettings || []).forEach((setting) => {
-            settings[setting.setting_key] = setting.setting_value;
-        });
+        const otherItemsTotal = cart
+            .filter(item => !supabaseItems.includes(item))
+            .reduce(
+                (sum, item) => sum + item.price * item.quantity,
+                0
+            );
 
-        const discountEnabled =
-            settings.bulk_discount_enabled === true;
-        const discountPercent =
-            Number(settings.bulk_discount_percent ?? 5);
-        const minimumQuantity =
-            Number(settings.bulk_discount_min_quantity ?? 5);
+        const combinedSubtotal =
+            discountResult.subtotal + otherItemsTotal;
 
-        if (
-            !Number.isFinite(discountPercent) ||
-            discountPercent < 0 ||
-            discountPercent > 100 ||
-            !Number.isInteger(minimumQuantity) ||
-            minimumQuantity < 1
-        ) {
-            throw new Error("Invalid store discount settings.");
-        }
-
-      const totalQuantity = cart.reduce(
-    (sum, item) => sum + item.quantity,
-    0
-);
-
-let discount = 0;
-
-if (discountEnabled) {
-    cart.forEach(function(item) {
-        if (item.quantity >= minimumQuantity) {
-            discount += item.price * item.quantity *
-                (discountPercent / 100);
-        }
-    });
-}
-
-        const finalTotal = Math.round(
-            (total - discount + Number.EPSILON) * 100
-        ) / 100;
+        const combinedTotal =
+            discountResult.total + otherItemsTotal;
 
         cartTotalElement.innerHTML =
-            `Subtotal: ₦${total.toLocaleString("en-NG")}<br>` +
-            `Bulk discount (${discountEnabled ? discountPercent : 0}%): ` +
-            `-₦${discount.toLocaleString("en-NG")}<br>` +
-            `<strong>Total: ₦${finalTotal.toLocaleString("en-NG")}</strong>`;
+            `Subtotal: ₦${combinedSubtotal.toLocaleString("en-NG")}<br>` +
+            `Discount: -₦${discountResult.discount.toLocaleString("en-NG")}<br>` +
+            `<strong>Total: ₦${combinedTotal.toLocaleString("en-NG")}</strong>`;
+
     } catch (error) {
-        console.error("Could not load cart discount settings:", error);
+        console.error("Could not calculate cart discounts:", error);
 
         cartTotalElement.textContent =
-            "Could not load discount settings. Please try again.";
+            "Could not load discount information. Please try again.";
     }
 }
 
@@ -744,7 +812,7 @@ if (allProductsLink) {
 window.storeSupabaseClient = client;
     const { data, error } = await client
         .from("products")
-        .select("id, name, category, price, image_url, description, stock_quantity")
+        .select("id, name, category, price, image_url, description, stock_quantity, available_colours")
         .eq("is_active", true)
         .order("created_at", { ascending: false });
 
@@ -784,6 +852,30 @@ window.storeSupabaseClient = client;
         const price = document.createElement("p");
         price.className = "product-price";
         price.textContent = "₦" + Number(product.price).toLocaleString("en-NG");
+        const colourSelect = document.createElement("select");
+colourSelect.className = "product-colour-select";
+colourSelect.dataset.productColour = "true";
+
+const colours = Array.isArray(product.available_colours)
+    ? product.available_colours
+    : [];
+
+if (colours.length > 0) {
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "Select a colour";
+    colourSelect.appendChild(placeholder);
+
+    colours.forEach((colour) => {
+        const option = document.createElement("option");
+        option.value = colour;
+        option.textContent =
+            colour.charAt(0).toUpperCase() + colour.slice(1);
+        colourSelect.appendChild(option);
+    });
+} else {
+    colourSelect.style.display = "none";
+}
         const stockStatus = document.createElement("p");
 stockStatus.className = "product-stock";
 
@@ -800,7 +892,15 @@ if (availableStock > 0) {
         button.type = "button";
         button.textContent = "Add to Cart";
 
-       info.append(category, name, description, price, stockStatus, button);
+       info.append(
+    category,
+    name,
+    description,
+    price,
+    colourSelect,
+    stockStatus,
+    button
+);
         card.append(imageWrap, info);
         productGrid.appendChild(card);
     });
@@ -829,6 +929,19 @@ productGrid.addEventListener("click", (event) => {
         return;
     }
 
+const colourSelect = card.querySelector(
+    "[data-product-colour]"
+);
+
+const selectedColour = colourSelect
+    ? colourSelect.value
+    : "";
+
+if (colourSelect && !selectedColour) {
+    alert("Please select a colour before adding this product to your cart.");
+    colourSelect.focus();
+    return;
+}
 
 const productId = Number(card.dataset.productId);
 
@@ -838,7 +951,9 @@ if (!Number.isInteger(productId) || productId <= 0) {
 }
 
 const existingItem = cart.find(
-    (item) => Number(item.product_id) === productId
+    (item) =>
+        Number(item.product_id) === productId &&
+        (item.selected_colour || "") === selectedColour
 );
 
 if (existingItem && existingItem.quantity >= availableStock) {
@@ -846,16 +961,17 @@ if (existingItem && existingItem.quantity >= availableStock) {
     return;
 }
 
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            cart.push({
-                product_id: productId,
-                name: name,
-                price: price,
-                quantity: 1
-            });
-        }
+if (existingItem) {
+    existingItem.quantity += 1;
+} else {
+    cart.push({
+        product_id: productId,
+        name: name,
+        price: price,
+        quantity: 1,
+        selected_colour: selectedColour
+    });
+}
 
         updateCartCount();
         saveCart();
@@ -1005,37 +1121,63 @@ async function loadSpecialOfferMessage() {
             Number.isInteger(minimum) &&
             minimum >= 1;
 
-        if (!validDiscount) {
-            if (offerMessage) {
-                offerMessage.textContent =
-                    "Check our store for current special offers.";
+        const { data: offers, error: offersError } =
+            await window.storeSupabaseClient
+                .from("discount_offers")
+                .select("offer_name, discount_per_item, minimum_quantity")
+                .eq("is_active", true);
+
+        if (offersError) throw offersError;
+
+        const validOffers = (offers || []).filter((offer) =>
+            Number(offer.discount_per_item) > 0 &&
+            Number.isFinite(Number(offer.discount_per_item)) &&
+            Number.isInteger(Number(offer.minimum_quantity)) &&
+            Number(offer.minimum_quantity) >= 1
+        );
+
+        const messages = [];
+
+        if (validDiscount) {
+            messages.push(
+                "Buy " + minimum +
+                " or more of the same product and enjoy " +
+                percent + "% off."
+            );
+        }
+
+        validOffers.forEach((offer) => {
+            messages.push(
+                (offer.offer_name || "Special offer") +
+                ": Buy " + offer.minimum_quantity +
+                " or more of an eligible product and save ₦" +
+                Number(offer.discount_per_item).toLocaleString("en-NG") +
+                " per item."
+            );
+        });
+
+        if (offerMessage) {
+            offerMessage.textContent = messages.length
+                ? messages.join(" ")
+                : "Check our store for current special offers.";
+        }
+
+        if (validDiscount) {
+            if (heroPercent) {
+                heroPercent.textContent = percent + "% OFF";
+            }
+
+            if (heroMinimum) {
+                heroMinimum.textContent = minimum + "+";
             }
 
             if (heroCircle) {
-                heroCircle.style.display = "none";
+                heroCircle.style.display = "";
             }
-
-            return;
+        } else if (heroCircle) {
+            heroCircle.style.display = "none";
         }
 
-        if (offerMessage) {
-            offerMessage.textContent =
-                "Buy " + minimum +
-                " or more of the same product and enjoy " +
-                percent + "% off.";
-        }
-
-        if (heroPercent) {
-            heroPercent.textContent = percent + "% OFF";
-        }
-
-        if (heroMinimum) {
-            heroMinimum.textContent = minimum + "+";
-        }
-
-        if (heroCircle) {
-            heroCircle.style.display = "";
-        }
     } catch (error) {
         console.error("Could not load the Special Offers message:", error);
 
