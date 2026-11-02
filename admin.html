@@ -200,7 +200,12 @@ body{margin:0;background:var(--bg);color:#29242c;font:15px/1.6 Inter,Arial,sans-
 
 >
 
-
+<label for="product-colours">Available colours (comma-separated)</label>
+<input
+    type="text"
+    id="product-colours"
+    placeholder="e.g. Red, Blue, Black"
+>
 
 
 
@@ -637,6 +642,7 @@ const categoryManagementList = document.getElementById("category-management-list
     const productPrice = document.getElementById("product-price");
 
     const productStock = document.getElementById("product-stock");
+const productColours = document.getElementById("product-colours");
 
     const productImageUrl = document.getElementById("product-image");
 
@@ -1280,6 +1286,9 @@ editButton.addEventListener("click", function () {
     productPrice.value = product.price;
 
     productStock.value = product.stock_quantity ?? 0;
+productColours.value = Array.isArray(product.available_colours)
+    ? product.available_colours.join(", ")
+    : "";
 
     productDescription.value = product.description || "";
 
@@ -3016,6 +3025,10 @@ const productDetails = {
     price: price,
 
     stock_quantity: Number(productStock.value),
+available_colours: productColours.value
+    .split(",")
+    .map(colour => colour.trim())
+    .filter(Boolean),
 
     image_url: imageUrl,
 

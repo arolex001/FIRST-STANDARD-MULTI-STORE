@@ -2162,3 +2162,195 @@ button.add-to-cart:hover,
         font-size: 17px;
     }
 }
+
+/* FIRST STANDARD - Product showcase hero */
+
+.hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 45px;
+    min-height: 480px;
+    padding: 65px 7%;
+    overflow: hidden;
+    background: linear-gradient(120deg, #fff5fa 0%, #ffffff 55%, #ffe4f0 100%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    max-width: 540px;
+}
+
+.hero-label {
+    color: #d63384;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    color: #25202a;
+    font-size: clamp(34px, 4.2vw, 54px);
+    line-height: 1.12;
+    margin-bottom: 20px;
+}
+
+.hero-description {
+    color: #625965;
+    font-size: 16px;
+    line-height: 1.8;
+    max-width: 490px;
+    margin-bottom: 25px;
+}
+
+.hero-button {
+    display: inline-block;
+    padding: 14px 30px;
+    border-radius: 30px;
+    background: #d63384;
+    color: #ffffff;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.hero-button:hover {
+    background: #b8206b;
+    transform: translateY(-3px);
+}
+
+.hero-supporting-text {
+    color: #817783;
+    font-size: 13px;
+    margin-top: 18px;
+}
+
+/* Product photo collage */
+
+.hero-decoration {
+    position: relative;
+    flex: 1;
+    max-width: 530px;
+    height: 390px;
+    border-radius: 0;
+    background: transparent;
+    overflow: visible;
+}
+
+.hero-decoration::before {
+    display: none;
+}
+
+.hero-product-card {
+    position: absolute;
+    overflow: hidden;
+    background: #ffffff;
+    border: 7px solid #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 15px 35px rgba(120, 48, 85, 0.16);
+}
+
+.hero-product-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-product-main {
+    width: 54%;
+    height: 78%;
+    left: 23%;
+    top: 11%;
+    z-index: 2;
+    transform: rotate(-3deg);
+}
+
+.hero-product-top {
+    width: 34%;
+    height: 42%;
+    left: 2%;
+    top: 3%;
+    z-index: 3;
+    transform: rotate(-9deg);
+}
+
+.hero-product-bottom {
+    width: 35%;
+    height: 42%;
+    right: 1%;
+    bottom: 2%;
+    z-index: 3;
+    transform: rotate(8deg);
+}
+
+.hero-product-side {
+    width: 31%;
+    height: 38%;
+    right: 0;
+    top: 1%;
+    z-index: 1;
+    transform: rotate(7deg);
+}
+
+/* Keep the existing live discount elements hidden in the collage */
+.hero-decoration .hero-offer-circle {
+    display: none !important;
+}
+
+@media (max-width: 700px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 45px 6% 35px;
+        gap: 25px;
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero h1 {
+        font-size: 35px;
+    }
+
+    .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-decoration {
+        width: 100%;
+        max-width: 430px;
+        height: 310px;
+        flex: none;
+    }
+
+    .hero-supporting-text {
+        margin-bottom: 0;
+    }
+}
+
+@media (max-width: 400px) {
+    .hero-decoration {
+        height: 260px;
+    }
+
+    .hero-product-card {
+        border-width: 5px;
+        border-radius: 16px;
+    }
+}
+
+.hero-product-earbuds {
+    width: 38%;
+    height: 48%;
+    left: 43%;
+    bottom: 5%;
+    z-index: 5;
+    transform: rotate(8deg);
+}
