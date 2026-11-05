@@ -308,7 +308,22 @@ async function processOrder() {
     }
 
 
+// Require an authenticated customer before checkout.
+const client = window.storeSupabaseClient;
 
+if (!client) {
+    alert("Store connection is not ready. Please refresh and try again.");
+    return;
+}
+
+const { data: sessionData, error: sessionError } =
+    await client.auth.getSession();
+
+if (sessionError || !sessionData.session) {
+    alert("Please sign in to your customer account before placing an order.");
+    window.location.href = "account.html";
+    return;
+}
     // Prepare order items for the secure server-side checkout.
     const orderItems = cart.map((item) => ({
     product_id: Number(item.product_id),
@@ -358,34 +373,20 @@ const orderTotal = discountResult.total;
 
     try {
         
-const client = window.storeSupabaseClient ||
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
-
-const { data: sessionData, error: sessionError } =
-    await client.auth.getSession();
-
-if (sessionError) {
-    throw sessionError;
-}
-
-const accessToken = sessionData.session?.access_token;
+const accessToken = sessionData.session.access_token;
 
 response = await fetch(functionURL, {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
         "apikey": SUPABASE_PUBLISHABLE_KEY,
-        "Authorization": "Bearer " +
-            (accessToken || SUPABASE_PUBLISHABLE_KEY)
+        "Authorization": "Bearer " + accessToken
     },
     body: JSON.stringify({
-        items: orderItems,
-        total: orderTotal,
-        delivery_address: deliveryAddress
-    })
+    items: orderItems,
+    total: orderTotal,
+    delivery_address: deliveryAddress
+})
 });
 
 
@@ -812,7 +813,7 @@ if (allProductsLink) {
 window.storeSupabaseClient = client;
     const { data, error } = await client
         .from("products")
-        .select("id, name, category, price, image_url, description, stock_quantity, available_colours")
+        .select("id, name, category, price, image_url, description, stock_quantity, available_colours, colour_stock")
         .eq("is_active", true)
         .order("created_at", { ascending: false });
 
@@ -856,6 +857,7 @@ window.storeSupabaseClient = client;
 colourSelect.className = "product-colour-select";
 colourSelect.dataset.productColour = "true";
 
+console.log("PRODUCT COLOUR STOCK:", product.name, product.colour_stock);
 const colours = Array.isArray(product.available_colours)
     ? product.available_colours
     : [];
@@ -867,12 +869,31 @@ if (colours.length > 0) {
     colourSelect.appendChild(placeholder);
 
     colours.forEach((colour) => {
-        const option = document.createElement("option");
-        option.value = colour;
-        option.textContent =
-            colour.charAt(0).toUpperCase() + colour.slice(1);
-        colourSelect.appendChild(option);
-    });
+    const option = document.createElement("option");
+    const colourStock = product.colour_stock || {};
+
+const quantity = Number(
+    colourStock[colour] ??
+    colourStock[
+        Object.keys(colourStock).find(
+            key => key.toLowerCase() === colour.toLowerCase()
+        )
+    ] ??
+    0
+);
+
+    option.value = colour;
+    option.textContent =
+        colour.charAt(0).toUpperCase() +
+        colour.slice(1) +
+        (quantity > 0
+            ? ` (${quantity} available)`
+            : " (Sold out)");
+
+    option.disabled = quantity <= 0;
+
+    colourSelect.appendChild(option);
+});
 } else {
     colourSelect.style.display = "none";
 }

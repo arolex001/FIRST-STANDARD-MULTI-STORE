@@ -207,6 +207,14 @@ body{margin:0;background:var(--bg);color:#29242c;font:15px/1.6 Inter,Arial,sans-
     placeholder="e.g. Red, Blue, Black"
 >
 
+<label for="product-colour-stock">Stock quantity for each colour</label>
+<textarea
+    id="product-colour-stock"
+    rows="5"
+    placeholder="Red: 2&#10;White: 1&#10;Green: 1&#10;Black: 1"
+></textarea>
+<p>Enter each colour and its available quantity on a separate line.</p>
+
 
 
 
@@ -258,6 +266,13 @@ body{margin:0;background:var(--bg);color:#29242c;font:15px/1.6 Inter,Arial,sans-
     
 
     <h2>Saved Products</h2>
+<label for="admin-product-search">Search products</label>
+<input
+    type="search"
+    id="admin-product-search"
+    placeholder="Search by product name or category..."
+    autocomplete="off"
+>
 
     <div id="saved-products-list">
 
@@ -643,6 +658,7 @@ const categoryManagementList = document.getElementById("category-management-list
 
     const productStock = document.getElementById("product-stock");
 const productColours = document.getElementById("product-colours");
+const productColourStock = document.getElementById("product-colour-stock");
 
     const productImageUrl = document.getElementById("product-image");
 
@@ -653,6 +669,8 @@ const productColours = document.getElementById("product-colours");
     const previewImage = document.getElementById("preview-image");
 
     const savedProductsList = document.getElementById("saved-products-list");
+
+const adminProductSearch = document.getElementById("admin-product-search");
 
 
 
@@ -1202,6 +1220,21 @@ discountSettingsForm.addEventListener("submit", async function (event) {
 
 
         data.forEach(function (product) {
+    const searchTerm = document
+    .getElementById("admin-product-search")
+    .value.trim()
+    .toLowerCase();
+
+const productName = (product.name || "").toLowerCase();
+const productCategory = (product.category || "").toLowerCase();
+
+if (
+    searchTerm &&
+    !productName.includes(searchTerm) &&
+    !productCategory.includes(searchTerm)
+) {
+    return;
+}
 
             const card = document.createElement("div");
 
@@ -1288,6 +1321,11 @@ editButton.addEventListener("click", function () {
     productStock.value = product.stock_quantity ?? 0;
 productColours.value = Array.isArray(product.available_colours)
     ? product.available_colours.join(", ")
+    : "";
+    productColourStock.value = product.colour_stock
+    ? Object.entries(product.colour_stock)
+        .map(([colour, quantity]) => `${colour}: ${quantity}`)
+        .join("\n")
     : "";
 
     productDescription.value = product.description || "";
@@ -1384,7 +1422,7 @@ productColours.value = Array.isArray(product.available_colours)
 
 
 
-
+adminProductSearch.addEventListener("input", loadProducts);
 
         // Load categories from Supabase
 
@@ -2193,6 +2231,7 @@ statusSelect.style.marginRight = "8px";
     "Pending",
 
     "Processing",
+    "Ready",
 
     "Shipped",
 
@@ -2232,86 +2271,86 @@ updateStatusButton.style.cssText =
 
 updateStatusButton.addEventListener("click", async function () {
 
-    updateStatusButton.disabled = true;
+    updateStatusButton.disabled = true;
+    updateStatusButton.textContent = "Updating...";
 
-    updateStatusButton.textContent = "Updating...";
+    try {
+        const selectedStatus = statusSelect.value;
 
+        const { data, error } = await supabaseClient
+            .from("orders")
+            .update({ status: selectedStatus })
+            .eq("id", order.id)
+            .select("id, status");
 
+        if (error) {
+            throw error;
+        }
 
-    try {
+        if (!data || data.length === 0) {
+            alert(
+                "No order was updated.\n" +
+                "Order ID: " + order.id + "\n" +
+                "Selected status: " + selectedStatus + "\n" +
+                "Supabase returned no updated row."
+            );
+            return;
+        }
 
-        const selectedStatus = statusSelect.value;
+        let emailMessage = "";
 
+        if (String(selectedStatus).toLowerCase() === "ready") {
 
+            const { data: emailData, error: emailError } =
+                await supabaseClient.functions.invoke("swift-task", {
+                    body: { order_id: order.id }
+                });
 
-        const { data, error } = await supabaseClient
+            if (emailError) {
+                console.error(
+                    "Ready email notification failed:",
+                    emailError,
+                    emailData
+                );
 
-            .from("orders")
+                emailMessage =
+                    "\n\nWARNING: Order status was updated, but the email could not be confirmed. Check the Edge Function logs before retrying.";
 
-            .update({ status: selectedStatus })
+            } else if (emailData?.already_processed) {
 
-            .eq("id", order.id)
+                emailMessage =
+                    "\n\nThe Ready email was already processed for this order.";
 
-            .select("id, status");
+            } else if (emailData?.success) {
 
+                emailMessage =
+                    "\n\nReady notification email sent successfully.";
 
+            } else {
 
-        if (error) {
+                emailMessage =
+                    "\n\nWARNING: Order status was updated, but the email result was not confirmed.";
+            }
+        }
 
-            throw error;
+        alert(
+            "Order updated successfully.\n" +
+            "Order ID: " + data[0].id + "\n" +
+            "Saved status: " + data[0].status +
+            emailMessage
+        );
 
-        }
+        await loadAdminOrders();
 
+    } catch (error) {
 
+        alert("Could not update order status: " + error.message);
 
-        if (!data || data.length === 0) {
+    } finally {
 
-    alert(
-
-        "No order was updated.\n" +
-
-        "Order ID: " + order.id + "\n" +
-
-        "Selected status: " + selectedStatus + "\n" +
-
-        "Supabase returned no updated row."
-
-    );
-
-    return;
-
-}
-
-
-
-        alert(
-
-            "Order updated successfully.\n" +
-
-            "Order ID: " + data[0].id + "\n" +
-
-            "Saved status: " + data[0].status
-
-        );
-
-
-
-        await loadAdminOrders();
-
-
-
-    } catch (error) {
-
-        alert("Could not update order status: " + error.message);
-
-    } finally {
-
-        updateStatusButton.disabled = false;
-
-        updateStatusButton.textContent = "Update Status";
-
-    }
-
+        updateStatusButton.disabled = false;
+        updateStatusButton.textContent = "Update Status";
+    }
 });
 
 
@@ -3016,6 +3055,63 @@ await loadAdminCustomers();
 
             // Add a new product or update an existing product
 
+const availableColours = productColours.value
+    .split(",")
+    .map(colour => colour.trim())
+    .filter(Boolean);
+
+const colourStock = {};
+
+const stockLines = productColourStock.value
+    .split("\n")
+    .map(line => line.trim())
+    .filter(Boolean);
+
+for (const line of stockLines) {
+    const separator = line.lastIndexOf(":");
+
+    if (separator === -1) {
+        alert(`Invalid stock entry: ${line}. Use Colour: Quantity.`);
+        return;
+    }
+
+    const colour = line.slice(0, separator).trim();
+    const quantityText = line.slice(separator + 1).trim();
+    const quantity = Number(quantityText);
+
+    if (!availableColours.includes(colour)) {
+        alert(`${colour} is not listed in Available colours.`);
+        return;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(colourStock, colour)) {
+        alert(`${colour} has been entered more than once.`);
+        return;
+    }
+
+    if (!Number.isInteger(quantity) || quantity < 0) {
+        alert(`Enter a whole number of zero or more for ${colour}.`);
+        return;
+    }
+
+    colourStock[colour] = quantity;
+}
+
+for (const colour of availableColours) {
+    if (!Object.prototype.hasOwnProperty.call(colourStock, colour)) {
+        alert(`Enter a stock quantity for ${colour}. Use 0 if sold out.`);
+        return;
+    }
+}
+
+const totalColourStock = Object.values(colourStock)
+    .reduce((total, quantity) => total + quantity, 0);
+
+if (totalColourStock !== Number(productStock.value)) {
+    alert(`The total colour stock (${totalColourStock}) must equal the product stock (${productStock.value}).`);
+    return;
+}
+
 const productDetails = {
 
     name: name,
@@ -3025,10 +3121,8 @@ const productDetails = {
     price: price,
 
     stock_quantity: Number(productStock.value),
-available_colours: productColours.value
-    .split(",")
-    .map(colour => colour.trim())
-    .filter(Boolean),
+available_colours: availableColours,
+colour_stock: colourStock,
 
     image_url: imageUrl,
 

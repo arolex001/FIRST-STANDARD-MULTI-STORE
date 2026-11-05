@@ -556,6 +556,10 @@ const supabaseKey =
     "You are signed in. Your order history is shown below.",
     "success"
 );
+
+ordersSection.hidden = false;
+
+await loadCustomerOrders();
                     }
                 } catch (error) {
                     console.error("Customer account error:", error);
@@ -594,9 +598,10 @@ const supabaseKey =
                 ordersList.replaceChildren();
 
                 const { data: orders, error } = await client
-                    .from("orders")
-                    .select("order_number, total, status, payment_status, created_at, items")
-                    .order("created_at", { ascending: false });
+                   .from("orders")
+.select("order_number, total, status, payment_status, created_at, items")
+.order("created_at", { ascending: false })
+.limit(5);
 
                 if (error) {
                     throw error;
