@@ -831,7 +831,18 @@ window.storeSupabaseClient = client;
         const imageWrap = document.createElement("div");
         imageWrap.className = "product-image";
         const image = document.createElement("img");
-        image.src = product.image_url;
+        const placeholderImageUrl =
+    "https://arolex001.github.io/FIRST-STANDARD-MULTI-STORE/product-placeholder.png";
+
+image.onerror = () => {
+    image.onerror = null;
+    image.src = placeholderImageUrl;
+};
+
+image.src =
+    product.image_url && product.image_url.startsWith("http")
+        ? product.image_url
+        : placeholderImageUrl;
         image.alt = product.name;
         image.loading = "lazy";
         imageWrap.appendChild(image);
