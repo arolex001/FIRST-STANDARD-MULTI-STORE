@@ -246,16 +246,58 @@ body{margin:0;background:var(--bg);color:#29242c;font:15px/1.6 Inter,Arial,sans-
                 <textarea id="product-description" required></textarea>
 
 
+                <button type="submit" class="admin-button">
+                    Save Product
+                </button>
 
-                <button type="submit" class="admin-button">
+            </form>
 
-                    Save Product
+            <!-- BULK PRODUCT UPLOAD -->
+            <div id="bulk-product-upload-panel">
 
-                </button>
+                <h2>Bulk Product Upload</h2>
 
-            </form>
+                <p>
+                    Add multiple product names at once.
+                    You can complete their details before importing them.
+                </p>
 
-        </section>
+                <label for="bulk-product-names">
+                    Product names (one product per line)
+                </label>
+
+                <textarea
+                    id="bulk-product-names"
+                    rows="8"
+                    placeholder="Samsung Galaxy A15&#10;iPhone 13&#10;Oraimo Power Bank&#10;Bluetooth Speaker"
+                ></textarea>
+
+                <button
+                    type="button"
+                    id="generate-bulk-products"
+                    class="admin-button"
+                >
+                    Generate Product List
+                </button>
+
+                <div id="bulk-products-preview" style="margin-top:20px;">
+                </div>
+
+                <button
+                    type="button"
+                    id="import-bulk-products"
+                    class="admin-button"
+                    disabled
+                >
+                    Import Products to Store
+                </button>
+
+                <p id="bulk-upload-message" role="status"></p>
+
+            </div>
+            <!-- END BULK PRODUCT UPLOAD -->
+
+        </section>
 
 
 
@@ -677,6 +719,250 @@ const adminProductSearch = document.getElementById("admin-product-search");
     let selectedImageFile = null;
 
     let editingProductId = null;
+// BULK PRODUCT UPLOAD ELEMENTS
+const bulkProductNames = document.getElementById("bulk-product-names");
+const generateBulkProducts = document.getElementById("generate-bulk-products");
+const bulkProductsPreview = document.getElementById("bulk-products-preview");
+const importBulkProducts = document.getElementById("import-bulk-products");
+const bulkUploadMessage = document.getElementById("bulk-upload-message");
+
+let bulkProductList = [];
+
+// GENERATE EDITABLE BULK PRODUCT LIST
+generateBulkProducts.addEventListener("click", () => {
+    const names = bulkProductNames.value
+        .split("\n")
+        .map(name => name.trim())
+        .filter(name => name !== "");
+
+    if (names.length === 0) {
+        bulkUploadMessage.textContent = "Please enter at least one product name.";
+        return;
+    }
+
+    bulkProductsPreview.innerHTML = "";
+    bulkProductList = [];
+
+    names.forEach((name, index) => {
+        const product = {
+            name,
+            category: "",
+            price: "",
+            stock: "0",
+            description: "",
+            colours: "",
+            colourStock: ""
+        };
+
+        bulkProductList.push(product);
+
+        const row = document.createElement("div");
+        row.className = "bulk-product-row";
+        row.style.cssText = "border:1px solid #ccc; padding:15px; margin-bottom:15px; border-radius:8px;";
+
+        const heading = document.createElement("h3");
+        heading.textContent = `Product ${index + 1}: ${name}`;
+        row.appendChild(heading);
+
+        function addField(labelText, fieldName, type = "text") {
+            const label = document.createElement("label");
+            label.textContent = labelText;
+
+            let field;
+
+            if (type === "textarea") {
+                field = document.createElement("textarea");
+                field.rows = 3;
+            } else {
+                field = document.createElement("input");
+                field.type = type;
+            }
+
+            field.value = product[fieldName];
+            field.dataset.field = fieldName;
+            field.style.cssText = "display:block; width:100%; margin:5px 0 12px;";
+
+            field.addEventListener("input", () => {
+                product[fieldName] = field.value;
+            });
+
+            row.appendChild(label);
+            row.appendChild(field);
+        }
+
+        addField("Product name", "name");
+        
+        const categoryLabel = document.createElement("label");
+        categoryLabel.textContent = "Category";
+
+        const categorySelect = document.createElement("select");
+        categorySelect.style.cssText = "display:block; width:100%; margin:5px 0 12px;";
+
+        Array.from(productCategory.options).forEach(option => {
+            if (option.value !== "") {
+                const newOption = document.createElement("option");
+                newOption.value = option.value;
+                newOption.textContent = option.textContent;
+                categorySelect.appendChild(newOption);
+            }
+        });
+
+        categorySelect.value = "";
+        categorySelect.addEventListener("change", () => {
+            product.category = categorySelect.value;
+        });
+
+        row.appendChild(categoryLabel);
+        row.appendChild(categorySelect);
+
+        addField("Price in naira (₦)", "price", "number");
+        addField("Available stock quantity", "stock", "number");
+        addField("Description", "description", "textarea");
+        addField("Available colours (comma-separated)", "colours");
+        addField("Stock for each colour (Colour: Quantity)", "colourStock", "textarea");
+
+        bulkProductsPreview.appendChild(row);
+    });
+
+    bulkUploadMessage.textContent =
+        `${names.length} product(s) generated. Complete their details below.`;
+
+    importBulkProducts.disabled = false;
+});
+
+
+// IMPORT BULK PRODUCTS TO SUPABASE
+importBulkProducts.addEventListener("click", async () => {
+    if (!bulkProductList.length) {
+        bulkUploadMessage.textContent = "Generate the product list first.";
+        return;
+    }
+
+    const productsToSave = [];
+
+    for (let index = 0; index < bulkProductList.length; index++) {
+        const product = bulkProductList[index];
+        const name = product.name.trim();
+        const category = product.category;
+        const price = Number(product.price);
+        const stock = Number(product.stock);
+
+        if (!name || !category || !Number.isFinite(price) || price <= 0) {
+            bulkUploadMessage.textContent =
+                `Product ${index + 1}: Enter a name, category and valid price.`;
+            return;
+        }
+
+        if (!Number.isInteger(stock) || stock < 0) {
+            bulkUploadMessage.textContent =
+                `Product ${index + 1}: Stock must be a whole number of zero or more.`;
+            return;
+        }
+
+        const availableColours = product.colours
+            .split(",")
+            .map(colour => colour.trim())
+            .filter(Boolean);
+
+        const colourStock = {};
+        const stockLines = product.colourStock
+            .split("\n")
+            .map(line => line.trim())
+            .filter(Boolean);
+
+        for (const line of stockLines) {
+            const separator = line.lastIndexOf(":");
+
+            if (separator === -1) {
+                bulkUploadMessage.textContent =
+                    `Product ${name}: Invalid stock entry "${line}". Use Colour: Quantity.`;
+                return;
+            }
+
+            const colour = line.slice(0, separator).trim();
+            const quantity = Number(line.slice(separator + 1).trim());
+
+            if (!availableColours.includes(colour)) {
+                bulkUploadMessage.textContent =
+                    `Product ${name}: ${colour} is not in Available colours.`;
+                return;
+            }
+
+            if (Object.prototype.hasOwnProperty.call(colourStock, colour)) {
+                bulkUploadMessage.textContent =
+                    `Product ${name}: ${colour} has been entered more than once.`;
+                return;
+            }
+
+            if (!Number.isInteger(quantity) || quantity < 0) {
+                bulkUploadMessage.textContent =
+                    `Product ${name}: Enter a valid whole-number quantity for ${colour}.`;
+                return;
+            }
+
+            colourStock[colour] = quantity;
+        }
+
+        for (const colour of availableColours) {
+            if (!Object.prototype.hasOwnProperty.call(colourStock, colour)) {
+                bulkUploadMessage.textContent =
+                    `Product ${name}: Enter a stock quantity for ${colour}.`;
+                return;
+            }
+        }
+
+        const totalColourStock = Object.values(colourStock)
+            .reduce((total, quantity) => total + quantity, 0);
+
+        if (totalColourStock !== stock) {
+            bulkUploadMessage.textContent =
+                `Product ${name}: Total colour stock (${totalColourStock}) must equal product stock (${stock}).`;
+            return;
+        }
+
+        productsToSave.push({
+            name,
+            category,
+            price,
+            stock_quantity: stock,
+            available_colours: availableColours,
+            colour_stock: colourStock,
+            image_url: "https://arolex001.github.io/FIRST-STANDARD-MULTI-STORE/product-placeholder.png",,
+            description: product.description.trim(),
+            is_active: true
+        });
+    }
+
+    importBulkProducts.disabled = true;
+    importBulkProducts.textContent = "Importing...";
+    bulkUploadMessage.textContent =
+        `Importing ${productsToSave.length} products...`;
+
+    try {
+        const { error } = await supabaseClient
+            .from("products")
+            .insert(productsToSave);
+
+        if (error) throw error;
+
+        bulkUploadMessage.textContent =
+            `${productsToSave.length} products imported successfully.`;
+
+        importBulkProducts.textContent = "Import Complete";
+
+        await loadProducts();
+
+    } catch (error) {
+        console.error("Bulk product import failed:", error);
+
+        bulkUploadMessage.textContent =
+            "Bulk import failed: " + error.message;
+
+        importBulkProducts.disabled = false;
+        importBulkProducts.textContent = "Import Products to Store";
+    }
+});
+
 
 
 
